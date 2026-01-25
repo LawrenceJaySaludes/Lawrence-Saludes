@@ -1,0 +1,342 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY + BACKGROUND */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial;
+  background: linear-gradient(120deg, #FDFCFB, #F7F6F4, #F9D5D3);
+  background-size: 300% 300%;
+  animation: gradientMove 16s ease infinite;
+  color: #2F3A44;
+}
+
+/* BACKGROUND ANIMATION */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* GLOBAL */
+section {
+  padding: 5rem 1.5rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+.hero p {
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+.hero-buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* BUTTONS */
+.btn-outline {
+  padding: 0.8rem 1.5rem;
+  border: 2px solid #2F3A44;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #2F3A44;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background: #2F3A44;
+  color: #FDFCFB;
+}
+
+.btn-solid {
+  padding: 0.8rem 1.5rem;
+  background: #2F3A44;
+  color: #FDFCFB;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-solid:hover {
+  opacity: 0.85;
+}
+
+/* CARD */
+.card {
+  background: #FDFCFB;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* SKILLS */
+.skill {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #F9D5D3;
+  border-radius: 999px;
+  margin: 0.4rem;
+  font-weight: 500;
+}
+
+/* SOFT GLOW */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(249,213,211,0.35), transparent 70%);
+  filter: blur(80px);
+  z-index: -1;
+  animation: floatGlow 20s infinite alternate ease-in-out;
+}
+
+body::before {
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  bottom: -100px;
+  right: -100px;
+  animation-delay: 6s;
+}
+
+@keyframes floatGlow {
+  0% { transform: translate(0,0); }
+  100% { transform: translate(40px,-60px); }
+}
+
+/* SECTION TITLE */
+.section-title {
+  text-align: center;
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  font-weight: 800;
+  margin-bottom: 3rem;
+  letter-spacing: 1px;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 3px;
+  background: linear-gradient(90deg, #7c7cff, #b983ff);
+  margin: 0.8rem auto 0;
+  border-radius: 999px;
+}
+
+/* PROJECT TAG */
+.project-tag {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: #2f3a44;
+  color: #fff;
+}
+
+.project-tag.desktop {
+  background: #556b8e;
+}
+
+.project-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* CHAT ABOUT SECTION */
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 900px;
+}
+
+.chat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.chat-row.right {
+  justify-content: flex-end;
+}
+
+.chat-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.chat-bubble {
+  max-width: 70%;
+  padding: 1rem 1.25rem;
+  border-radius: 18px;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  background: #f1f3f5;
+  color: #2f3a44;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.chat-row.right .chat-bubble {
+  background: #2f3a44;
+  color: #fdfcfb;
+}
+
+/* DIVIDER */
+.section-divider {
+  max-width: 1100px;
+  height: 1px;
+  margin: 5rem auto;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.12), transparent);
+}
+
+/* DARK MODE */
+.dark {
+  background: linear-gradient(120deg, #0f172a, #020617);
+  color: #e5e7eb;
+}
+
+.dark .card {
+  background: rgba(255,255,255,0.05);
+}
+
+.dark .chat-bubble {
+  background: rgba(255,255,255,0.08);
+  color: #e5e7eb;
+}
+
+.dark .chat-row.right .chat-bubble {
+  background: #e5e7eb;
+  color: #020617;
+}
+
+.dark .section-divider {
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+}
+
+/* TOGGLE */
+.dark-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  border: none;
+  background: #2f3a44;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dark .dark-toggle {
+  background: #e5e7eb;
+  color: #020617;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .chat-bubble {
+    max-width: 100%;
+  }
+}
+
+/* CONTACT SECTION */
+.contact-card {
+  max-width: 700px;
+  margin: auto;
+  padding: 3rem 2.5rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.contact-card h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.contact-text {
+  margin-top: 1rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.contact-info {
+  margin-top: 1.5rem;
+  font-size: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* DARK MODE */
+.dark .contact-card {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* CHAT ANIMATION — FIXED */
+.reveal .chat-row {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: chatReveal 0.6s ease forwards;
+}
+
+/* stagger effect */
+.reveal .chat-row:nth-child(1) { animation-delay: 0.1s; }
+.reveal .chat-row:nth-child(2) { animation-delay: 0.25s; }
+.reveal .chat-row:nth-child(3) { animation-delay: 0.4s; }
+.reveal .chat-row:nth-child(4) { animation-delay: 0.55s; }
+
+@keyframes chatReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
