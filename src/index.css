@@ -339,4 +339,198 @@ body::after {
   }
 }
 
+/* CERTIFICATES CAROUSEL */
+.cert-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.cert-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 320px;
+}
+
+.cert-img {
+  position: absolute;
+  max-width: 420px;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  transition: all 0.5s ease;
+  opacity: 0.4;
+  transform: scale(0.8);
+}
+
+/* CENTER (ACTIVE) */
+.cert-img.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 3;
+}
+
+/* LEFT */
+.cert-img.left {
+  transform: translateX(-220px) scale(0.75);
+  z-index: 2;
+}
+
+/* RIGHT */
+.cert-img.right {
+  transform: translateX(220px) scale(0.75);
+  z-index: 2;
+}
+
+/* ARROWS */
+.cert-arrow {
+  background: none;
+  border: none;
+  font-size: 3rem;
+  cursor: pointer;
+  color: #2f3a44;
+  transition: 0.3s;
+}
+
+.cert-arrow:hover {
+  opacity: 0.6;
+}
+
+/* DARK MODE */
+.dark .cert-arrow {
+  color: #e5e7eb;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .cert-img.left,
+  .cert-img.right {
+    display: none;
+  }
+
+  .cert-img.active {
+    max-width: 100%;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.modal-grid img {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.modal-grid img:hover {
+  transform: scale(1.03);
+}
+
+.image-preview {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}
+
+/* PROJECT SAMPLE IMAGE FIX (PORTRAIT SAFE) */
+.project-sample {
+  width: 100%;
+  height: 220px;              /* controls visual consistency */
+  object-fit: contain;        /* prevents stretching */
+  background: #f1f3f5;        /* soft frame for portrait images */
+  border-radius: 12px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-sample:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   DARK MODE UI FIXES
+   =========================== */
+
+/* SKILLS — DARK MODE */
+.dark .skill {
+  background: rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* BUTTONS — DARK MODE */
+.dark .btn-outline {
+  border-color: #e5e7eb;
+  color: #e5e7eb;
+}
+
+.dark .btn-outline:hover {
+  background: #e5e7eb;
+  color: #020617;
+}
+
+.dark .btn-solid {
+  background: #e5e7eb;
+  color: #020617;
+}
+
+.dark .btn-solid:hover {
+  opacity: 0.9;
+}
+
+/* PROJECT LINKS / ACTIONS */
+.dark .project-actions a {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* PROJECT TAG (DESKTOP) DARK POLISH */
+.dark .project-tag {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e5e7eb;
+}
+
+.dark .project-tag.desktop {
+  background: rgba(124, 124, 255, 0.35);
+}
+
+/* MODAL FIX */
+.dark .modal {
+  background: rgba(15, 23, 42, 0.95);
+  color: #e5e7eb;
+}
+
+/* PROJECT SAMPLE FRAME — DARK */
+.dark .project-sample {
+  background: rgba(255, 255, 255, 0.08);
+}
 

@@ -5,6 +5,8 @@ import Projects from "./components/Projects";
 import Videos from "./components/Videos";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
+import Certificates from "./components/Certificates";
+
 
 function App() {
   const [dark, setDark] = useState(false);
@@ -25,6 +27,10 @@ function App() {
       <div className="section-divider" />
 
       <About />
+
+      <div className="section-divider" />
+
+      <Certificates />
 
       <div className="section-divider" />
 

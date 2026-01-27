@@ -1,4 +1,21 @@
+import { useState } from "react";
+
+/* CLINICAL SCREENSHOTS */
+import clinical1 from "../assets/clinical-samp1.png";
+import clinical2 from "../assets/clinical-samp2.png";
+import clinical3 from "../assets/clinical-samp3.png";
+import clinical4 from "../assets/clinical-samp4.png";
+
+/* BILLING SCREENSHOTS */
+import billing1 from "../assets/billing-samp1.png";
+import billing2 from "../assets/billing-samp2.png";
+import billing3 from "../assets/billing-samp3.png";
+import billing4 from "../assets/billing-samp4.png";
+
 function Projects() {
+  const [openGallery, setOpenGallery] = useState(null);
+  const [activeImage, setActiveImage] = useState(null);
+
   return (
     <section id="projects" className="reveal">
       {/* SECTION TITLE */}
@@ -76,7 +93,7 @@ function Projects() {
             </div>
           </div>
 
-          {/* SAFESHORE (AQUACHECK) – CAPSTONE */}
+          {/* SAFESHORE (AQUACHECK) */}
           <div className="card project-card">
             <span className="project-tag">Website</span>
 
@@ -122,6 +139,20 @@ function Projects() {
             <small>C# WinForms · SQL Server · Visual Studio</small>
 
             <div className="project-actions">
+              <button
+                className="btn-outline"
+                onClick={() =>
+                  setOpenGallery([
+                    clinical1,
+                    clinical2,
+                    clinical3,
+                    clinical4,
+                  ])
+                }
+              >
+                View Screenshots
+              </button>
+
               <a
                 href="https://github.com/LawrenceJaySaludes/clinical-appointment.git"
                 target="_blank"
@@ -132,7 +163,7 @@ function Projects() {
             </div>
           </div>
 
-          {/* BILLING RECEIPT FOR PICKN'EAT */}
+          {/* BILLING RECEIPT */}
           <div className="card project-card">
             <span className="project-tag desktop">Desktop App</span>
 
@@ -146,6 +177,20 @@ function Projects() {
             <small>C# WinForms · SQL Server · Visual Studio</small>
 
             <div className="project-actions">
+              <button
+                className="btn-outline"
+                onClick={() =>
+                  setOpenGallery([
+                    billing1,
+                    billing2,
+                    billing3,
+                    billing4,
+                  ])
+                }
+              >
+                View Screenshots
+              </button>
+
               <a
                 href="https://github.com/LawrenceJaySaludes/Billing-Receipt-for-Pick-N-Eat.git"
                 target="_blank"
@@ -157,6 +202,41 @@ function Projects() {
           </div>
         </div>
       </div>
+
+      {/* GALLERY MODAL */}
+{openGallery && (
+  <div className="modal-overlay" onClick={() => setOpenGallery(null)}>
+    <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <h3>Project Screenshots</h3>
+
+      <div className="modal-grid">
+        {openGallery.map((img, i) => (
+          <img
+            key={i}
+            src={img}
+            alt="project screenshot"
+            className="project-sample"
+            onClick={() => setActiveImage(img)}
+          />
+        ))}
+      </div>
+
+      <button
+        className="btn-solid"
+        onClick={() => setOpenGallery(null)}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
+      {/* IMAGE PREVIEW */}
+      {activeImage && (
+        <div className="modal-overlay" onClick={() => setActiveImage(null)}>
+          <img src={activeImage} className="image-preview" />
+        </div>
+      )}
     </section>
   );
 }
