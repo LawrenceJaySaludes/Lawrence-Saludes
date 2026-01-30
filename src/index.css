@@ -534,3 +534,52 @@ body::after {
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* ===========================
+   DARK MODE — VIEW SCREENSHOTS BUTTON FIX
+   =========================== */
+
+.dark .btn-outline {
+  background: transparent;
+  color: #e5e7eb;
+  border: 2px solid rgba(229, 231, 235, 0.4);
+}
+
+.dark .btn-outline:hover {
+  background: rgba(229, 231, 235, 0.1);
+  border-color: #e5e7eb;
+  color: #ffffff;
+}
+
+.contact-section {
+  padding: 4rem 0;
+}
+
+.contact-card.modern {
+  max-width: 700px;
+  margin: auto;
+  padding: 2.5rem;
+  border-radius: 16px;
+  background: var(--card-bg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.contact-text {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+}
+
+.contact-info {
+  margin-top: 2rem;
+  display: grid;
+  gap: 0.75rem;
+  font-size: 1.05rem;
+}
+
+.resume-actions {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
