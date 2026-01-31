@@ -1,7 +1,7 @@
 import { useState } from "react";
 import cert1 from "../assets/cert1.jpg";
 import cert2 from "../assets/cert2.png";
-import cert3 from "../assets/lawr-prof.jpg"; // TEMPORARY MAIN CERT
+import cert3 from "../assets/cert3.jpg"; 
 
 function Certificates() {
   const certificates = [cert1, cert3, cert2];
@@ -40,17 +40,11 @@ function Certificates() {
 
             return (
               <img
-  key={index}
-  src={cert}
-  alt="Certificate"
-  className={`cert-img ${position}`}
-  onClick={() => {
-    if (position === "active") {
-      window.open(cert, "_blank");
-    }
-  }}
-/>
-
+                key={index}
+                src={cert}
+                alt="Certificate"
+                className={`cert-img ${position}`}
+              />
             );
           })}
         </div>
