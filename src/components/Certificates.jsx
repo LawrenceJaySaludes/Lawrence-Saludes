@@ -1,11 +1,14 @@
 import { useState } from "react";
 import cert1 from "../assets/cert1.jpg";
 import cert2 from "../assets/cert2.png";
-import cert3 from "../assets/cert3.jpg"; 
+import cert3 from "../assets/cert3.jpg";
+import useScrollReveal from "../hooks/useScrollReveal";
 
 function Certificates() {
+  useScrollReveal();
+
   const certificates = [cert1, cert3, cert2];
-  const [activeIndex, setActiveIndex] = useState(1); // cert3 centered
+  const [activeIndex, setActiveIndex] = useState(1);
 
   const prev = () => {
     setActiveIndex((prev) =>
@@ -20,10 +23,12 @@ function Certificates() {
   };
 
   return (
-    <section className="reveal">
-      <h2 className="section-title">Certificates</h2>
+    <section id="certificates">
+      <h2 className="section-title scroll-animate fade-up">
+        Certificates
+      </h2>
 
-      <div className="container cert-carousel">
+      <div className="container cert-carousel scroll-animate fade-up delay-1">
         <button className="cert-arrow left" onClick={prev}>‹</button>
 
         <div className="cert-track">

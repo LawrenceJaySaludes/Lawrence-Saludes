@@ -1,29 +1,46 @@
-function Contact() {
-  return (
-    <section className="reveal contact-section">
-      <div className="container">
-        <div className="contact-card modern">
-          <h2 className="section-title">Let’s Work Together</h2>
+import useScrollReveal from "../hooks/useScrollReveal";
 
-          <p className="contact-text">
+function Contact() {
+  useScrollReveal();
+
+  return (
+    <section id="contact" className="contact-section">
+      <div className="container">
+        <div className="contact-card modern scroll-animate fade-up">
+          <div className="contact-kicker scroll-animate fade-up delay-1">
+            Available for Work
+          </div>
+
+          <h2 className="section-title contact-title scroll-animate fade-up delay-1">
+            Let&apos;s Work Together
+          </h2>
+
+          <p className="contact-text scroll-animate fade-up delay-2">
             Open for <strong>remote</strong>, <strong>onsite</strong>, and{" "}
             <strong>freelance</strong> opportunities.
           </p>
 
-          {/* CONTACT INFO */}
-          <div className="contact-info">
-            <p>📧 <strong>lawrencesaludes00@gmail.com</strong></p>
-            <p>📱 <strong>0939 694 2357</strong></p>
-            <p>📍 Davao City, Philippines</p>
+          <div className="contact-info scroll-animate fade-up delay-3">
+            <p className="contact-item">
+              <span className="contact-item-label">Email</span>
+              <strong>lawrencesaludes00@gmail.com</strong>
+            </p>
+            <p className="contact-item">
+              <span className="contact-item-label">Phone</span>
+              <strong>0939 694 2357</strong>
+            </p>
+            <p className="contact-item">
+              <span className="contact-item-label">Location</span>
+              <strong>Davao City, Philippines</strong>
+            </p>
           </div>
 
-          {/* RESUME ACTIONS */}
-          <div className="resume-actions">
+          <div className="resume-actions scroll-animate fade-up delay-4">
             <a
               href="/Lawrence-Saludes-Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-outline"
+              className="btn-outline contact-resume-btn"
             >
               View Resume
             </a>
@@ -31,7 +48,7 @@ function Contact() {
             <a
               href="/Lawrence-Saludes-Resume.pdf"
               download
-              className="btn-solid"
+              className="btn-solid contact-resume-btn"
             >
               Download Resume
             </a>

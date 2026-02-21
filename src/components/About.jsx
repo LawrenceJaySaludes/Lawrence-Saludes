@@ -1,13 +1,18 @@
 import profilePic from "../assets/lawr-prof.jpg";
+import useScrollReveal from "../hooks/useScrollReveal";
 
 function About() {
+  useScrollReveal();
+
   return (
-    <section className="reveal">
-      <h2 className="section-title">About Myself</h2>
+    <section id="about">
+      <h2 className="section-title scroll-animate fade-up">
+        About Myself
+      </h2>
 
       <div className="container chat-wrapper">
-        {/* CHAT 1 — LEFT */}
-        <div className="chat-row left">
+
+        <div className="chat-row left scroll-animate slide-left delay-1">
           <img src={profilePic} alt="Lawrence" className="chat-avatar" />
           <div className="chat-bubble">
             I am a <strong>4th-year Information Technology student</strong> from
@@ -18,7 +23,7 @@ function About() {
         </div>
 
         {/* CHAT 2 — RIGHT */}
-        <div className="chat-row right">
+        <div className="chat-row right scroll-animate slide-right delay-2">
           <div className="chat-bubble">
             On the development side, I design, develop, and deploy web
             applications using <strong>React.js</strong>, with database integration
@@ -30,19 +35,20 @@ function About() {
         </div>
 
         {/* CHAT 3 — LEFT */}
-        <div className="chat-row left">
+          <div className="chat-row left scroll-animate slide-left delay-3">
           <img src={profilePic} alt="Lawrence" className="chat-avatar" />
           <div className="chat-bubble">
             On the creative side, I have <strong>one year of professional experience </strong>
-            as a <strong> video editor </strong>  under Vast Professional, producing motion graphics,
+            as a <strong> video editor </strong> under Vast Professional, producing motion graphics,
             visual effects, and thumbnails using Adobe Premiere Pro, After Effects,
             and Canva.
           </div>
         </div>
 
         {/* CHAT 4 — RIGHT */}
-        <div className="chat-row right">
+        <div className="chat-row right scroll-animate slide-right delay-4">
           <div className="chat-bubble">
+            
             Beyond technical skills, I am a <strong>strong problem solver </strong>
             who adapts quickly to <strong>new technologies and tools</strong>.
             I value clean code, continuous learning, and collaboration, and I am
@@ -51,6 +57,7 @@ function About() {
           </div>
           <img src={profilePic} alt="Lawrence" className="chat-avatar" />
         </div>
+
       </div>
     </section>
   );

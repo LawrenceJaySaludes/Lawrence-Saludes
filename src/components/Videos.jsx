@@ -1,3 +1,4 @@
+import useScrollReveal from "../hooks/useScrollReveal";
 import travelPug from "../assets/travelpug.jpg";
 import waterLemon from "../assets/waterlemon.jpg";
 import etcLogo from "../assets/etc.jpg";
@@ -5,12 +6,18 @@ import businessBoss from "../assets/businessboss.jpg";
 import ytLogo from "../assets/yt-logo.png";
 
 function Videos() {
+  useScrollReveal();
+
   return (
-    <section id="videos" className="reveal">
-      <h2 className="section-title">Video Editing Portfolio</h2>
+    <section id="videos">
+      <h2 className="section-title scroll-animate fade-up">
+        Video Editing Portfolio
+      </h2>
 
       <div className="container">
+
         <p
+          className="scroll-animate fade-up delay-1"
           style={{
             textAlign: "center",
             maxWidth: "760px",
@@ -26,6 +33,7 @@ function Videos() {
         </p>
 
         <p
+          className="scroll-animate fade-up delay-2"
           style={{
             textAlign: "center",
             marginBottom: "2.5rem",
@@ -36,14 +44,7 @@ function Videos() {
           video editing work.
         </p>
 
-        {/* CHANNEL GRID */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "2rem",
-          }}
-        >
+        <div className="channel-grid">
           {[
             {
               img: travelPug,
@@ -70,36 +71,29 @@ function Videos() {
               key={index}
               href={channel.link}
               target="_blank"
-              className="card project-card"
-              style={{ textAlign: "center", position: "relative" }}
+              rel="noreferrer"
+              className={`card project-card channel-card scroll-animate fade-up channel-delay-${index + 1}`}
             >
-              <img
-                src={ytLogo}
-                alt="YouTube"
-                style={{
-                  position: "absolute",
-                  top: "12px",
-                  right: "12px",
-                  width: "28px",
-                }}
-              />
+              <div className="channel-badge-row">
+                <img
+                  src={ytLogo}
+                  alt="YouTube"
+                  className="channel-badge"
+                />
+              </div>
 
               <img
                 src={channel.img}
                 alt={channel.name}
-                style={{
-                  width: "100%",
-                  borderRadius: "12px",
-                  marginBottom: "0.75rem",
-                }}
+
+                className="channel-thumb"
               />
-              <h3>{channel.name}</h3>
+              <h3 className="channel-name">{channel.name}</h3>
             </a>
           ))}
         </div>
 
-        {/* SAMPLE VIDEO */}
-        <div style={{ marginTop: "4rem", textAlign: "center" }}>
+        <div className="scroll-animate fade-up delay-2" style={{ marginTop: "4rem", textAlign: "center" }}>
           <h3 style={{ marginBottom: "0.8rem" }}>
             Featured Video Editing Sample
           </h3>
@@ -125,7 +119,6 @@ function Videos() {
               src="https://www.youtube.com/embed/Mtp14xAnkGw"
               title="Video Editing Sample"
               frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               style={{
                 position: "absolute",
@@ -134,28 +127,17 @@ function Videos() {
                 width: "100%",
                 height: "100%",
               }}
+
+              
             />
           </div>
+          {/* PROFESSIONAL REFERENCE */} <p style={{ marginTop: "3rem", textAlign: "center", opacity: 0.85, lineHeight: "1.7", }} > 
+            <strong>Professional Reference:</strong> 
+            Kyla Don — CEO, Vast Professionals <br /> 
+            🌐{" "} <a href="https://vastprofessionals.com" target="_blank"> vastprofessionals.com </a>{" "} · 📱 0968 753 8883 </p>
+
         </div>
 
-        {/* PROFESSIONAL REFERENCE */}
-        <p
-          style={{
-            marginTop: "3rem",
-            textAlign: "center",
-            opacity: 0.85,
-            lineHeight: "1.7",
-          }}
-        >
-          <strong>Professional Reference:</strong> Kyla Don — CEO, Vast
-          Professionals
-          <br />
-          🌐{" "}
-          <a href="https://vastprofessionals.com" target="_blank">
-            vastprofessionals.com
-          </a>{" "}
-          · 📱 0968 753 8883
-        </p>
       </div>
     </section>
   );
