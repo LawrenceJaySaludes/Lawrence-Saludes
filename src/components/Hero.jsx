@@ -1,78 +1,75 @@
 import { useEffect, useState } from "react";
 import profilePic from "../assets/lawr-test.png";
 
-function Hero() {
-  const fullName = "Lawrence Jay A. Saludes";
-  const [typedName, setTypedName] = useState("");
-  const [showAddress, setShowAddress] = useState(false);
-  const [showRole, setShowRole] = useState(false);
-  const [showButtons, setShowButtons] = useState(false);
-  const [showImage, setShowImage] = useState(false);
+function TypingName({ text }) {
+  const safeText = text || "";
+  const [visibleChars, setVisibleChars] = useState(0);
 
   useEffect(() => {
-    let index = 0;
+    if (!safeText.length) {
+      return undefined;
+    }
 
-    const typeName = setInterval(() => {
-      setTypedName(fullName.slice(0, index + 1));
-      index += 1;
+    const intervalId = window.setInterval(() => {
+      setVisibleChars((previous) => {
+        if (previous >= safeText.length) {
+          window.clearInterval(intervalId);
+          return previous;
+        }
 
-      if (index === fullName.length) {
-        clearInterval(typeName);
+        return previous + 1;
+      });
+    }, 68);
 
-        setTimeout(() => setShowAddress(true), 300);
-        setTimeout(() => setShowRole(true), 600);
-        setTimeout(() => setShowButtons(true), 900);
-        setTimeout(() => setShowImage(true), 1200);
-      }
-    }, 80);
+    return () => window.clearInterval(intervalId);
+  }, [safeText]);
 
-    return () => clearInterval(typeName);
-  }, []);
+  const typedValue = safeText.slice(0, visibleChars);
+
+  return <h1 className="hero-name">{typedValue}</h1>;
+}
+
+function Hero({ profile }) {
+  const fullName = profile?.fullName || "Lawrence Jay A. Saludes";
+  const address = profile?.address || "Davao City, Philippines";
+  const birthday = profile?.birthday || "January 29, 2004";
+  const details =
+    profile?.details || "Junior Web Developer | React.js | Video Editor";
 
   return (
     <section id="home" className="hero reveal">
       <div className="container hero-layout">
         <div className="hero-content">
-          <h1 className="hero-name">{typedName}</h1>
+          <TypingName key={fullName} text={fullName} />
 
-          {showAddress && (
-            <div className="hero-meta hero-left show">
-              <div className="hero-detail-pill">
-                <span className="hero-detail-label">Address</span>
-                <span className="hero-detail-value">Davao City, Philippines</span>
-              </div>
-              <div className="hero-detail-pill">
-                <span className="hero-detail-label">Birthday</span>
-                <span className="hero-detail-value">January 29, 2004</span>
-              </div>
+          <div className="hero-meta hero-left show">
+            <div className="hero-detail-pill">
+              <span className="hero-detail-label">Address</span>
+              <span className="hero-detail-value">{address}</span>
             </div>
-          )}
-
-          {showRole && (
-            <p className="hero-right show hero-role">
-              Junior Web Developer | React.js | Video Editor
-            </p>
-          )}
-
-          {showButtons && (
-            <div className="hero-buttons hero-fade show">
-              <a href="#projects" className="btn-solid hero-cta-btn">
-                System Projects
-              </a>
-              <a href="#videos" className="btn-solid hero-cta-btn">
-                Video Portfolio
-              </a>
+            <div className="hero-detail-pill">
+              <span className="hero-detail-label">Birthday</span>
+              <span className="hero-detail-value">{birthday}</span>
             </div>
-          )}
+          </div>
+
+          <p className="hero-right show hero-role">{details}</p>
+
+          <div className="hero-buttons hero-fade show">
+            <a href="#projects" className="btn-solid hero-cta-btn">
+              System Projects
+            </a>
+            <a href="#videos" className="btn-solid hero-cta-btn">
+              Video Portfolio
+            </a>
+          </div>
         </div>
 
-        {showImage && (
-          <img
-            src={profilePic}
-            alt="Lawrence Jay A. Saludes"
-            className="hero-image show"
-          />
-        )}
+        <img
+          src={profilePic}
+          alt="Lawrence Jay A. Saludes"
+          className="hero-image show"
+        />
       </div>
     </section>
   );

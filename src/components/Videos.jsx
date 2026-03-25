@@ -1,11 +1,38 @@
-import useScrollReveal from "../hooks/useScrollReveal";
+﻿import useScrollReveal from "../hooks/useScrollReveal";
 import travelPug from "../assets/travelpug.jpg";
 import waterLemon from "../assets/waterlemon.jpg";
 import etcLogo from "../assets/etc.jpg";
 import businessBoss from "../assets/businessboss.jpg";
 import ytLogo from "../assets/yt-logo.png";
 
-function Videos() {
+const DEFAULT_CHANNELS = [
+  {
+    id: "channel-1",
+    img: travelPug,
+    name: "Travel Pug",
+    link: "https://youtube.com/@thetravelpug?si=faCyVSJq9gSJCOlt",
+  },
+  {
+    id: "channel-2",
+    img: waterLemon,
+    name: "Water Lemon",
+    link: "https://youtube.com/@waterlemon385?si=YU-z7pMXb_GNrGJl",
+  },
+  {
+    id: "channel-3",
+    img: etcLogo,
+    name: "Elite Trade Club",
+    link: "https://youtube.com/@elitetradeclub?si=KAcSrmi4nC6bZWRb",
+  },
+  {
+    id: "channel-4",
+    img: businessBoss,
+    name: "Business Boss",
+    link: "https://youtube.com/@businessboss3156?si=aTOL8JlRQBD97pHG",
+  },
+];
+
+function Videos({ customVideos = [] }) {
   useScrollReveal();
 
   return (
@@ -15,7 +42,6 @@ function Videos() {
       </h2>
 
       <div className="container">
-
         <p
           className="scroll-animate fade-up delay-1"
           style={{
@@ -45,55 +71,69 @@ function Videos() {
         </p>
 
         <div className="channel-grid">
-          {[
-            {
-              img: travelPug,
-              name: "Travel Pug",
-              link: "https://youtube.com/@thetravelpug?si=faCyVSJq9gSJCOlt",
-            },
-            {
-              img: waterLemon,
-              name: "Water Lemon",
-              link: "https://youtube.com/@waterlemon385?si=YU-z7pMXb_GNrGJl",
-            },
-            {
-              img: etcLogo,
-              name: "Elite Trade Club",
-              link: "https://youtube.com/@elitetradeclub?si=KAcSrmi4nC6bZWRb",
-            },
-            {
-              img: businessBoss,
-              name: "Business Boss",
-              link: "https://youtube.com/@businessboss3156?si=aTOL8JlRQBD97pHG",
-            },
-          ].map((channel, index) => (
+          {DEFAULT_CHANNELS.map((channel, index) => (
             <a
-              key={index}
+              key={channel.id}
               href={channel.link}
               target="_blank"
               rel="noreferrer"
               className={`card project-card channel-card scroll-animate fade-up channel-delay-${index + 1}`}
             >
               <div className="channel-badge-row">
-                <img
-                  src={ytLogo}
-                  alt="YouTube"
-                  className="channel-badge"
-                />
+                <img src={ytLogo} alt="YouTube" className="channel-badge" />
               </div>
 
-              <img
-                src={channel.img}
-                alt={channel.name}
-
-                className="channel-thumb"
-              />
+              <img src={channel.img} alt={channel.name} className="channel-thumb" />
               <h3 className="channel-name">{channel.name}</h3>
             </a>
           ))}
         </div>
 
-        <div className="scroll-animate fade-up delay-2" style={{ marginTop: "4rem", textAlign: "center" }}>
+        {customVideos.length > 0 && (
+          <>
+            <h3
+              className="scroll-animate fade-up delay-1"
+              style={{ marginTop: "3rem", marginBottom: "1rem", textAlign: "center" }}
+            >
+              Added Videos
+            </h3>
+
+            <div className="channel-grid">
+              {customVideos.map((video, index) => (
+                <a
+                  key={video.id}
+                  href={video.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`card project-card channel-card scroll-animate fade-up channel-delay-${(index % 4) + 1}`}
+                >
+                  {video.thumbnail ? (
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="channel-thumb"
+                    />
+                  ) : (
+                    <div className="channel-thumb custom-video-placeholder">
+                      Watch Video
+                    </div>
+                  )}
+
+                  <h3 className="channel-name">{video.title}</h3>
+
+                  {video.description && (
+                    <p className="project-add-note">{video.description}</p>
+                  )}
+                </a>
+              ))}
+            </div>
+          </>
+        )}
+
+        <div
+          className="scroll-animate fade-up delay-2"
+          style={{ marginTop: "4rem", textAlign: "center" }}
+        >
           <h3 style={{ marginBottom: "0.8rem" }}>
             Featured Video Editing Sample
           </h3>
@@ -127,17 +167,26 @@ function Videos() {
                 width: "100%",
                 height: "100%",
               }}
-
-              
             />
           </div>
-          {/* PROFESSIONAL REFERENCE */} <p style={{ marginTop: "3rem", textAlign: "center", opacity: 0.85, lineHeight: "1.7", }} > 
-            <strong>Professional Reference:</strong> 
-            Kyla Don — CEO, Vast Professionals <br /> 
-            🌐{" "} <a href="https://vastprofessionals.com" target="_blank"> vastprofessionals.com </a>{" "} · 📱 0968 753 8883 </p>
 
+          <p
+            style={{
+              marginTop: "3rem",
+              textAlign: "center",
+              opacity: 0.85,
+              lineHeight: "1.7",
+            }}
+          >
+            <strong>Professional Reference:</strong> Kyla Don - CEO, Vast
+            Professionals
+            <br />
+            <a href="https://vastprofessionals.com" target="_blank" rel="noreferrer">
+              vastprofessionals.com
+            </a>{" "}
+            | 0968 753 8883
+          </p>
         </div>
-
       </div>
     </section>
   );

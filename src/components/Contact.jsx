@@ -1,7 +1,11 @@
 import useScrollReveal from "../hooks/useScrollReveal";
 
-function Contact() {
+function Contact({ contacts }) {
   useScrollReveal();
+
+  const email = contacts?.email || "";
+  const phone = contacts?.phone || "";
+  const location = contacts?.location || "";
 
   return (
     <section id="contact" className="contact-section">
@@ -23,15 +27,15 @@ function Contact() {
           <div className="contact-info scroll-animate fade-up delay-3">
             <p className="contact-item">
               <span className="contact-item-label">Email</span>
-              <strong>lawrencesaludes00@gmail.com</strong>
+              <strong>{email}</strong>
             </p>
             <p className="contact-item">
               <span className="contact-item-label">Phone</span>
-              <strong>0939 694 2357</strong>
+              <strong>{phone}</strong>
             </p>
             <p className="contact-item">
               <span className="contact-item-label">Location</span>
-              <strong>Davao City, Philippines</strong>
+              <strong>{location}</strong>
             </p>
           </div>
 
