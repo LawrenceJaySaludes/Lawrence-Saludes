@@ -18,24 +18,69 @@ body {
   color: #2F3A44;
   background-color: #f3f4f6;
   position: relative;
+  transition: background-color 0.85s ease, color 0.55s ease;
 }
 
 .app-bg {
   min-height: 100vh;
   position: relative;
   isolation: isolate;
-  background-image: url("/whitebg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: #f3f4f6;
   color: #2F3A44;
+  transition: background-color 0.85s ease, color 0.55s ease;
 }
 
 .dark.app-bg {
   background-color: #020617;
-  background-image: url("/darkbg.png");
   color: #e5e7eb;
+}
+
+.app-bg::before,
+.app-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  will-change: opacity, transform, filter;
+  transition:
+    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.95s ease;
+}
+
+.app-bg::before {
+  z-index: -3;
+  opacity: 1;
+  transform: scale(1);
+  filter: saturate(1.04) brightness(1);
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
+    url("/whitebg.png");
+}
+
+.app-bg::after {
+  z-index: -2;
+  opacity: 0;
+  transform: scale(1.035);
+  filter: saturate(1.08) brightness(0.82);
+  background-image:
+    linear-gradient(145deg, rgba(2, 6, 23, 0.22), rgba(15, 23, 42, 0.54)),
+    url("/darkbg.png");
+}
+
+.dark.app-bg::before {
+  opacity: 0;
+  transform: scale(1.025);
+  filter: saturate(0.96) brightness(0.92);
+}
+
+.dark.app-bg::after {
+  opacity: 1;
+  transform: scale(1);
+  filter: saturate(1.04) brightness(1);
 }
 
 .app-shell {
@@ -43,23 +88,47 @@ body {
   z-index: 1;
 }
 
-.app-threads {
+.app-shell::before,
+.app-shell::after {
+  content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
   pointer-events: none;
+  will-change: opacity, transform;
+  transition:
+    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.app-threads-light {
-  opacity: 0.24;
-  mix-blend-mode: multiply;
+.app-shell::before {
+  z-index: -2;
+  opacity: 1;
+  transform: scale(1);
+  background:
+    radial-gradient(circle at 18% 14%, rgba(79, 70, 229, 0.18), transparent 34%),
+    radial-gradient(circle at 84% 12%, rgba(34, 211, 238, 0.14), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.24), transparent 42%);
 }
 
-.app-threads-dark {
-  opacity: 0.34;
-  mix-blend-mode: screen;
+.app-shell::after {
+  z-index: -1;
+  opacity: 0;
+  transform: scale(1.045);
+  background:
+    radial-gradient(circle at 18% 16%, rgba(59, 130, 246, 0.16), transparent 34%),
+    radial-gradient(circle at 82% 14%, rgba(125, 249, 255, 0.13), transparent 28%),
+    radial-gradient(circle at 52% 100%, rgba(15, 23, 42, 0.42), transparent 46%);
 }
 
+.dark .app-shell::before {
+  opacity: 0;
+  transform: scale(1.045);
+}
+
+.dark .app-shell::after {
+  opacity: 1;
+  transform: scale(1);
+}
 
 /* BACKGROUND ANIMATION */
 @keyframes gradientMove {
