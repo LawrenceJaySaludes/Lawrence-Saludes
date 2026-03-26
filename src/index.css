@@ -23,6 +23,7 @@ body {
 .app-bg {
   min-height: 100vh;
   position: relative;
+  isolation: isolate;
   background-image: url("/whitebg.png");
   background-size: cover;
   background-position: center;
@@ -35,6 +36,28 @@ body {
   background-color: #020617;
   background-image: url("/darkbg.png");
   color: #e5e7eb;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.app-threads {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.app-threads-light {
+  opacity: 0.24;
+  mix-blend-mode: multiply;
+}
+
+.app-threads-dark {
+  opacity: 0.34;
+  mix-blend-mode: screen;
 }
 
 
@@ -1050,17 +1073,13 @@ body::after {
   white-space: nowrap;
 }
 
-.hero-name-gradient {
+.hero-name-shiny {
   margin: 0;
   max-width: none;
-  border-radius: 0;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  overflow: visible;
   line-height: inherit;
 }
 
-.hero-name-gradient .text-content {
+.hero-name-shiny .shiny-text-content {
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;

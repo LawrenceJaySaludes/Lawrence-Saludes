@@ -3,6 +3,7 @@ import profilePic from "../assets/lawr-test.png";
 import ElectricBorder from "./ui/ElectricBorder";
 import DecryptedText from "./ui/DecryptedText";
 import GradientText from "./ui/GradientText";
+import ShinyText from "./ui/ShinyText";
 
 const NAME_TRIPLE_CLICK_SOUND = "/neon-go-go-go.mp3";
 const IMAGE_TRIPLE_CLICK_SOUND = "/fahhhhhhhhhhhhhh.mp3";
@@ -85,6 +86,9 @@ function TypingName({ text, onNameClick, isDark }) {
   const greetingGradientColors = isDark
     ? ["#A5F3FC", "#C4B5FD", "#E2E8F0"]
     : ["#334155", "#3730A3", "#4F46E5"];
+  const nameShineColor = isDark
+    ? "rgba(255, 255, 255, 0.95)"
+    : "rgba(255, 255, 255, 0.9)";
 
   return (
     <>
@@ -108,11 +112,14 @@ function TypingName({ text, onNameClick, isDark }) {
       </p>
 
       <h1 className="hero-name hero-name-interactive" onClick={onNameClick}>
-        <GradientText
+        <ShinyText
+          speed={3.2}
           colors={nameGradientColors}
-          animationSpeed={8}
-          showBorder={false}
-          className="hero-name-gradient"
+          shineColor={nameShineColor}
+          spread={112}
+          yoyo
+          delay={0.4}
+          className="hero-name-shiny"
         >
           <DecryptedText
             text={safeText}
@@ -123,7 +130,7 @@ function TypingName({ text, onNameClick, isDark }) {
             className="hero-name-char"
             encryptedClassName="hero-name-encrypted"
           />
-        </GradientText>
+        </ShinyText>
       </h1>
     </>
   );
@@ -144,6 +151,19 @@ function Hero({ profile, dark = false }) {
     typeof profile?.profileImage === "string" && profile.profileImage.trim()
       ? profile.profileImage.trim()
       : profilePic;
+  const electricBorderColor = dark ? "#7df9ff" : "#4f46e5";
+  const electricBorderStyle = dark
+    ? undefined
+    : {
+        "--electric-light-mix": "white 10%",
+        "--electric-glow-1-fade": "transparent 58%",
+        "--electric-glow-2-fade": "transparent 50%",
+        "--electric-glow-1-blur": "0.5px",
+        "--electric-glow-2-blur": "2px",
+        "--electric-background-glow-scale": "1.04",
+        "--electric-background-glow-blur": "16px",
+        "--electric-background-glow-opacity": "0.14",
+      };
 
   const playNameTripleClickSound = useTripleClickSound(NAME_TRIPLE_CLICK_SOUND);
   const playImageTripleClickSound = useTripleClickSound(IMAGE_TRIPLE_CLICK_SOUND);
@@ -184,12 +204,13 @@ function Hero({ profile, dark = false }) {
 
         <div className="hero-image-shell show">
           <ElectricBorder
-            color="#7df9ff"
+            color={electricBorderColor}
             speed={1}
             chaos={0.12}
             thickness={2}
             borderRadius={28}
             className="hero-electric-border"
+            style={electricBorderStyle}
           >
             <img
               src={profileImageSrc}

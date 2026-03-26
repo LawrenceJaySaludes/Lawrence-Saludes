@@ -254,79 +254,79 @@ function App() {
 
   return (
     <div className={dark ? "dark app-bg" : "app-bg"}>
-      {/* DARK MODE TOGGLE */}
-      <button
-        onClick={() => setDark(!dark)}
-        className="dark-toggle"
-        title="Toggle dark mode"
-        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        <span className="dark-toggle-track">
-          <span className="dark-toggle-knob">
-            {dark ? (
-              <IconSunHigh className="dark-toggle-icon" stroke={1.8} />
-            ) : (
-              <IconMoonStars className="dark-toggle-icon" stroke={1.8} />
-            )}
+        {/* DARK MODE TOGGLE */}
+        <button
+          onClick={() => setDark(!dark)}
+          className="dark-toggle"
+          title="Toggle dark mode"
+          aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          <span className="dark-toggle-track">
+            <span className="dark-toggle-knob">
+              {dark ? (
+                <IconSunHigh className="dark-toggle-icon" stroke={1.8} />
+              ) : (
+                <IconMoonStars className="dark-toggle-icon" stroke={1.8} />
+              )}
+            </span>
           </span>
-        </span>
-        <span className="dark-toggle-label">{dark ? "Light" : "Dark"}</span>
-      </button>
+          <span className="dark-toggle-label">{dark ? "Light" : "Dark"}</span>
+        </button>
 
-      <FloatingDock
-        items={dockItems}
-        desktopClassName="portfolio-dock-desktop"
-        mobileClassName="portfolio-dock-mobile"
-      />
-
-      <Hero profile={portfolioContent.profile} dark={dark} />
-
-      <div className="section-divider" />
-
-      <About
-        aboutBubbles={portfolioContent.aboutBubbles}
-        profileImage={portfolioContent.profile.profileImage}
-      />
-
-      <div className="section-divider" />
-
-      <Certificates customCertificates={portfolioContent.customCertificates} />
-
-      <div className="section-divider" />
-
-      <Projects customProjects={portfolioContent.customProjects} />
-
-      <div className="section-divider" />
-
-      <Videos customVideos={portfolioContent.customVideos} />
-
-      <div className="section-divider" />
-
-      <Skills />
-
-      <div className="section-divider" />
-
-      <Contact contacts={portfolioContent.contacts} />
-
-      {showAdminPanel && (
-        <AdminPanel
-          onClose={() => setShowAdminPanel(false)}
-          onSave={savePortfolioContent}
-          profile={portfolioContent.profile}
-          contacts={portfolioContent.contacts}
-          aboutBubbles={portfolioContent.aboutBubbles}
-          customProjects={portfolioContent.customProjects}
-          customVideos={portfolioContent.customVideos}
-          customCertificates={portfolioContent.customCertificates}
-          setProfile={setProfile}
-          setContacts={setContacts}
-          setAboutBubbles={setAboutBubbles}
-          setCustomProjects={setCustomProjects}
-          setCustomVideos={setCustomVideos}
-          setCustomCertificates={setCustomCertificates}
+        <FloatingDock
+          items={dockItems}
+          desktopClassName="portfolio-dock-desktop"
+          mobileClassName="portfolio-dock-mobile"
         />
-      )}
-    </div>
+
+        <Hero profile={portfolioContent.profile} dark={dark} />
+
+        <div className="section-divider" />
+
+        <About
+          aboutBubbles={portfolioContent.aboutBubbles}
+          profileImage={portfolioContent.profile.profileImage}
+        />
+
+        <div className="section-divider" />
+
+        <Certificates customCertificates={portfolioContent.customCertificates} />
+
+        <div className="section-divider" />
+
+        <Projects customProjects={portfolioContent.customProjects} />
+
+        <div className="section-divider" />
+
+        <Videos customVideos={portfolioContent.customVideos} />
+
+        <div className="section-divider" />
+
+        <Skills />
+
+        <div className="section-divider" />
+
+        <Contact contacts={portfolioContent.contacts} />
+
+        {showAdminPanel && (
+          <AdminPanel
+            onClose={() => setShowAdminPanel(false)}
+            onSave={savePortfolioContent}
+            profile={portfolioContent.profile}
+            contacts={portfolioContent.contacts}
+            aboutBubbles={portfolioContent.aboutBubbles}
+            customProjects={portfolioContent.customProjects}
+            customVideos={portfolioContent.customVideos}
+            customCertificates={portfolioContent.customCertificates}
+            setProfile={setProfile}
+            setContacts={setContacts}
+            setAboutBubbles={setAboutBubbles}
+            setCustomProjects={setCustomProjects}
+            setCustomVideos={setCustomVideos}
+            setCustomCertificates={setCustomCertificates}
+          />
+        )}
+      </div>
   );
 }
 

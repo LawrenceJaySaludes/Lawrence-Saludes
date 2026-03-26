@@ -1,5 +1,17 @@
 .electric-border {
-  --electric-light-color: color-mix(in srgb, var(--electric-border-color), white 22%);
+  --electric-light-mix: white 22%;
+  --electric-glow-1-fade: transparent 42%;
+  --electric-glow-2-fade: transparent 20%;
+  --electric-glow-1-blur: 1px;
+  --electric-glow-2-blur: 5px;
+  --electric-background-glow-scale: 1.1;
+  --electric-background-glow-blur: 28px;
+  --electric-background-glow-opacity: 0.34;
+  --electric-light-color: color-mix(
+    in srgb,
+    var(--electric-border-color),
+    var(--electric-light-mix)
+  );
   position: relative;
   display: inline-flex;
   border-radius: inherit;
@@ -48,25 +60,25 @@
   border: var(--electric-border-thickness) solid color-mix(
     in srgb,
     var(--electric-border-color),
-    transparent 42%
+    var(--electric-glow-1-fade)
   );
-  filter: blur(1px);
+  filter: blur(var(--electric-glow-1-blur));
 }
 
 .eb-glow-2 {
   border: var(--electric-border-thickness) solid color-mix(
     in srgb,
     var(--electric-light-color),
-    transparent 20%
+    var(--electric-glow-2-fade)
   );
-  filter: blur(5px);
+  filter: blur(var(--electric-glow-2-blur));
 }
 
 .eb-background-glow {
   z-index: -1;
-  transform: scale(1.1);
-  filter: blur(28px);
-  opacity: 0.34;
+  transform: scale(var(--electric-background-glow-scale));
+  filter: blur(var(--electric-background-glow-blur));
+  opacity: var(--electric-background-glow-opacity);
   background: linear-gradient(
     -25deg,
     var(--electric-light-color),

@@ -1,0 +1,13 @@
+.shiny-text {
+  display: inline-block;
+  cursor: inherit;
+}
+
+.shiny-text-content {
+  display: inline-block;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
