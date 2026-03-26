@@ -8,6 +8,7 @@ function ElectricBorder({
   chaos = 0.12,
   thickness = 2,
   borderRadius = 24,
+  inset = 0,
   className = "",
   style,
 }) {
@@ -16,6 +17,21 @@ function ElectricBorder({
   const animationRef = useRef(null);
   const timeRef = useRef(0);
   const lastFrameTimeRef = useRef(0);
+
+  const normalizedInset =
+    typeof inset === "number" || typeof inset === "string"
+      ? {
+          top: inset,
+          right: inset,
+          bottom: inset,
+          left: inset,
+        }
+      : {
+          top: inset?.top ?? 0,
+          right: inset?.right ?? 0,
+          bottom: inset?.bottom ?? 0,
+          left: inset?.left ?? 0,
+        };
 
   const random = useCallback((x) => {
     const value = Math.sin(x * 12.9898) * 43758.5453;
@@ -71,7 +87,7 @@ function ElectricBorder({
 
         y +=
           octaveAmplitude *
-          noise2D(frequency * x + seed * 100, time * frequency * 0.3);
+          (noise2D(frequency * x + seed * 100, time * frequency * 0.3) - 0.5);
 
         frequency *= lacunarity;
         amplitude *= gain;
@@ -180,6 +196,26 @@ function ElectricBorder({
     [getCornerPoint]
   );
 
+  const resolveInsetValue = useCallback((value, size) => {
+    if (typeof value === "number") {
+      return value;
+    }
+
+    if (typeof value !== "string") {
+      return 0;
+    }
+
+    const trimmed = value.trim();
+
+    if (trimmed.endsWith("%")) {
+      const percent = Number.parseFloat(trimmed.slice(0, -1));
+      return Number.isFinite(percent) ? (size * percent) / 100 : 0;
+    }
+
+    const numeric = Number.parseFloat(trimmed);
+    return Number.isFinite(numeric) ? numeric : 0;
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -233,10 +269,16 @@ function ElectricBorder({
       ctx.lineJoin = "round";
 
       const scale = displacement;
-      const left = borderOffset;
-      const top = borderOffset;
-      const borderWidth = width - 2 * borderOffset;
-      const borderHeight = height - 2 * borderOffset;
+      const contentWidth = width - 2 * borderOffset;
+      const contentHeight = height - 2 * borderOffset;
+      const insetTop = resolveInsetValue(normalizedInset.top, contentHeight);
+      const insetRight = resolveInsetValue(normalizedInset.right, contentWidth);
+      const insetBottom = resolveInsetValue(normalizedInset.bottom, contentHeight);
+      const insetLeft = resolveInsetValue(normalizedInset.left, contentWidth);
+      const left = borderOffset + insetLeft;
+      const top = borderOffset + insetTop;
+      const borderWidth = Math.max(0, contentWidth - insetLeft - insetRight);
+      const borderHeight = Math.max(0, contentHeight - insetTop - insetBottom);
       const maxRadius = Math.min(borderWidth, borderHeight) / 2;
       const radius = Math.min(borderRadius, maxRadius);
 
@@ -312,11 +354,40 @@ function ElectricBorder({
       }
       resizeObserver.disconnect();
     };
-  }, [borderRadius, chaos, color, getRoundedRectPoint, octavedNoise, speed, thickness]);
+  }, [
+    borderRadius,
+    chaos,
+    color,
+    getRoundedRectPoint,
+    normalizedInset.bottom,
+    normalizedInset.left,
+    normalizedInset.right,
+    normalizedInset.top,
+    octavedNoise,
+    resolveInsetValue,
+    speed,
+    thickness,
+  ]);
 
   const vars = {
     "--electric-border-color": color,
     "--electric-border-thickness": `${thickness}px`,
+    "--electric-inset-top":
+      typeof normalizedInset.top === "number"
+        ? `${normalizedInset.top}px`
+        : normalizedInset.top,
+    "--electric-inset-right":
+      typeof normalizedInset.right === "number"
+        ? `${normalizedInset.right}px`
+        : normalizedInset.right,
+    "--electric-inset-bottom":
+      typeof normalizedInset.bottom === "number"
+        ? `${normalizedInset.bottom}px`
+        : normalizedInset.bottom,
+    "--electric-inset-left":
+      typeof normalizedInset.left === "number"
+        ? `${normalizedInset.left}px`
+        : normalizedInset.left,
     borderRadius,
   };
 

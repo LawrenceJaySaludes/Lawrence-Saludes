@@ -8,6 +8,7 @@ import ShinyText from "./ui/ShinyText";
 const NAME_TRIPLE_CLICK_SOUND = "/neon-go-go-go.mp3";
 const IMAGE_TRIPLE_CLICK_SOUND = "/fahhhhhhhhhhhhhh.mp3";
 const TRIPLE_CLICK_WINDOW_MS = 850;
+const DEFAULT_PROFILE_FRAME_RADIUS = 10;
 
 function useTripleClickSound(soundPath) {
   const audioRef = useRef(null);
@@ -151,6 +152,7 @@ function Hero({ profile, dark = false }) {
     typeof profile?.profileImage === "string" && profile.profileImage.trim()
       ? profile.profileImage.trim()
       : profilePic;
+  const usesDefaultProfileFrame = profileImageSrc === profilePic;
   const electricBorderColor = dark ? "#7df9ff" : "#4f46e5";
   const electricBorderStyle = dark
     ? undefined
@@ -164,6 +166,12 @@ function Hero({ profile, dark = false }) {
         "--electric-background-glow-blur": "16px",
         "--electric-background-glow-opacity": "0.14",
       };
+  const electricBorderRadius = usesDefaultProfileFrame
+    ? DEFAULT_PROFILE_FRAME_RADIUS
+    : 28;
+  const electricBorderClassName = usesDefaultProfileFrame
+    ? "hero-electric-border hero-electric-border--polaroid"
+    : "hero-electric-border";
 
   const playNameTripleClickSound = useTripleClickSound(NAME_TRIPLE_CLICK_SOUND);
   const playImageTripleClickSound = useTripleClickSound(IMAGE_TRIPLE_CLICK_SOUND);
@@ -180,11 +188,11 @@ function Hero({ profile, dark = false }) {
           />
 
           <div className="hero-meta hero-left show">
-            <div className="hero-detail-pill">
+            <div className="hero-detail-pill hero-detail-pill--address">
               <span className="hero-detail-label">Address</span>
               <span className="hero-detail-value">{address}</span>
             </div>
-            <div className="hero-detail-pill">
+            <div className="hero-detail-pill hero-detail-pill--birthday">
               <span className="hero-detail-label">Birthday</span>
               <span className="hero-detail-value">{birthday}</span>
             </div>
@@ -208,8 +216,8 @@ function Hero({ profile, dark = false }) {
             speed={1}
             chaos={0.12}
             thickness={2}
-            borderRadius={28}
-            className="hero-electric-border"
+            borderRadius={electricBorderRadius}
+            className={electricBorderClassName}
             style={electricBorderStyle}
           >
             <img

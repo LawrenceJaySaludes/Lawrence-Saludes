@@ -40,7 +40,11 @@
 
 .eb-layers {
   position: absolute;
-  inset: 0;
+  inset:
+    var(--electric-inset-top, 0px)
+    var(--electric-inset-right, 0px)
+    var(--electric-inset-bottom, 0px)
+    var(--electric-inset-left, 0px);
   border-radius: inherit;
   pointer-events: none;
   z-index: 0;
