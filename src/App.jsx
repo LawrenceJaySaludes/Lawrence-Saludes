@@ -22,6 +22,12 @@ import {
 
 const STORAGE_KEY = "portfolio-admin-content-v1";
 const SECRET_SEQUENCE = ["l", "j", "s"];
+const DEFAULT_ABOUT_BUBBLES = [
+  "I am a 4th-year Information Technology student from Holy Cross of Davao College, specializing in building modern, responsive web applications using React.js, with solid experience in frontend development and system integration.",
+  "On the development side, I design, develop, and deploy web applications using React.js, with database integration through Supabase and SQL. I also build C# WinForms applications connected to SQL databases, implementing full CRUD functionality and efficient data handling.",
+  "On the creative side, I have one year of professional experience as a video editor under Vast Professional, producing motion graphics, visual effects, and thumbnails using Adobe Premiere Pro, After Effects, and Canva.",
+  "Beyond technical skills, I am a strong problem solver who adapts quickly to new technologies and tools. I value clean code, continuous learning, and collaboration, and I am actively seeking opportunities where I can grow while delivering real-world, high-quality solutions.",
+];
 
 const DEFAULT_CONTENT = {
   profile: {
@@ -29,16 +35,29 @@ const DEFAULT_CONTENT = {
     address: "Davao City, Philippines",
     birthday: "January 29, 2004",
     details: "Junior Web Developer | React.js | Video Editor",
+    profileImage: "",
   },
   contacts: {
     email: "lawrencesaludes00@gmail.com",
     phone: "0939 694 2357",
     location: "Davao City, Philippines",
   },
+  aboutBubbles: DEFAULT_ABOUT_BUBBLES,
   customProjects: [],
   customVideos: [],
   customCertificates: [],
 };
+
+function normalizeAboutBubbles(value) {
+  if (!Array.isArray(value)) {
+    return DEFAULT_ABOUT_BUBBLES;
+  }
+
+  return DEFAULT_ABOUT_BUBBLES.map((fallbackText, index) => {
+    const item = value[index];
+    return typeof item === "string" ? item : fallbackText;
+  });
+}
 
 function readStoredContent() {
   if (typeof window === "undefined") {
@@ -63,6 +82,7 @@ function mergeContent(stored) {
       ...DEFAULT_CONTENT.contacts,
       ...(stored?.contacts ?? {}),
     },
+    aboutBubbles: normalizeAboutBubbles(stored?.aboutBubbles),
     customProjects: Array.isArray(stored?.customProjects)
       ? stored.customProjects
       : [],
@@ -155,6 +175,14 @@ function App() {
       ...prev,
       contacts:
         typeof updater === "function" ? updater(prev.contacts) : updater,
+    }));
+  };
+
+  const setAboutBubbles = (updater) => {
+    setPortfolioContent((prev) => ({
+      ...prev,
+      aboutBubbles:
+        typeof updater === "function" ? updater(prev.aboutBubbles) : updater,
     }));
   };
 
@@ -251,11 +279,14 @@ function App() {
         mobileClassName="portfolio-dock-mobile"
       />
 
-      <Hero profile={portfolioContent.profile} />
+      <Hero profile={portfolioContent.profile} dark={dark} />
 
       <div className="section-divider" />
 
-      <About />
+      <About
+        aboutBubbles={portfolioContent.aboutBubbles}
+        profileImage={portfolioContent.profile.profileImage}
+      />
 
       <div className="section-divider" />
 
@@ -283,11 +314,13 @@ function App() {
           onSave={savePortfolioContent}
           profile={portfolioContent.profile}
           contacts={portfolioContent.contacts}
+          aboutBubbles={portfolioContent.aboutBubbles}
           customProjects={portfolioContent.customProjects}
           customVideos={portfolioContent.customVideos}
           customCertificates={portfolioContent.customCertificates}
           setProfile={setProfile}
           setContacts={setContacts}
+          setAboutBubbles={setAboutBubbles}
           setCustomProjects={setCustomProjects}
           setCustomVideos={setCustomVideos}
           setCustomCertificates={setCustomCertificates}

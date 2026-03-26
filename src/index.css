@@ -471,6 +471,10 @@ body::after {
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
+.about-chat-bubble {
+  white-space: pre-line;
+}
+
 .chat-row.right .chat-bubble {
   background: #2f3a44;
   color: #fdfcfb;
@@ -1432,9 +1436,20 @@ body::after {
 .hero-cta-btn {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(41, 22, 245, 0.15);
-  box-shadow: 0 10px 22px rgba(47, 58, 68, 0.18);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  isolation: isolate;
+  color: #f8fafc;
+  border: 1px solid rgba(41, 22, 245, 0.34);
+  background: linear-gradient(90deg, #2f3a44, #2916f5);
+  box-shadow: 0 12px 24px rgba(41, 22, 245, 0.2);
+  background-size: 170% 170%;
+  background-position: 0% 50%;
+  transition:
+    transform 0.32s ease,
+    box-shadow 0.32s ease,
+    background 0.32s ease,
+    background-position 0.32s ease,
+    border-color 0.32s ease,
+    color 0.32s ease;
 }
 
 .hero-cta-btn::before {
@@ -1444,14 +1459,16 @@ body::after {
   background: linear-gradient(120deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
   transform: translateX(-120%);
   transition: transform 0.55s ease;
+  z-index: -1;
 }
 
 .hero-cta-btn:hover {
-  opacity: 1;
-  transform: translateY(-3px) scale(1.02);
-  border-color: rgba(41, 22, 245, 0.38);
-  background: linear-gradient(90deg, #2f3a44, #2916f5);
-  box-shadow: 0 16px 28px rgba(41, 22, 245, 0.22);
+  transform: translateY(-2px) scale(1.01);
+  color: #f8fafc;
+  border-color: rgba(41, 22, 245, 0.48);
+  background: linear-gradient(90deg, #384453, #3523f6);
+  background-position: 100% 50%;
+  box-shadow: 0 16px 28px rgba(41, 22, 245, 0.24);
 }
 
 .hero-cta-btn:hover::before {
@@ -1604,14 +1621,22 @@ body::after {
 }
 
 .dark .hero-cta-btn {
-  border-color: rgba(229, 231, 235, 0.3);
+  color: #eef2ff;
+  border-color: rgba(148, 163, 184, 0.5);
+  background: linear-gradient(98deg, #5754b8 0%, #4664b4 54%, #3b6ab0 100%);
+  box-shadow:
+    0 14px 24px rgba(37, 99, 235, 0.2),
+    0 8px 16px rgba(49, 46, 129, 0.2);
 }
 
 .dark .hero-cta-btn:hover {
-  background: linear-gradient(90deg, #b983ff, #e5e7eb);
-  color: #111827;
-  border-color: rgba(185, 131, 255, 0.7);
-  box-shadow: 0 16px 28px rgba(185, 131, 255, 0.3);
+  background: linear-gradient(98deg, #615dc7 0%, #4e6fc0 54%, #4277bd 100%);
+  background-position: 100% 50%;
+  color: #f8fafc;
+  border-color: rgba(148, 163, 184, 0.62);
+  box-shadow:
+    0 16px 28px rgba(59, 130, 246, 0.24),
+    0 10px 20px rgba(67, 56, 202, 0.2);
 }
 
 .dark .channel-card {
@@ -1889,7 +1914,7 @@ body::after {
 
 /* DARK MODE HERO NAME VISIBILITY */
 .dark .hero-name {
-  text-shadow: 0 10px 26px rgba(125, 249, 255, 0.24);
+  text-shadow: none;
 }
 
 .dark .hero-greeting {

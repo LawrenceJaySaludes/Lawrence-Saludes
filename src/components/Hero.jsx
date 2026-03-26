@@ -77,14 +77,20 @@ function useTripleClickSound(soundPath) {
   }, []);
 }
 
-function TypingName({ text, onNameClick }) {
+function TypingName({ text, onNameClick, isDark }) {
   const safeText = text || "Lawrence";
+  const nameGradientColors = isDark
+    ? ["#7DF9FF", "#B983FF", "#E5E7EB"]
+    : ["#2F3A44", "#2916F5", "#5E51F7"];
+  const greetingGradientColors = isDark
+    ? ["#A5F3FC", "#C4B5FD", "#E2E8F0"]
+    : ["#334155", "#3730A3", "#4F46E5"];
 
   return (
     <>
       <p className="hero-greeting">
         <GradientText
-          colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+          colors={greetingGradientColors}
           animationSpeed={8}
           showBorder={false}
           className="hero-greeting-gradient"
@@ -103,7 +109,7 @@ function TypingName({ text, onNameClick }) {
 
       <h1 className="hero-name hero-name-interactive" onClick={onNameClick}>
         <GradientText
-          colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+          colors={nameGradientColors}
           animationSpeed={8}
           showBorder={false}
           className="hero-name-gradient"
@@ -123,7 +129,7 @@ function TypingName({ text, onNameClick }) {
   );
 }
 
-function Hero({ profile }) {
+function Hero({ profile, dark = false }) {
   const fullName = profile?.fullName || "Lawrence";
   const displayName =
     fullName
@@ -134,6 +140,10 @@ function Hero({ profile }) {
   const birthday = profile?.birthday || "January 29, 2004";
   const details =
     profile?.details || "Junior Web Developer | React.js | Video Editor";
+  const profileImageSrc =
+    typeof profile?.profileImage === "string" && profile.profileImage.trim()
+      ? profile.profileImage.trim()
+      : profilePic;
 
   const playNameTripleClickSound = useTripleClickSound(NAME_TRIPLE_CLICK_SOUND);
   const playImageTripleClickSound = useTripleClickSound(IMAGE_TRIPLE_CLICK_SOUND);
@@ -146,6 +156,7 @@ function Hero({ profile }) {
             key={displayName}
             text={displayName}
             onNameClick={playNameTripleClickSound}
+            isDark={dark}
           />
 
           <div className="hero-meta hero-left show">
@@ -181,8 +192,8 @@ function Hero({ profile }) {
             className="hero-electric-border"
           >
             <img
-              src={profilePic}
-              alt="Lawrence Jay A. Saludes"
+              src={profileImageSrc}
+              alt={fullName}
               className="hero-image hero-image-interactive"
               onClick={playImageTripleClickSound}
             />

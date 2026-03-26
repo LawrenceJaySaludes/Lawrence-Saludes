@@ -35,11 +35,13 @@ function AdminPanel({
   onSave,
   profile,
   contacts,
+  aboutBubbles,
   customProjects,
   customVideos,
   customCertificates,
   setProfile,
   setContacts,
+  setAboutBubbles,
   setCustomProjects,
   setCustomVideos,
   setCustomCertificates,
@@ -199,6 +201,10 @@ function AdminPanel({
   const projectCount = customProjects.length;
   const videoCount = customVideos.length;
   const certificateCount = customCertificates.length;
+  const aboutBubbleFields = Array.from({ length: 4 }, (_, index) => {
+    const value = aboutBubbles?.[index];
+    return typeof value === "string" ? value : "";
+  });
 
   if (!authed) {
     return (
@@ -341,7 +347,7 @@ function AdminPanel({
                   <h3>Profile Info</h3>
                 </div>
                 <p className="admin-section-note">
-                  Changes update your hero section instantly.
+                  Changes update your hero and about profile content instantly.
                 </p>
 
                 <div className="admin-form-grid">
@@ -400,6 +406,20 @@ function AdminPanel({
                     }}
                     placeholder="Role or short details"
                   />
+
+                  <label className="admin-field-label">Profile Image URL</label>
+                  <input
+                    className="form-input form-full"
+                    value={profile.profileImage || ""}
+                    onChange={(event) => {
+                      markDirty();
+                      setProfile((prev) => ({
+                        ...prev,
+                        profileImage: event.target.value,
+                      }));
+                    }}
+                    placeholder="https://example.com/your-profile-image.jpg"
+                  />
                 </div>
               </section>
 
@@ -453,6 +473,43 @@ function AdminPanel({
                     }}
                     placeholder="Location"
                   />
+                </div>
+              </section>
+
+              <section className="admin-section">
+                <div className="admin-section-head">
+                  <h3>About Myself</h3>
+                </div>
+                <p className="admin-section-note">
+                  Edit the about chat bubbles shown in your About section.
+                </p>
+
+                <div className="admin-form-grid">
+                  {aboutBubbleFields.map((bubbleText, index) => (
+                    <div key={`about-bubble-field-${index}`} className="form-full">
+                      <label className="admin-field-label">
+                        Chat Bubble {index + 1}
+                      </label>
+                      <textarea
+                        className="form-textarea form-full"
+                        value={bubbleText}
+                        onChange={(event) => {
+                          const nextValue = event.target.value;
+                          markDirty();
+                          setAboutBubbles((prev) => {
+                            const next = Array.from({ length: 4 }, (_, bubbleIndex) => {
+                              const existingValue = prev?.[bubbleIndex];
+                              return typeof existingValue === "string" ? existingValue : "";
+                            });
+
+                            next[index] = nextValue;
+                            return next;
+                          });
+                        }}
+                        placeholder={`Write your about message ${index + 1}`}
+                      />
+                    </div>
+                  ))}
                 </div>
               </section>
             </div>
