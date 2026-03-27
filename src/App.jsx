@@ -281,32 +281,34 @@ function App() {
 
         <Hero profile={portfolioContent.profile} dark={dark} />
 
-        <div className="section-divider" />
+        <main className="portfolio-sections">
+          <div className="section-divider" />
 
-        <About
-          aboutBubbles={portfolioContent.aboutBubbles}
-          profileImage={portfolioContent.profile.profileImage}
-        />
+          <About
+            aboutBubbles={portfolioContent.aboutBubbles}
+            profileImage={portfolioContent.profile.profileImage}
+          />
 
-        <div className="section-divider" />
+          <div className="section-divider" />
 
-        <Certificates customCertificates={portfolioContent.customCertificates} />
+          <Certificates customCertificates={portfolioContent.customCertificates} />
 
-        <div className="section-divider" />
+          <div className="section-divider" />
 
-        <Projects customProjects={portfolioContent.customProjects} />
+          <Projects customProjects={portfolioContent.customProjects} />
 
-        <div className="section-divider" />
+          <div className="section-divider" />
 
-        <Videos customVideos={portfolioContent.customVideos} />
+          <Videos customVideos={portfolioContent.customVideos} />
 
-        <div className="section-divider" />
+          <div className="section-divider" />
 
-        <Skills />
+          <Skills />
 
-        <div className="section-divider" />
+          <div className="section-divider" />
 
-        <Contact contacts={portfolioContent.contacts} />
+          <Contact contacts={portfolioContent.contacts} />
+        </main>
 
         {showAdminPanel && (
           <AdminPanel

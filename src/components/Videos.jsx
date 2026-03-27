@@ -36,39 +36,29 @@ function Videos({ customVideos = [] }) {
   useScrollReveal();
 
   return (
-    <section id="videos">
+    <section id="videos" className="videos-section">
       <h2 className="section-title scroll-animate fade-up">
         Video Editing Portfolio
       </h2>
+      <p className="section-lead scroll-animate fade-up delay-1">
+        Motion graphics, short-form edits, and branded YouTube content shaped to
+        feel clear, engaging, and polished on screen.
+      </p>
 
       <div className="container">
-        <p
-          className="scroll-animate fade-up delay-1"
-          style={{
-            textAlign: "center",
-            maxWidth: "760px",
-            margin: "0 auto 1.8rem",
-            lineHeight: "1.7",
-          }}
-        >
+        <div className="videos-intro scroll-animate fade-up delay-2">
+          <p className="videos-intro-copy">
           With <strong>1 year of professional video editing experience</strong>{" "}
           under <strong>Vast Professional</strong>, I contributed to multiple
           YouTube channels by producing motion graphics, visual effects, and
           engaging video content using <strong>Adobe Premiere Pro</strong>,{" "}
           <strong>After Effects</strong>, and <strong>Canva</strong>.
-        </p>
-
-        <p
-          className="scroll-animate fade-up delay-2"
-          style={{
-            textAlign: "center",
-            marginBottom: "2.5rem",
-            opacity: 0.85,
-          }}
-        >
-          Visit the following YouTube channels to view published samples of my
-          video editing work.
-        </p>
+          </p>
+          <p className="videos-intro-note">
+            Visit the following channels to view published samples of my editing
+            work.
+          </p>
+        </div>
 
         <div className="channel-grid">
           {DEFAULT_CHANNELS.map((channel, index) => (
@@ -91,10 +81,7 @@ function Videos({ customVideos = [] }) {
 
         {customVideos.length > 0 && (
           <>
-            <h3
-              className="scroll-animate fade-up delay-1"
-              style={{ marginTop: "3rem", marginBottom: "1rem", textAlign: "center" }}
-            >
+            <h3 className="videos-subtitle scroll-animate fade-up delay-1">
               Added Videos
             </h3>
 
@@ -130,62 +117,44 @@ function Videos({ customVideos = [] }) {
           </>
         )}
 
-        <div
-          className="scroll-animate fade-up delay-2"
-          style={{ marginTop: "4rem", textAlign: "center" }}
-        >
-          <h3 style={{ marginBottom: "0.8rem" }}>
-            Featured Video Editing Sample
-          </h3>
-
-          <p style={{ opacity: 0.85, marginBottom: "1.5rem" }}>
-            A short compilation highlighting my editing style, transitions, and
-            motion graphics work.
-          </p>
-
-          <div
-            style={{
-              position: "relative",
-              paddingBottom: "56.25%",
-              height: 0,
-              maxWidth: "900px",
-              margin: "0 auto",
-              borderRadius: "16px",
-              overflow: "hidden",
-              boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
-            }}
-          >
-            <iframe
-              src="https://www.youtube.com/embed/Mtp14xAnkGw"
-              title="Video Editing Sample"
-              frameBorder="0"
-              allowFullScreen
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-              }}
-            />
+        <div className="featured-video-wrap scroll-animate fade-up delay-2">
+          <div className="featured-video-head">
+            <span className="featured-video-kicker">Featured Sample</span>
+            <h3 className="featured-video-title">Featured Video Editing Sample</h3>
+            <p className="featured-video-copy">
+              A short compilation highlighting my editing style, transitions,
+              pacing, and motion graphics work.
+            </p>
           </div>
 
-          <p
-            style={{
-              marginTop: "3rem",
-              textAlign: "center",
-              opacity: 0.85,
-              lineHeight: "1.7",
-            }}
-          >
-            <strong>Professional Reference:</strong> Kyla Don - CEO, Vast
-            Professionals
-            <br />
-            <a href="https://vastprofessionals.com" target="_blank" rel="noreferrer">
-              vastprofessionals.com
-            </a>{" "}
-            | 0968 753 8883
-          </p>
+          <div className="featured-video-frame">
+            <div className="featured-video-embed">
+              <iframe
+                src="https://www.youtube.com/embed/Mtp14xAnkGw"
+                title="Video Editing Sample"
+                frameBorder="0"
+                allowFullScreen
+                className="featured-video-iframe"
+              />
+            </div>
+          </div>
+
+          <div className="video-reference">
+            <span className="video-reference-label">Professional Reference</span>
+            <p className="video-reference-text">
+              Kyla Don, CEO of Vast Professionals
+            </p>
+            <p className="video-reference-links">
+              <a
+                href="https://vastprofessionals.com"
+                target="_blank"
+                rel="noreferrer"
+              >
+                vastprofessionals.com
+              </a>
+              <span>0968 753 8883</span>
+            </p>
+          </div>
         </div>
       </div>
     </section>

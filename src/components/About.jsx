@@ -25,8 +25,12 @@ function About({ aboutBubbles = DEFAULT_ABOUT_BUBBLES, profileImage = "" }) {
     .filter(Boolean);
 
   return (
-    <section id="about">
+    <section id="about" className="about-section">
       <h2 className="section-title scroll-animate fade-up">About Myself</h2>
+      <p className="section-lead about-lead scroll-animate fade-up delay-1">
+        A quick snapshot of how I combine web development, system building, and
+        creative editing into polished, real-world work.
+      </p>
 
       <div className="container chat-wrapper">
         {visibleBubbles.map((bubbleText, index) => {

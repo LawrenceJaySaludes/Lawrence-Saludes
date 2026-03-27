@@ -78,43 +78,55 @@ function Projects({ customProjects = [] }) {
   const projects = [...DEFAULT_PROJECTS, ...customProjects];
 
   return (
-    <section id="projects">
+    <section id="projects" className="projects-section">
       <h2 className="section-title scroll-animate fade-up">
         Website & Desktop Projects
       </h2>
+      <p className="section-lead scroll-animate fade-up delay-1">
+        A selection of web and desktop builds focused on usable interfaces,
+        solid system logic, and practical real-world workflows.
+      </p>
 
       <div className="container">
-        <div
-          className="grid"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "2rem",
-          }}
-        >
+        <div className="grid projects-grid">
           {projects.map((project, index) => {
             const delayClass = `delay-${(index % 4) + 1}`;
             const isDesktop = project.category
               ?.toLowerCase()
               .includes("desktop");
+            const cardToneClassName = isDesktop
+              ? "project-card--desktop"
+              : "project-card--web";
 
             return (
-              <div
+              <article
                 key={project.id || `${project.title}-${index}`}
-                className={`card project-card scroll-animate fade-up ${delayClass}`}
+                className={`card project-card ${cardToneClassName} scroll-animate fade-up ${delayClass}`}
               >
-                <span className={`project-tag${isDesktop ? " desktop" : ""}`}>
-                  {project.category || "Website"}
-                </span>
+                <div className="project-card-top">
+                  <span className={`project-tag${isDesktop ? " desktop" : ""}`}>
+                    {project.category || "Website"}
+                  </span>
+                  <span className="project-card-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
 
-                <h3>{project.title}</h3>
-                <p style={{ margin: "1rem 0" }}>{project.description}</p>
-                <small>{project.stack}</small>
+                <div className="project-card-body">
+                  <h3 className="project-card-title">{project.title}</h3>
+                  <p className="project-card-description">{project.description}</p>
+                </div>
+
+                <div className="project-stack-block">
+                  <span className="project-stack-label">Stack</span>
+                  <small className="project-stack-value">{project.stack}</small>
+                </div>
 
                 <div className="project-actions">
                   {Array.isArray(project.screenshots) &&
                     project.screenshots.length > 0 && (
                       <button
-                        className="btn-outline"
+                        className="btn-outline project-link-btn"
                         onClick={() => setOpenGallery(project.screenshots)}
                       >
                         View Screenshots
@@ -126,7 +138,7 @@ function Projects({ customProjects = [] }) {
                       href={project.liveLink}
                       target="_blank"
                       rel="noreferrer"
-                      className="btn-outline"
+                      className="btn-outline project-link-btn"
                     >
                       {project.liveLabel || "Live Demo"}
                     </a>
@@ -137,13 +149,13 @@ function Projects({ customProjects = [] }) {
                       href={project.repoLink}
                       target="_blank"
                       rel="noreferrer"
-                      className="btn-solid"
+                      className="btn-solid project-link-btn"
                     >
                       {project.repoLabel || "GitHub"}
                     </a>
                   )}
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
