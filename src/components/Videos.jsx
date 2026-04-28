@@ -129,13 +129,15 @@ function Videos({ customVideos = [] }) {
 
           <div className="featured-video-frame">
             <div className="featured-video-embed">
-              <iframe
-                src="https://www.youtube.com/embed/Mtp14xAnkGw"
-                title="Video Editing Sample"
-                frameBorder="0"
-                allowFullScreen
-                className="featured-video-iframe"
-              />
+              <video
+                className="featured-video-player"
+                controls
+                preload="metadata"
+                playsInline
+              >
+                <source src="/Edit-Sample.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
 

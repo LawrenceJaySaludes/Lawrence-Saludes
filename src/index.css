@@ -2549,6 +2549,8 @@ body::after {
 }
 
 .featured-video-frame {
+  width: min(100%, 760px);
+  margin: 0 auto;
   padding: 0.8rem;
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -2562,19 +2564,20 @@ body::after {
 
 .featured-video-embed {
   position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   border-radius: 18px;
   overflow: hidden;
   background: rgba(15, 23, 42, 0.1);
   box-shadow: 0 20px 42px rgba(15, 23, 42, 0.12);
 }
 
-.featured-video-iframe {
-  position: absolute;
-  inset: 0;
+.featured-video-player {
+  display: block;
   width: 100%;
   height: 100%;
+  background: #000;
+  border-radius: inherit;
 }
 
 .video-reference {
@@ -4133,4 +4136,70 @@ html {
   .admin-form {
     grid-template-columns: 1fr;
   }
+}
+
+/* INSPECT LOCK */
+.inspect-lock-active {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.inspect-lock-active .hero,
+.inspect-lock-active .portfolio-sections,
+.inspect-lock-active .floating-dock-desktop,
+.inspect-lock-active .floating-dock-mobile-wrap,
+.inspect-lock-active .dark-toggle {
+  pointer-events: none;
+  filter: blur(2px) saturate(0.92);
+}
+
+.inspect-lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2300;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2.6vw, 2rem);
+  background:
+    radial-gradient(circle at 14% 12%, rgba(41, 22, 245, 0.2), transparent 36%),
+    radial-gradient(circle at 86% 80%, rgba(56, 189, 248, 0.14), transparent 38%),
+    rgba(2, 6, 23, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.inspect-lock-card {
+  width: min(560px, 100%);
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(30, 41, 59, 0.92)
+  );
+  color: #f8fafc;
+  box-shadow: 0 28px 58px rgba(2, 6, 23, 0.55);
+  padding: clamp(1.2rem, 3vw, 1.7rem);
+  text-align: center;
+}
+
+.inspect-lock-card h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.inspect-lock-card p {
+  margin: 0.75rem 0 0;
+  line-height: 1.65;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.inspect-lock-hint {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(125, 249, 255, 0.9);
 }

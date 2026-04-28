@@ -7,6 +7,7 @@ import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import Certificates from "./components/Certificates";
 import AdminPanel from "./components/AdminPanel";
+import useInspectLock from "./hooks/useInspectLock";
 import { FloatingDock } from "./components/ui/FloatingDock";
 import {
   IconAddressBook,
@@ -159,6 +160,7 @@ function mergeContent(stored) {
 function App() {
   const [dark, setDark] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const isInspectLocked = useInspectLock();
   const [portfolioContent, setPortfolioContent] = useState(() =>
     mergeContent(readStoredContent())
   );
@@ -329,7 +331,11 @@ function App() {
   ];
 
   return (
-    <div className={dark ? "dark app-bg" : "app-bg"}>
+    <div
+      className={`${dark ? "dark app-bg" : "app-bg"}${
+        isInspectLocked ? " inspect-lock-active" : ""
+      }`}
+    >
         {/* DARK MODE TOGGLE */}
         <button
           onClick={() => setDark(!dark)}
@@ -405,6 +411,19 @@ function App() {
             setCustomCertificates={setCustomCertificates}
             setCv={setCv}
           />
+        )}
+
+        {isInspectLocked && (
+          <div className="inspect-lock-overlay" role="alert" aria-live="assertive">
+            <div className="inspect-lock-card">
+              <h2>Protected View</h2>
+              <p>
+                Developer tools appear to be open. This portfolio is locked while
+                inspect mode is active.
+              </p>
+              <p className="inspect-lock-hint">Close inspect tools to continue.</p>
+            </div>
+          </div>
         )}
       </div>
   );
