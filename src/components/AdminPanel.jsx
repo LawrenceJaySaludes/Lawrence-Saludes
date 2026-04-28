@@ -1,6 +1,9 @@
 ﻿import { useCallback, useEffect, useState } from "react";
 
 const ADMIN_PASSWORD = "lawrence@admin.him";
+const MAX_CV_FILE_SIZE_BYTES = 3 * 1024 * 1024;
+const CV_FILE_ACCEPT =
+  ".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
 const EMPTY_PROJECT = {
   title: "",
@@ -39,12 +42,14 @@ function AdminPanel({
   customProjects,
   customVideos,
   customCertificates,
+  cv,
   setProfile,
   setContacts,
   setAboutBubbles,
   setCustomProjects,
   setCustomVideos,
   setCustomCertificates,
+  setCv,
 }) {
   const [passwordInput, setPasswordInput] = useState("");
   const [authError, setAuthError] = useState("");
@@ -58,6 +63,8 @@ function AdminPanel({
   const [projectError, setProjectError] = useState("");
   const [videoError, setVideoError] = useState("");
   const [certificateError, setCertificateError] = useState("");
+  const [cvError, setCvError] = useState("");
+  const [isCvDragActive, setIsCvDragActive] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [saveFeedback, setSaveFeedback] = useState("");
@@ -198,9 +205,89 @@ function AdminPanel({
     markDirty();
   };
 
+  const processCvAttachment = (file) => {
+    if (!file) {
+      return;
+    }
+
+    const lowerName = typeof file.name === "string" ? file.name.toLowerCase() : "";
+    const isAllowedType =
+      lowerName.endsWith(".pdf") ||
+      lowerName.endsWith(".doc") ||
+      lowerName.endsWith(".docx");
+
+    if (!isAllowedType) {
+      setCvError("Please attach a PDF, DOC, or DOCX file.");
+      return;
+    }
+
+    if (file.size > MAX_CV_FILE_SIZE_BYTES) {
+      setCvError("CV file is too large. Keep it 3MB or less.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result !== "string") {
+        setCvError("Unable to read the selected file.");
+        return;
+      }
+
+      setCv((prev) => ({
+        ...(prev ?? {}),
+        url: reader.result,
+        fileName: file.name,
+      }));
+      setCvError("");
+      markDirty();
+    };
+
+    reader.onerror = () => {
+      setCvError("Unable to read the selected file.");
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const handleCvFileChange = (event) => {
+    const input = event.target;
+    processCvAttachment(input.files?.[0]);
+    input.value = "";
+  };
+
+  const handleCvDragEnter = (event) => {
+    event.preventDefault();
+    setIsCvDragActive(true);
+  };
+
+  const handleCvDragOver = (event) => {
+    event.preventDefault();
+    if (!isCvDragActive) {
+      setIsCvDragActive(true);
+    }
+  };
+
+  const handleCvDragLeave = (event) => {
+    event.preventDefault();
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setIsCvDragActive(false);
+    }
+  };
+
+  const handleCvDrop = (event) => {
+    event.preventDefault();
+    setIsCvDragActive(false);
+    processCvAttachment(event.dataTransfer?.files?.[0]);
+  };
+
   const projectCount = customProjects.length;
   const videoCount = customVideos.length;
   const certificateCount = customCertificates.length;
+  const cvFileName =
+    typeof cv?.fileName === "string" && cv.fileName.trim()
+      ? cv.fileName.trim()
+      : "No file selected";
   const aboutBubbleFields = Array.from({ length: 4 }, (_, index) => {
     const value = aboutBubbles?.[index];
     return typeof value === "string" ? value : "";
@@ -420,6 +507,63 @@ function AdminPanel({
                     }}
                     placeholder="https://example.com/your-profile-image.jpg"
                   />
+
+                  <label className="admin-field-label">Update CV Attachment</label>
+                  <div
+                    className={`admin-cv-dropzone form-full${isCvDragActive ? " is-drag-active" : ""}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={(event) => {
+                      event.currentTarget
+                        .querySelector(".admin-cv-file-input")
+                        ?.click();
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        event.currentTarget
+                          .querySelector(".admin-cv-file-input")
+                          ?.click();
+                      }
+                    }}
+                    onDragEnter={handleCvDragEnter}
+                    onDragOver={handleCvDragOver}
+                    onDragLeave={handleCvDragLeave}
+                    onDrop={handleCvDrop}
+                  >
+                    <p className="admin-cv-dropzone-title">Drop your CV file here</p>
+                    <p className="admin-cv-dropzone-copy">
+                      PDF, DOC, or DOCX up to 3MB
+                    </p>
+                    <p className="admin-cv-current-file">
+                      Current file: <strong>{cvFileName}</strong>
+                    </p>
+                    <button
+                      type="button"
+                      className="btn-outline admin-secondary-btn admin-cv-upload-btn"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        event.currentTarget
+                          .closest(".admin-cv-dropzone")
+                          ?.querySelector(".admin-cv-file-input")
+                          ?.click();
+                      }}
+                    >
+                      Choose File
+                    </button>
+                    <input
+                      type="file"
+                      accept={CV_FILE_ACCEPT}
+                      className="admin-cv-file-input"
+                      onChange={handleCvFileChange}
+                    />
+                  </div>
+
+                  <p className="admin-section-note form-full">
+                    Drag and drop your CV attachment, then click Save Changes.
+                  </p>
+
+                  {cvError && <span className="form-error form-full">{cvError}</span>}
                 </div>
               </section>
 

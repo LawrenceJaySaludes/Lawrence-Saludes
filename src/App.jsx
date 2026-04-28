@@ -22,12 +22,24 @@ import {
 
 const STORAGE_KEY = "portfolio-admin-content-v1";
 const SECRET_SEQUENCE = ["l", "j", "s"];
+const DEFAULT_CV = {
+  url: "/Lawrence-Saludes-Resume.pdf",
+  fileName: "Lawrence-Saludes-CV.pdf",
+};
 const DEFAULT_ABOUT_BUBBLES = [
   "I am a 4th-year Information Technology student from Holy Cross of Davao College, specializing in building modern, responsive web applications using React.js, with solid experience in frontend development and system integration.",
   "On the development side, I design, develop, and deploy web applications using React.js, with database integration through Supabase and SQL. I also build C# WinForms applications connected to SQL databases, implementing full CRUD functionality and efficient data handling.",
   "On the creative side, I have one year of professional experience as a video editor under Vast Professional, producing motion graphics, visual effects, and thumbnails using Adobe Premiere Pro, After Effects, and Canva.",
   "Beyond technical skills, I am a strong problem solver who adapts quickly to new technologies and tools. I value clean code, continuous learning, and collaboration, and I am actively seeking opportunities where I can grow while delivering real-world, high-quality solutions.",
 ];
+
+function isObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function toTextOrFallback(value, fallback) {
+  return typeof value === "string" ? value : fallback;
+}
 
 const DEFAULT_CONTENT = {
   profile: {
@@ -46,6 +58,7 @@ const DEFAULT_CONTENT = {
   customProjects: [],
   customVideos: [],
   customCertificates: [],
+  cv: DEFAULT_CV,
 };
 
 function normalizeAboutBubbles(value) {
@@ -59,6 +72,55 @@ function normalizeAboutBubbles(value) {
   });
 }
 
+function normalizeProfile(value) {
+  const safeValue = isObject(value) ? value : {};
+
+  return {
+    fullName: toTextOrFallback(safeValue.fullName, DEFAULT_CONTENT.profile.fullName),
+    address: toTextOrFallback(safeValue.address, DEFAULT_CONTENT.profile.address),
+    birthday: toTextOrFallback(safeValue.birthday, DEFAULT_CONTENT.profile.birthday),
+    details: toTextOrFallback(safeValue.details, DEFAULT_CONTENT.profile.details),
+    profileImage: toTextOrFallback(
+      safeValue.profileImage,
+      DEFAULT_CONTENT.profile.profileImage
+    ),
+  };
+}
+
+function normalizeContacts(value) {
+  const safeValue = isObject(value) ? value : {};
+
+  return {
+    email: toTextOrFallback(safeValue.email, DEFAULT_CONTENT.contacts.email),
+    phone: toTextOrFallback(safeValue.phone, DEFAULT_CONTENT.contacts.phone),
+    location: toTextOrFallback(safeValue.location, DEFAULT_CONTENT.contacts.location),
+  };
+}
+
+function normalizeCv(value) {
+  if (typeof value === "string") {
+    return {
+      ...DEFAULT_CV,
+      url: value.trim() || DEFAULT_CV.url,
+    };
+  }
+
+  if (!value || typeof value !== "object") {
+    return { ...DEFAULT_CV };
+  }
+
+  return {
+    url:
+      typeof value.url === "string" && value.url.trim()
+        ? value.url.trim()
+        : DEFAULT_CV.url,
+    fileName:
+      typeof value.fileName === "string" && value.fileName.trim()
+        ? value.fileName.trim()
+        : DEFAULT_CV.fileName,
+  };
+}
+
 function readStoredContent() {
   if (typeof window === "undefined") {
     return null;
@@ -68,20 +130,20 @@ function readStoredContent() {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // no-op
+    }
+
     return null;
   }
 }
 
 function mergeContent(stored) {
   return {
-    profile: {
-      ...DEFAULT_CONTENT.profile,
-      ...(stored?.profile ?? {}),
-    },
-    contacts: {
-      ...DEFAULT_CONTENT.contacts,
-      ...(stored?.contacts ?? {}),
-    },
+    profile: normalizeProfile(stored?.profile),
+    contacts: normalizeContacts(stored?.contacts),
     aboutBubbles: normalizeAboutBubbles(stored?.aboutBubbles),
     customProjects: Array.isArray(stored?.customProjects)
       ? stored.customProjects
@@ -90,6 +152,7 @@ function mergeContent(stored) {
     customCertificates: Array.isArray(stored?.customCertificates)
       ? stored.customCertificates
       : [],
+    cv: normalizeCv(stored?.cv),
   };
 }
 
@@ -102,7 +165,13 @@ function App() {
 
   const savePortfolioContent = () => {
     if (typeof window !== "undefined") {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolioContent));
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolioContent));
+      } catch {
+        window.alert(
+          "Unable to save changes locally. Try a smaller CV file or use a hosted CV URL."
+        );
+      }
     }
   };
 
@@ -214,6 +283,13 @@ function App() {
     }));
   };
 
+  const setCv = (updater) => {
+    setPortfolioContent((prev) => ({
+      ...prev,
+      cv: typeof updater === "function" ? updater(prev.cv) : updater,
+    }));
+  };
+
   const dockItems = [
     {
       title: "Home",
@@ -307,7 +383,7 @@ function App() {
 
           <div className="section-divider" />
 
-          <Contact contacts={portfolioContent.contacts} />
+          <Contact contacts={portfolioContent.contacts} cv={portfolioContent.cv} />
         </main>
 
         {showAdminPanel && (
@@ -320,12 +396,14 @@ function App() {
             customProjects={portfolioContent.customProjects}
             customVideos={portfolioContent.customVideos}
             customCertificates={portfolioContent.customCertificates}
+            cv={portfolioContent.cv}
             setProfile={setProfile}
             setContacts={setContacts}
             setAboutBubbles={setAboutBubbles}
             setCustomProjects={setCustomProjects}
             setCustomVideos={setCustomVideos}
             setCustomCertificates={setCustomCertificates}
+            setCv={setCv}
           />
         )}
       </div>

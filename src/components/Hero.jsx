@@ -1,85 +1,12 @@
-﻿import { useCallback, useEffect, useRef } from "react";
 import profilePic from "../assets/lawr-test.png";
 import ElectricBorder from "./ui/ElectricBorder";
 import DecryptedText from "./ui/DecryptedText";
 import GradientText from "./ui/GradientText";
 import ShinyText from "./ui/ShinyText";
 
-const NAME_TRIPLE_CLICK_SOUND = "/neon-go-go-go.mp3";
-const IMAGE_TRIPLE_CLICK_SOUND = "/fahhhhhhhhhhhhhh.mp3";
-const TRIPLE_CLICK_WINDOW_MS = 850;
 const DEFAULT_PROFILE_FRAME_RADIUS = 10;
 
-function useTripleClickSound(soundPath) {
-  const audioRef = useRef(null);
-  const clickCountRef = useRef(0);
-  const clickResetTimerRef = useRef(null);
-  const isSoundPlayingRef = useRef(false);
-
-  useEffect(() => {
-    const audio = new Audio(soundPath);
-    audio.preload = "auto";
-
-    const handleAudioEnded = () => {
-      isSoundPlayingRef.current = false;
-    };
-
-    audio.addEventListener("ended", handleAudioEnded);
-    audioRef.current = audio;
-
-    return () => {
-      if (clickResetTimerRef.current) {
-        window.clearTimeout(clickResetTimerRef.current);
-      }
-
-      audio.pause();
-      audio.removeEventListener("ended", handleAudioEnded);
-      audioRef.current = null;
-    };
-  }, [soundPath]);
-
-  return useCallback(() => {
-    if (isSoundPlayingRef.current) {
-      return;
-    }
-
-    clickCountRef.current += 1;
-
-    if (clickResetTimerRef.current) {
-      window.clearTimeout(clickResetTimerRef.current);
-    }
-
-    clickResetTimerRef.current = window.setTimeout(() => {
-      clickCountRef.current = 0;
-      clickResetTimerRef.current = null;
-    }, TRIPLE_CLICK_WINDOW_MS);
-
-    if (clickCountRef.current < 3) {
-      return;
-    }
-
-    clickCountRef.current = 0;
-    window.clearTimeout(clickResetTimerRef.current);
-    clickResetTimerRef.current = null;
-
-    const audio = audioRef.current;
-    if (!audio) {
-      return;
-    }
-
-    isSoundPlayingRef.current = true;
-    audio.currentTime = 0;
-    const playResult = audio.play();
-
-    if (playResult && typeof playResult.catch === "function") {
-      playResult.catch(() => {
-        isSoundPlayingRef.current = false;
-      });
-    }
-  }, []);
-}
-
-function TypingName({ text, onNameClick, isDark }) {
+function TypingName({ text, isDark }) {
   const safeText = text || "Lawrence";
   const nameGradientColors = isDark
     ? ["#7DF9FF", "#B983FF", "#E5E7EB"]
@@ -112,7 +39,7 @@ function TypingName({ text, onNameClick, isDark }) {
         </GradientText>
       </p>
 
-      <h1 className="hero-name hero-name-interactive" onClick={onNameClick}>
+      <h1 className="hero-name">
         <ShinyText
           speed={3.2}
           colors={nameGradientColors}
@@ -138,16 +65,27 @@ function TypingName({ text, onNameClick, isDark }) {
 }
 
 function Hero({ profile, dark = false }) {
-  const fullName = profile?.fullName || "Lawrence";
+  const fullName =
+    typeof profile?.fullName === "string" && profile.fullName.trim()
+      ? profile.fullName
+      : "Lawrence";
   const displayName =
     fullName
       .trim()
       .split(/\s+/)
       .filter(Boolean)[0] || "Lawrence";
-  const address = profile?.address || "Davao City, Philippines";
-  const birthday = profile?.birthday || "January 29, 2004";
+  const address =
+    typeof profile?.address === "string" && profile.address.trim()
+      ? profile.address
+      : "Davao City, Philippines";
+  const birthday =
+    typeof profile?.birthday === "string" && profile.birthday.trim()
+      ? profile.birthday
+      : "January 29, 2004";
   const details =
-    profile?.details || "Junior Web Developer | React.js | Video Editor";
+    typeof profile?.details === "string" && profile.details.trim()
+      ? profile.details
+      : "Junior Web Developer | React.js | Video Editor";
   const profileImageSrc =
     typeof profile?.profileImage === "string" && profile.profileImage.trim()
       ? profile.profileImage.trim()
@@ -173,19 +111,11 @@ function Hero({ profile, dark = false }) {
     ? "hero-electric-border hero-electric-border--polaroid"
     : "hero-electric-border";
 
-  const playNameTripleClickSound = useTripleClickSound(NAME_TRIPLE_CLICK_SOUND);
-  const playImageTripleClickSound = useTripleClickSound(IMAGE_TRIPLE_CLICK_SOUND);
-
   return (
     <section id="home" className="hero reveal">
       <div className="container hero-layout">
         <div className="hero-content">
-          <TypingName
-            key={displayName}
-            text={displayName}
-            onNameClick={playNameTripleClickSound}
-            isDark={dark}
-          />
+          <TypingName key={displayName} text={displayName} isDark={dark} />
 
           <div className="hero-meta hero-left show">
             <div className="hero-detail-pill hero-detail-pill--address">
@@ -220,12 +150,7 @@ function Hero({ profile, dark = false }) {
             className={electricBorderClassName}
             style={electricBorderStyle}
           >
-            <img
-              src={profileImageSrc}
-              alt={fullName}
-              className="hero-image hero-image-interactive"
-              onClick={playImageTripleClickSound}
-            />
+            <img src={profileImageSrc} alt={fullName} className="hero-image" />
           </ElectricBorder>
         </div>
       </div>

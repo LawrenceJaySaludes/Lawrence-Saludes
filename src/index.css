@@ -1928,16 +1928,6 @@ body::after {
   -webkit-text-fill-color: currentColor;
 }
 
-.hero-name-interactive {
-  cursor: pointer;
-  user-select: none;
-}
-
-.hero-image-interactive {
-  cursor: pointer;
-  user-select: none;
-}
-
 @keyframes gradientFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -3025,7 +3015,8 @@ body::after {
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 0.4rem;
   text-decoration: none;
   color: inherit;
@@ -3807,6 +3798,67 @@ html {
   opacity: 0.68;
 }
 
+.admin-cv-dropzone {
+  display: grid;
+  justify-items: center;
+  gap: 0.32rem;
+  padding: 1rem 0.9rem;
+  border-radius: 14px;
+  border: 2px dashed rgba(41, 22, 245, 0.3);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.54)),
+    rgba(67, 56, 202, 0.04);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.24s ease, box-shadow 0.24s ease, transform 0.24s ease;
+}
+
+.admin-cv-dropzone:hover {
+  border-color: rgba(41, 22, 245, 0.52);
+  box-shadow: 0 10px 20px rgba(41, 22, 245, 0.12);
+  transform: translateY(-1px);
+}
+
+.admin-cv-dropzone:focus-visible {
+  outline: none;
+  border-color: rgba(41, 22, 245, 0.58);
+  box-shadow: 0 0 0 3px rgba(41, 22, 245, 0.18);
+}
+
+.admin-cv-dropzone.is-drag-active {
+  border-color: rgba(41, 22, 245, 0.72);
+  box-shadow: 0 0 0 3px rgba(41, 22, 245, 0.22);
+  transform: translateY(-1px);
+}
+
+.admin-cv-dropzone-title {
+  margin: 0;
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.admin-cv-dropzone-copy {
+  margin: 0;
+  font-size: 0.84rem;
+  color: rgba(31, 41, 55, 0.72);
+}
+
+.admin-cv-current-file {
+  margin: 0.15rem 0;
+  font-size: 0.84rem;
+  color: rgba(31, 41, 55, 0.84);
+}
+
+.admin-cv-upload-btn {
+  padding: 0.48rem 0.84rem;
+  border-radius: 10px;
+}
+
+.admin-cv-file-input {
+  display: none;
+}
+
 .admin-panel .form-input,
 .admin-panel .form-select,
 .admin-panel .form-textarea {
@@ -3938,6 +3990,32 @@ html {
 .dark .admin-list-head {
   color: rgba(229, 231, 235, 0.82);
   opacity: 1;
+}
+
+.dark .admin-cv-dropzone {
+  border-color: rgba(185, 131, 255, 0.44);
+  background:
+    linear-gradient(145deg, rgba(30, 41, 59, 0.78), rgba(15, 23, 42, 0.66)),
+    rgba(185, 131, 255, 0.08);
+}
+
+.dark .admin-cv-dropzone:hover {
+  border-color: rgba(185, 131, 255, 0.68);
+  box-shadow: 0 10px 20px rgba(185, 131, 255, 0.2);
+}
+
+.dark .admin-cv-dropzone.is-drag-active {
+  border-color: rgba(125, 249, 255, 0.74);
+  box-shadow: 0 0 0 3px rgba(125, 249, 255, 0.22);
+}
+
+.dark .admin-cv-dropzone-title,
+.dark .admin-cv-current-file {
+  color: #f8fafc;
+}
+
+.dark .admin-cv-dropzone-copy {
+  color: rgba(229, 231, 235, 0.74);
 }
 
 .dark .admin-auth-copy {
