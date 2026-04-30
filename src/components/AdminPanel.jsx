@@ -68,6 +68,7 @@ function AdminPanel({
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [saveFeedback, setSaveFeedback] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const markDirty = () => {
     setHasUnsavedChanges(true);
@@ -75,6 +76,10 @@ function AdminPanel({
   };
 
   const requestClose = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
+
     if (authed && hasUnsavedChanges) {
       const shouldClose = window.confirm(
         "You have unsaved changes. Close without saving?"
@@ -86,7 +91,7 @@ function AdminPanel({
     }
 
     onClose();
-  }, [authed, hasUnsavedChanges, onClose]);
+  }, [authed, hasUnsavedChanges, isSaving, onClose]);
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -111,10 +116,31 @@ function AdminPanel({
     return () => window.clearTimeout(timeoutId);
   }, [saveFeedback]);
 
-  const handleSaveChanges = () => {
-    onSave();
-    setHasUnsavedChanges(false);
-    setSaveFeedback("Changes saved.");
+  const handleSaveChanges = async () => {
+    if (isSaving || !hasUnsavedChanges) {
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveFeedback("");
+
+    try {
+      const saveResult = await onSave();
+      setHasUnsavedChanges(false);
+      setSaveFeedback(
+        saveResult?.mode === "remote"
+          ? "Changes saved and synced across devices."
+          : "Changes saved."
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : "Unable to save changes.";
+      setSaveFeedback(message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleAuthSubmit = (event) => {
@@ -370,20 +396,21 @@ function AdminPanel({
             <span
               className={`admin-save-pill${hasUnsavedChanges ? " is-dirty" : ""}`}
             >
-              {hasUnsavedChanges ? "Unsaved" : "Saved"}
+              {isSaving ? "Saving" : hasUnsavedChanges ? "Unsaved" : "Saved"}
             </span>
             <button
               type="button"
               className="btn-solid admin-save-btn"
               onClick={handleSaveChanges}
-              disabled={!hasUnsavedChanges}
+              disabled={!hasUnsavedChanges || isSaving}
             >
-              Save Changes
+              {isSaving ? "Saving..." : "Save Changes"}
             </button>
             <button
               type="button"
               className="btn-outline admin-close-btn"
               onClick={requestClose}
+              disabled={isSaving}
             >
               Close
             </button>

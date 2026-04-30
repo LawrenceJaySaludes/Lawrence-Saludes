@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 const DEFAULT_CV_URL = "/Lawrence-Saludes-Resume.pdf";
@@ -28,8 +29,41 @@ function openInNewTab(url) {
   document.body.removeChild(link);
 }
 
+async function copyTextToClipboard(text) {
+  if (!text) {
+    return false;
+  }
+
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Fall through to legacy copy method.
+    }
+  }
+
+  try {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.setAttribute("readonly", "");
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    textArea.style.pointerEvents = "none";
+    document.body.appendChild(textArea);
+    textArea.select();
+    textArea.setSelectionRange(0, text.length);
+    const didCopy = document.execCommand("copy");
+    document.body.removeChild(textArea);
+    return didCopy;
+  } catch {
+    return false;
+  }
+}
+
 function Contact({ contacts, cv }) {
   useScrollReveal();
+  const [copyFeedback, setCopyFeedback] = useState("");
 
   const email = typeof contacts?.email === "string" ? contacts.email : "";
   const phone = typeof contacts?.phone === "string" ? contacts.phone : "";
@@ -48,22 +82,37 @@ function Contact({ contacts, cv }) {
     {
       label: "Email",
       value: email,
-      href: email ? `mailto:${email}` : "",
     },
     {
       label: "Phone",
       value: phone,
-      href: phone ? `tel:${phone.replace(/\s+/g, "")}` : "",
     },
     {
       label: "Location",
       value: location,
-      href: location
-        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`
-        : "",
-      external: true,
     },
   ].filter((item) => item.value);
+
+  useEffect(() => {
+    if (!copyFeedback) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setCopyFeedback("");
+    }, 1800);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [copyFeedback]);
+
+  const handleCopyDetails = async (label, value) => {
+    const didCopy = await copyTextToClipboard(value);
+    setCopyFeedback(
+      didCopy
+        ? `${label} copied to clipboard.`
+        : `Unable to copy ${label.toLowerCase()}.`
+    );
+  };
 
   const handleViewCvClick = (event) => {
     event.preventDefault();
@@ -117,22 +166,23 @@ function Contact({ contacts, cv }) {
 
           <div className="contact-info scroll-animate fade-up delay-3">
             {contactItems.map((item) => {
-              const Tag = item.href ? "a" : "div";
-
               return (
-                <Tag
+                <button
+                  type="button"
                   key={item.label}
                   className="contact-item"
-                  href={item.href || undefined}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noreferrer" : undefined}
+                  onClick={() => {
+                    void handleCopyDetails(item.label, item.value);
+                  }}
+                  aria-label={`Copy ${item.label}: ${item.value}`}
                 >
                   <span className="contact-item-label">{item.label}</span>
                   <strong className="contact-item-value">{item.value}</strong>
-                </Tag>
+                </button>
               );
             })}
           </div>
+          {copyFeedback && <p className="contact-copy-feedback">{copyFeedback}</p>}
 
           <div className="resume-actions scroll-animate fade-up delay-4">
             <a

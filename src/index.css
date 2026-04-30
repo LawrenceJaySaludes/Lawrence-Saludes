@@ -1188,6 +1188,10 @@ body::after {
     justify-content: center;
   }
 
+  .hero-cta-btn {
+    width: min(100%, 18rem);
+  }
+
   .hero-meta {
     width: 100%;
     display: flex;
@@ -2322,6 +2326,17 @@ body::after {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(13rem, 19vw, 15.25rem);
+  padding: clamp(0.92rem, 0.78rem + 0.3vw, 1.08rem)
+    clamp(1.6rem, 1.18rem + 0.85vw, 2.05rem);
+  font-size: clamp(0.98rem, 0.9rem + 0.2vw, 1.12rem);
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(15, 23, 42, 0.18);
   color: #f8fafc;
   border: 1px solid rgba(41, 22, 245, 0.34);
   background: linear-gradient(90deg, #2f3a44, #2916f5);
@@ -3015,6 +3030,7 @@ body::after {
 }
 
 .contact-item {
+  width: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -3033,6 +3049,10 @@ body::after {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.34),
     0 14px 28px rgba(31, 41, 55, 0.08);
+  cursor: copy;
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
   transition:
@@ -3050,6 +3070,11 @@ body::after {
     inset 0 1px 0 rgba(255, 255, 255, 0.38);
 }
 
+.contact-item:focus-visible {
+  outline: 2px solid rgba(67, 56, 202, 0.44);
+  outline-offset: 2px;
+}
+
 .contact-item-label {
   font-size: 0.74rem;
   font-weight: 700;
@@ -3063,6 +3088,14 @@ body::after {
   line-height: 1.55;
   color: #1f2937;
   word-break: break-word;
+}
+
+.contact-copy-feedback {
+  margin: 0.8rem 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3730a3;
 }
 
 .resume-actions {
@@ -3161,6 +3194,14 @@ body::after {
 
 .dark .contact-item-value {
   color: #e5e7eb;
+}
+
+.dark .contact-item:focus-visible {
+  outline-color: rgba(167, 139, 250, 0.56);
+}
+
+.dark .contact-copy-feedback {
+  color: #c4b5fd;
 }
 
 .dark .resume-actions {
@@ -4136,70 +4177,4 @@ html {
   .admin-form {
     grid-template-columns: 1fr;
   }
-}
-
-/* INSPECT LOCK */
-.inspect-lock-active {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.inspect-lock-active .hero,
-.inspect-lock-active .portfolio-sections,
-.inspect-lock-active .floating-dock-desktop,
-.inspect-lock-active .floating-dock-mobile-wrap,
-.inspect-lock-active .dark-toggle {
-  pointer-events: none;
-  filter: blur(2px) saturate(0.92);
-}
-
-.inspect-lock-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 2300;
-  display: grid;
-  place-items: center;
-  padding: clamp(1rem, 2.6vw, 2rem);
-  background:
-    radial-gradient(circle at 14% 12%, rgba(41, 22, 245, 0.2), transparent 36%),
-    radial-gradient(circle at 86% 80%, rgba(56, 189, 248, 0.14), transparent 38%),
-    rgba(2, 6, 23, 0.78);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.inspect-lock-card {
-  width: min(560px, 100%);
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: linear-gradient(
-    145deg,
-    rgba(15, 23, 42, 0.95),
-    rgba(30, 41, 59, 0.92)
-  );
-  color: #f8fafc;
-  box-shadow: 0 28px 58px rgba(2, 6, 23, 0.55);
-  padding: clamp(1.2rem, 3vw, 1.7rem);
-  text-align: center;
-}
-
-.inspect-lock-card h2 {
-  margin: 0;
-  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.inspect-lock-card p {
-  margin: 0.75rem 0 0;
-  line-height: 1.65;
-  color: rgba(226, 232, 240, 0.9);
-}
-
-.inspect-lock-hint {
-  margin-top: 0.6rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: rgba(125, 249, 255, 0.9);
 }

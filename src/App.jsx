@@ -10,6 +10,14 @@ import AdminPanel from "./components/AdminPanel";
 import useInspectLock from "./hooks/useInspectLock";
 import { FloatingDock } from "./components/ui/FloatingDock";
 import {
+  isRemotePortfolioStoreEnabled,
+  loadRemotePortfolioContent,
+  readLocalPortfolioContent,
+  saveLocalPortfolioContent,
+  saveRemotePortfolioContent,
+  subscribeToRemotePortfolioContent,
+} from "./lib/portfolioStore";
+import {
   IconAddressBook,
   IconCertificate,
   IconCode,
@@ -21,7 +29,6 @@ import {
   IconTools,
 } from "@tabler/icons-react";
 
-const STORAGE_KEY = "portfolio-admin-content-v1";
 const SECRET_SEQUENCE = ["l", "j", "s"];
 const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",
@@ -122,25 +129,6 @@ function normalizeCv(value) {
   };
 }
 
-function readStoredContent() {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    try {
-      window.localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // no-op
-    }
-
-    return null;
-  }
-}
-
 function mergeContent(stored) {
   return {
     profile: normalizeProfile(stored?.profile),
@@ -157,25 +145,104 @@ function mergeContent(stored) {
   };
 }
 
+function hasPortfolioPayload(value) {
+  if (!isObject(value)) {
+    return false;
+  }
+
+  return (
+    "profile" in value ||
+    "contacts" in value ||
+    "aboutBubbles" in value ||
+    "customProjects" in value ||
+    "customVideos" in value ||
+    "customCertificates" in value ||
+    "cv" in value
+  );
+}
+
 function App() {
   const [dark, setDark] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
-  const isInspectLocked = useInspectLock();
+  useInspectLock();
   const [portfolioContent, setPortfolioContent] = useState(() =>
-    mergeContent(readStoredContent())
+    mergeContent(readLocalPortfolioContent())
   );
 
-  const savePortfolioContent = () => {
-    if (typeof window !== "undefined") {
+  const savePortfolioContent = async () => {
+    if (isRemotePortfolioStoreEnabled()) {
       try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolioContent));
-      } catch {
-        window.alert(
+        await saveRemotePortfolioContent(portfolioContent);
+      } catch (error) {
+        console.error("Unable to save portfolio content to Supabase:", error);
+        throw new Error(
+          "Unable to sync changes to Supabase. Check your table/policies and try again."
+        );
+      }
+    }
+
+    try {
+      saveLocalPortfolioContent(portfolioContent);
+    } catch {
+      if (!isRemotePortfolioStoreEnabled()) {
+        throw new Error(
           "Unable to save changes locally. Try a smaller CV file or use a hosted CV URL."
         );
       }
     }
+
+    return {
+      mode: isRemotePortfolioStoreEnabled() ? "remote" : "local",
+    };
   };
+
+  useEffect(() => {
+    if (!isRemotePortfolioStoreEnabled()) {
+      return undefined;
+    }
+
+    let isMounted = true;
+
+    const applySyncedContent = (nextContent) => {
+      if (!hasPortfolioPayload(nextContent)) {
+        return;
+      }
+
+      const mergedContent = mergeContent(nextContent);
+      setPortfolioContent(mergedContent);
+
+      try {
+        saveLocalPortfolioContent(mergedContent);
+      } catch {
+        // Cache failure should not block shared realtime sync.
+      }
+    };
+
+    const unsubscribe = subscribeToRemotePortfolioContent((nextContent) => {
+      if (!isMounted) {
+        return;
+      }
+
+      applySyncedContent(nextContent);
+    });
+
+    loadRemotePortfolioContent()
+      .then((remoteContent) => {
+        if (!isMounted || !remoteContent) {
+          return;
+        }
+
+        applySyncedContent(remoteContent);
+      })
+      .catch((error) => {
+        console.error("Unable to load remote portfolio content:", error);
+      });
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     let sequenceIndex = 0;
@@ -331,11 +398,7 @@ function App() {
   ];
 
   return (
-    <div
-      className={`${dark ? "dark app-bg" : "app-bg"}${
-        isInspectLocked ? " inspect-lock-active" : ""
-      }`}
-    >
+    <div className={dark ? "dark app-bg" : "app-bg"}>
         {/* DARK MODE TOGGLE */}
         <button
           onClick={() => setDark(!dark)}
@@ -413,18 +476,6 @@ function App() {
           />
         )}
 
-        {isInspectLocked && (
-          <div className="inspect-lock-overlay" role="alert" aria-live="assertive">
-            <div className="inspect-lock-card">
-              <h2>Protected View</h2>
-              <p>
-                Developer tools appear to be open. This portfolio is locked while
-                inspect mode is active.
-              </p>
-              <p className="inspect-lock-hint">Close inspect tools to continue.</p>
-            </div>
-          </div>
-        )}
       </div>
   );
 }
