@@ -3597,6 +3597,20 @@ html {
   color: rgba(31, 41, 55, 0.72);
 }
 
+.admin-sync-note {
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.admin-sync-note.is-live {
+  color: #166534;
+}
+
+.admin-sync-note.is-local-only {
+  color: #b45309;
+}
+
 .admin-toolbar-actions {
   display: flex;
   align-items: center;
@@ -4027,6 +4041,14 @@ html {
 .dark .admin-section-note,
 .dark .admin-empty-state {
   color: rgba(229, 231, 235, 0.72);
+}
+
+.dark .admin-sync-note.is-live {
+  color: #86efac;
+}
+
+.dark .admin-sync-note.is-local-only {
+  color: #fcd34d;
 }
 
 .dark .admin-field-label,

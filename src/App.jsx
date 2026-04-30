@@ -10,12 +10,8 @@ import AdminPanel from "./components/AdminPanel";
 import useInspectLock from "./hooks/useInspectLock";
 import { FloatingDock } from "./components/ui/FloatingDock";
 import {
-  isRemotePortfolioStoreEnabled,
-  loadRemotePortfolioContent,
   readLocalPortfolioContent,
   saveLocalPortfolioContent,
-  saveRemotePortfolioContent,
-  subscribeToRemotePortfolioContent,
 } from "./lib/portfolioStore";
 import {
   IconAddressBook,
@@ -30,6 +26,7 @@ import {
 } from "@tabler/icons-react";
 
 const SECRET_SEQUENCE = ["l", "j", "s"];
+const DEPLOYED_PORTFOLIO_CONTENT_URL = "/portfolio-content.json";
 const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",
   fileName: "Lawrence-Saludes-CV.pdf",
@@ -170,77 +167,54 @@ function App() {
   );
 
   const savePortfolioContent = async () => {
-    if (isRemotePortfolioStoreEnabled()) {
-      try {
-        await saveRemotePortfolioContent(portfolioContent);
-      } catch (error) {
-        console.error("Unable to save portfolio content to Supabase:", error);
-        throw new Error(
-          "Unable to sync changes to Supabase. Check your table/policies and try again."
-        );
-      }
-    }
-
     try {
       saveLocalPortfolioContent(portfolioContent);
     } catch {
-      if (!isRemotePortfolioStoreEnabled()) {
-        throw new Error(
-          "Unable to save changes locally. Try a smaller CV file or use a hosted CV URL."
-        );
-      }
+      throw new Error(
+        "Unable to save changes locally. Try a smaller CV file or use a hosted CV URL."
+      );
     }
 
     return {
-      mode: isRemotePortfolioStoreEnabled() ? "remote" : "local",
+      mode: "local",
     };
   };
 
   useEffect(() => {
-    if (!isRemotePortfolioStoreEnabled()) {
-      return undefined;
-    }
-
     let isMounted = true;
 
-    const applySyncedContent = (nextContent) => {
-      if (!hasPortfolioPayload(nextContent)) {
-        return;
-      }
-
-      const mergedContent = mergeContent(nextContent);
-      setPortfolioContent(mergedContent);
-
+    const loadDeployedPortfolioContent = async () => {
       try {
-        saveLocalPortfolioContent(mergedContent);
-      } catch {
-        // Cache failure should not block shared realtime sync.
-      }
-    };
+        const response = await fetch(DEPLOYED_PORTFOLIO_CONTENT_URL, {
+          cache: "no-store",
+        });
 
-    const unsubscribe = subscribeToRemotePortfolioContent((nextContent) => {
-      if (!isMounted) {
-        return;
-      }
-
-      applySyncedContent(nextContent);
-    });
-
-    loadRemotePortfolioContent()
-      .then((remoteContent) => {
-        if (!isMounted || !remoteContent) {
+        if (!response.ok) {
           return;
         }
 
-        applySyncedContent(remoteContent);
-      })
-      .catch((error) => {
-        console.error("Unable to load remote portfolio content:", error);
-      });
+        const deployedContent = await response.json();
+        if (!isMounted || !hasPortfolioPayload(deployedContent)) {
+          return;
+        }
+
+        const mergedContent = mergeContent(deployedContent);
+        setPortfolioContent(mergedContent);
+
+        try {
+          saveLocalPortfolioContent(mergedContent);
+        } catch {
+          // Cache write errors should not block deployed content loading.
+        }
+      } catch (error) {
+        console.error("Unable to load deployed portfolio content:", error);
+      }
+    };
+
+    void loadDeployedPortfolioContent();
 
     return () => {
       isMounted = false;
-      unsubscribe();
     };
   }, []);
 
@@ -466,6 +440,7 @@ function App() {
             customVideos={portfolioContent.customVideos}
             customCertificates={portfolioContent.customCertificates}
             cv={portfolioContent.cv}
+            portfolioContent={portfolioContent}
             setProfile={setProfile}
             setContacts={setContacts}
             setAboutBubbles={setAboutBubbles}

@@ -36,6 +36,7 @@ const TABS = [
 function AdminPanel({
   onClose,
   onSave,
+  portfolioContent,
   profile,
   contacts,
   aboutBubbles,
@@ -125,12 +126,10 @@ function AdminPanel({
     setSaveFeedback("");
 
     try {
-      const saveResult = await onSave();
+      await onSave();
       setHasUnsavedChanges(false);
       setSaveFeedback(
-        saveResult?.mode === "remote"
-          ? "Changes saved and synced across devices."
-          : "Changes saved."
+        "Changes saved on this device. Export portfolio-content.json then redeploy Vercel to update all devices."
       );
     } catch (error) {
       const message =
@@ -141,6 +140,25 @@ function AdminPanel({
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleExportContent = () => {
+    const payload =
+      portfolioContent && typeof portfolioContent === "object"
+        ? JSON.stringify(portfolioContent, null, 2)
+        : "{}";
+    const blob = new Blob([payload], { type: "application/json;charset=utf-8" });
+    const objectUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = "portfolio-content.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    setSaveFeedback(
+      "Downloaded portfolio-content.json. Replace public/portfolio-content.json in your repo, then redeploy Vercel."
+    );
   };
 
   const handleAuthSubmit = (event) => {
@@ -390,6 +408,10 @@ function AdminPanel({
             <p className="admin-subtitle">
               Update your portfolio and click Save Changes to persist edits.
             </p>
+            <p className="admin-sync-note is-local-only">
+              No backend mode: saves are local to this browser. Export and redeploy
+              to publish updates on all devices.
+            </p>
           </div>
 
           <div className="admin-toolbar-actions">
@@ -405,6 +427,14 @@ function AdminPanel({
               disabled={!hasUnsavedChanges || isSaving}
             >
               {isSaving ? "Saving..." : "Save Changes"}
+            </button>
+            <button
+              type="button"
+              className="btn-outline admin-close-btn"
+              onClick={handleExportContent}
+              disabled={isSaving}
+            >
+              Export JSON
             </button>
             <button
               type="button"
