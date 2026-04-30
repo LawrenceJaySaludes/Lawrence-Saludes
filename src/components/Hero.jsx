@@ -74,14 +74,6 @@ function Hero({ profile, dark = false }) {
       .trim()
       .split(/\s+/)
       .filter(Boolean)[0] || "Lawrence";
-  const address =
-    typeof profile?.address === "string" && profile.address.trim()
-      ? profile.address
-      : "Davao City, Philippines";
-  const birthday =
-    typeof profile?.birthday === "string" && profile.birthday.trim()
-      ? profile.birthday
-      : "January 29, 2004";
   const details =
     typeof profile?.details === "string" && profile.details.trim()
       ? profile.details
@@ -116,17 +108,6 @@ function Hero({ profile, dark = false }) {
       <div className="container hero-layout">
         <div className="hero-content">
           <TypingName key={displayName} text={displayName} isDark={dark} />
-
-          <div className="hero-meta hero-left show">
-            <div className="hero-detail-pill hero-detail-pill--address">
-              <span className="hero-detail-label">Address</span>
-              <span className="hero-detail-value">{address}</span>
-            </div>
-            <div className="hero-detail-pill hero-detail-pill--birthday">
-              <span className="hero-detail-label">Birthday</span>
-              <span className="hero-detail-value">{birthday}</span>
-            </div>
-          </div>
 
           <p className="hero-right show hero-role">{details}</p>
 

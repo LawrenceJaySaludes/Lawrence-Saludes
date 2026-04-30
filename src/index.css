@@ -167,18 +167,18 @@ section {
 
 .hero-layout {
   display: grid;
-  grid-template-columns: fit-content(32rem) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   justify-content: center;
-  column-gap: clamp(0.9rem, 1.8vw, 1.5rem);
+  column-gap: clamp(1.25rem, 2.6vw, 2.6rem);
   row-gap: 2rem;
 }
 
 .hero-content {
   display: grid;
   justify-items: start;
-  width: fit-content;
-  max-width: min(100%, 32rem);
+  width: 100%;
+  max-width: min(100%, 34rem);
   min-width: 0;
 }
 
@@ -211,7 +211,7 @@ section {
 }
 
 .hero-buttons {
-  margin-top: 1.9rem;
+  margin-top: clamp(1.2rem, 2.2vw, 1.75rem);
   display: flex;
   gap: 0.85rem;
   flex-wrap: wrap;
@@ -1192,15 +1192,9 @@ body::after {
     width: min(100%, 18rem);
   }
 
-  .hero-meta {
-    width: 100%;
-    display: flex;
-  }
-
-  .hero-detail-pill--address,
-  .hero-detail-pill--birthday {
-    flex: 1 1 100%;
-    min-width: 0;
+  .hero-role {
+    justify-content: center;
+    text-align: center;
   }
 
   .hero-image {
@@ -2281,10 +2275,13 @@ body::after {
 }
 
 .hero-role {
-  margin-top: 0.85rem;
+  margin-top: 0.4rem;
   display: inline-flex;
   align-items: center;
   padding: 0.82rem 1.2rem;
+  max-width: min(100%, 34rem);
+  line-height: 1.34;
+  text-wrap: balance;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.62);
   background:
@@ -3510,10 +3507,6 @@ html {
 }
 
 @media (max-width: 900px) {
-  .hero-meta {
-    justify-content: center;
-  }
-
   .hero-role {
     justify-content: center;
   }
