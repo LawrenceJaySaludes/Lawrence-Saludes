@@ -5,6 +5,8 @@ import GradientText from "./ui/GradientText";
 import ShinyText from "./ui/ShinyText";
 
 const DEFAULT_PROFILE_FRAME_RADIUS = 10;
+const DEFAULT_ROLE_TEXT = "Junior Full Stack Developer | Video Editor";
+const LEGACY_ROLE_TEXT = "Junior Web Developer | React.js | Video Editor";
 
 function TypingName({ text, isDark }) {
   const safeText = text || "Lawrence";
@@ -74,10 +76,12 @@ function Hero({ profile, dark = false }) {
       .trim()
       .split(/\s+/)
       .filter(Boolean)[0] || "Lawrence";
+  const rawDetails =
+    typeof profile?.details === "string" ? profile.details.trim() : "";
   const details =
-    typeof profile?.details === "string" && profile.details.trim()
-      ? profile.details
-      : "Junior Web Developer | React.js | Video Editor";
+    !rawDetails || rawDetails === LEGACY_ROLE_TEXT
+      ? DEFAULT_ROLE_TEXT
+      : rawDetails;
   const profileImageSrc =
     typeof profile?.profileImage === "string" && profile.profileImage.trim()
       ? profile.profileImage.trim()

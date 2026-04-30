@@ -107,9 +107,6 @@ function Projects({ customProjects = [] }) {
                   <span className={`project-tag${isDesktop ? " desktop" : ""}`}>
                     {project.category || "Website"}
                   </span>
-                  <span className="project-card-index">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
                 </div>
 
                 <div className="project-card-body">

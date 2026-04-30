@@ -27,9 +27,15 @@ function Certificates({ customCertificates = [] }) {
     [customCertificates]
   );
 
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const hasMultipleCertificates = certificates.length > 1;
   const safeActiveIndex = activeIndex % certificates.length;
+
   const prev = () => {
+    if (!hasMultipleCertificates) {
+      return;
+    }
+
     setActiveIndex((prevIndex) => {
       const normalizedIndex = prevIndex % certificates.length;
       return normalizedIndex === 0
@@ -39,6 +45,10 @@ function Certificates({ customCertificates = [] }) {
   };
 
   const next = () => {
+    if (!hasMultipleCertificates) {
+      return;
+    }
+
     setActiveIndex(
       (prevIndex) => ((prevIndex % certificates.length) + 1) % certificates.length
     );
@@ -53,24 +63,7 @@ function Certificates({ customCertificates = [] }) {
       </p>
 
       <div className="container cert-showcase scroll-animate fade-up delay-2">
-        <div className="cert-showcase-header">
-          <div className="cert-controls" aria-label="Certificate navigation">
-            <div className="cert-count">
-              <strong>{String(safeActiveIndex + 1).padStart(2, "0")}</strong>
-              <span>/ {String(certificates.length).padStart(2, "0")}</span>
-            </div>
-
-            <button className="cert-arrow left" onClick={prev} aria-label="Previous certificate">
-              <span aria-hidden="true">&lt;</span>
-            </button>
-
-            <button className="cert-arrow right" onClick={next} aria-label="Next certificate">
-              <span aria-hidden="true">&gt;</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="cert-carousel">
+        <div className="cert-carousel" aria-label="Certificate navigation">
           <div className="cert-track">
             {certificates.map((certificate, index) => {
               let position = "side";
@@ -97,6 +90,44 @@ function Certificates({ customCertificates = [] }) {
                 />
               );
             })}
+          </div>
+
+          <div className="cert-controls" role="group" aria-label="Certificate controls">
+            <button
+              className="cert-arrow cert-arrow-left"
+              onClick={prev}
+              aria-label="Previous certificate"
+              disabled={!hasMultipleCertificates}
+            >
+              <span className="cert-arrow-icon" aria-hidden="true">
+                <svg viewBox="0 0 14 14" focusable="false" aria-hidden="true">
+                  <path d="M9.5 2.5L4.5 7l5 4.5" />
+                </svg>
+              </span>
+            </button>
+
+            <div
+              className="cert-count"
+              aria-label="Certificate progress"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <strong>{String(safeActiveIndex + 1).padStart(2, "0")}</strong>
+              <span>/ {String(certificates.length).padStart(2, "0")}</span>
+            </div>
+
+            <button
+              className="cert-arrow cert-arrow-right"
+              onClick={next}
+              aria-label="Next certificate"
+              disabled={!hasMultipleCertificates}
+            >
+              <span className="cert-arrow-icon" aria-hidden="true">
+                <svg viewBox="0 0 14 14" focusable="false" aria-hidden="true">
+                  <path d="M4.5 2.5L9.5 7l-5 4.5" />
+                </svg>
+              </span>
+            </button>
           </div>
         </div>
       </div>

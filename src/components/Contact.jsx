@@ -170,7 +170,9 @@ function Contact({ contacts, cv }) {
                 <button
                   type="button"
                   key={item.label}
-                  className="contact-item"
+                  className={`contact-item${
+                    item.label.toLowerCase() === "email" ? " contact-item--email" : ""
+                  }`}
                   onClick={() => {
                     void handleCopyDetails(item.label, item.value);
                   }}

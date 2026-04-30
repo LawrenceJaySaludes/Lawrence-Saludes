@@ -28,10 +28,16 @@ function useInspectLock() {
       }
     };
 
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+    };
+
     window.addEventListener("keydown", handleKeyDown, true);
+    window.addEventListener("contextmenu", handleContextMenu);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown, true);
+      window.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
 }

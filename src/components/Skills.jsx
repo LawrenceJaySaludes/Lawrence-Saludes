@@ -4,36 +4,39 @@ import { IoLogoJavascript } from "react-icons/io";
 import { DiMsqlServer } from "react-icons/di";
 import { RiSupabaseFill } from "react-icons/ri";
 import { TbBrandCSharp } from "react-icons/tb";
-import { SiAdobepremierepro, SiAdobeaftereffects, SiCanva } from "react-icons/si";
+import {
+  SiAdobepremierepro,
+  SiAdobeaftereffects,
+  SiAdobephotoshop,
+  SiCanva,
+  SiGit,
+  SiLaravel,
+} from "react-icons/si";
 
 function Skills() {
   useScrollReveal();
   const skillGroups = [
     {
-      title: "Web Development",
-      className: "skills-card web",
+      title: "System",
+      className: "skills-card system",
       items: [
         { label: "React.js", icon: <FaReact />, color: "#61DAFB" },
         { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
+        { label: "Laravel", icon: <SiLaravel />, color: "#FF2D20" },
+        { label: "Git", icon: <SiGit />, color: "#F05032" },
+        { label: "C# WinForms App", icon: <TbBrandCSharp />, color: "#9B4DCA" },
+        { label: "SQL Database", icon: <DiMsqlServer />, color: "#0078D4" },
         { label: "Supabase", icon: <RiSupabaseFill />, color: "#3ECF8E" },
-        { label: "SQL", icon: <DiMsqlServer />, color: "#0078D4" },
         { label: "Docker", icon: <FaDocker />, color: "#2496ED" },
       ],
     },
     {
-      title: "Desktop Development",
-      className: "skills-card desktop",
-      items: [
-        { label: "C# WinForms App", icon: <TbBrandCSharp />, color: "#9B4DCA" },
-        { label: "SQL Database", icon: <DiMsqlServer />, color: "#0078D4" },
-      ],
-    },
-    {
-      title: "Video & Creative",
+      title: "Video Editing",
       className: "skills-card creative",
       items: [
         { label: "Adobe Premiere Pro", icon: <SiAdobepremierepro />, color: "#9999FF" },
-        { label: "After Effects", icon: <SiAdobeaftereffects />, color: "#D291FF" },
+        { label: "Adobe After Effects", icon: <SiAdobeaftereffects />, color: "#D291FF" },
+        { label: "Adobe Photoshop", icon: <SiAdobephotoshop />, color: "#31A8FF" },
         { label: "Canva", icon: <SiCanva />, color: "#00C4CC" },
       ],
     },

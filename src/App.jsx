@@ -51,7 +51,7 @@ const DEFAULT_CONTENT = {
     fullName: "Lawrence Jay A. Saludes",
     address: "Davao City, Philippines",
     birthday: "January 29, 2004",
-    details: "Junior Web Developer | React.js | Video Editor",
+    details: "Junior Full Stack Developer | Video Editor",
     profileImage: "",
   },
   contacts: {
