@@ -27,6 +27,8 @@ import {
 
 const SECRET_SEQUENCE = ["l", "j", "s"];
 const DEPLOYED_PORTFOLIO_CONTENT_URL = "/portfolio-content.json";
+const INTRO_FADE_MS = 2400;
+const INTRO_SPEED_MULTIPLIER = 1.5;
 const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",
   fileName: "Lawrence-Saludes-CV.pdf",
@@ -161,6 +163,15 @@ function hasPortfolioPayload(value) {
 function App() {
   const [dark, setDark] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [isIntroVisible, setIsIntroVisible] = useState(true);
+  const [isIntroClosing, setIsIntroClosing] = useState(false);
+  const [isPortfolioVisible, setIsPortfolioVisible] = useState(false);
+  const [introCommandText, setIntroCommandText] = useState("");
+  const [introLocalText, setIntroLocalText] = useState("");
+  const [introRouteText, setIntroRouteText] = useState("");
+  const [isIntroLocalVisible, setIsIntroLocalVisible] = useState(false);
+  const [isIntroRouteVisible, setIsIntroRouteVisible] = useState(false);
+  const [introTypingStage, setIntroTypingStage] = useState("none");
   useInspectLock();
   const [portfolioContent, setPortfolioContent] = useState(() =>
     mergeContent(readLocalPortfolioContent())
@@ -219,6 +230,93 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let isCancelled = false;
+    const timeouts = [];
+    const faster = (ms) =>
+      Math.max(1, Math.round(ms / INTRO_SPEED_MULTIPLIER));
+
+    const wait = (ms) =>
+      new Promise((resolve) => {
+        const timeoutId = window.setTimeout(resolve, ms);
+        timeouts.push(timeoutId);
+      });
+
+    const typeLine = async (text, setter, charMs) => {
+      for (let index = 1; index <= text.length; index += 1) {
+        if (isCancelled) {
+          return;
+        }
+        setter(text.slice(0, index));
+        await wait(charMs);
+      }
+    };
+
+    const playIntroSequence = async () => {
+      const commandLine = "npm run dev";
+      const localLine = "lawrence-portfolio@0.0.0 dev";
+      const routeLine = "Opening: http://localhost:1313";
+
+      await wait(faster(220));
+      if (isCancelled) {
+        return;
+      }
+
+      setIntroTypingStage("command");
+      await typeLine(commandLine, setIntroCommandText, faster(65));
+      await wait(faster(220));
+      if (isCancelled) {
+        return;
+      }
+
+      setIsIntroLocalVisible(true);
+      setIntroTypingStage("local");
+      await typeLine(localLine, setIntroLocalText, faster(38));
+      await wait(faster(180));
+      if (isCancelled) {
+        return;
+      }
+
+      setIsIntroRouteVisible(true);
+      setIntroTypingStage("route");
+      await typeLine(routeLine, setIntroRouteText, faster(32));
+      await wait(faster(320));
+      if (isCancelled) {
+        return;
+      }
+
+      setIntroTypingStage("none");
+      setIsPortfolioVisible(true);
+      await wait(40);
+      if (isCancelled) {
+        return;
+      }
+
+      setIsIntroClosing(true);
+    };
+
+    void playIntroSequence();
+
+    return () => {
+      isCancelled = true;
+      timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isIntroVisible || !isIntroClosing) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsIntroVisible(false);
+    }, INTRO_FADE_MS + 120);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isIntroClosing, isIntroVisible]);
+
+  useEffect(() => {
     let sequenceIndex = 0;
     let lastKeyTime = 0;
 
@@ -263,7 +361,7 @@ function App() {
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
 
-    if (showAdminPanel) {
+    if (showAdminPanel || isIntroVisible) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
     }
@@ -272,7 +370,7 @@ function App() {
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
     };
-  }, [showAdminPanel]);
+  }, [isIntroVisible, showAdminPanel]);
 
   const setProfile = (updater) => {
     setPortfolioContent((prev) => ({
@@ -370,89 +468,163 @@ function App() {
       icon: <IconAddressBook className="dock-nav-icon" stroke={1.9} />,
     },
   ];
+  const appClassName = `${dark ? "dark " : ""}app-bg${
+    isIntroVisible && !isIntroClosing ? " intro-active" : ""
+  }`;
+
+  const handleIntroAnimationEnd = (event) => {
+    if (!isIntroClosing || !isIntroVisible) {
+      return;
+    }
+
+    if (
+      event.target !== event.currentTarget ||
+      event.animationName !== "introOverlayFadeOut"
+    ) {
+      return;
+    }
+
+    setIsIntroVisible(false);
+  };
 
   return (
-    <div className={dark ? "dark app-bg" : "app-bg"}>
-        {/* DARK MODE TOGGLE */}
-        <button
-          onClick={() => setDark(!dark)}
-          className="dark-toggle"
-          title="Toggle dark mode"
-          aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-        >
-          <span className="dark-toggle-track">
-            <span className="dark-toggle-knob">
-              {dark ? (
-                <IconSunHigh className="dark-toggle-icon" stroke={1.8} />
-              ) : (
-                <IconMoonStars className="dark-toggle-icon" stroke={1.8} />
-              )}
+    <div className={appClassName}>
+      {isPortfolioVisible && (
+        <div className="app-content">
+          {/* DARK MODE TOGGLE */}
+          <button
+            onClick={() => setDark(!dark)}
+            className="dark-toggle"
+            title="Toggle dark mode"
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            <span className="dark-toggle-track">
+              <span className="dark-toggle-knob">
+                {dark ? (
+                  <IconSunHigh className="dark-toggle-icon" stroke={1.8} />
+                ) : (
+                  <IconMoonStars className="dark-toggle-icon" stroke={1.8} />
+                )}
+              </span>
             </span>
-          </span>
-          <span className="dark-toggle-label">{dark ? "Light" : "Dark"}</span>
-        </button>
+            <span className="dark-toggle-label">{dark ? "Light" : "Dark"}</span>
+          </button>
 
-        <FloatingDock
-          items={dockItems}
-          desktopClassName="portfolio-dock-desktop"
-          mobileClassName="portfolio-dock-mobile"
-        />
-
-        <Hero profile={portfolioContent.profile} dark={dark} />
-
-        <main className="portfolio-sections">
-          <div className="section-divider" />
-
-          <About
-            aboutBubbles={portfolioContent.aboutBubbles}
-            profileImage={portfolioContent.profile.profileImage}
+          <FloatingDock
+            items={dockItems}
+            desktopClassName="portfolio-dock-desktop"
+            mobileClassName="portfolio-dock-mobile"
           />
 
-          <div className="section-divider" />
+          <Hero profile={portfolioContent.profile} dark={dark} />
 
-          <Certificates customCertificates={portfolioContent.customCertificates} />
+          <main className="portfolio-sections">
+            <div className="section-divider" />
 
-          <div className="section-divider" />
+            <About
+              aboutBubbles={portfolioContent.aboutBubbles}
+              profileImage={portfolioContent.profile.profileImage}
+            />
 
-          <Projects customProjects={portfolioContent.customProjects} />
+            <div className="section-divider" />
 
-          <div className="section-divider" />
+            <Certificates customCertificates={portfolioContent.customCertificates} />
 
-          <Videos customVideos={portfolioContent.customVideos} />
+            <div className="section-divider" />
 
-          <div className="section-divider" />
+            <Projects customProjects={portfolioContent.customProjects} />
 
-          <Skills />
+            <div className="section-divider" />
 
-          <div className="section-divider" />
+            <Videos customVideos={portfolioContent.customVideos} />
 
-          <Contact contacts={portfolioContent.contacts} cv={portfolioContent.cv} />
-        </main>
+            <div className="section-divider" />
 
-        {showAdminPanel && (
-          <AdminPanel
-            onClose={() => setShowAdminPanel(false)}
-            onSave={savePortfolioContent}
-            profile={portfolioContent.profile}
-            contacts={portfolioContent.contacts}
-            aboutBubbles={portfolioContent.aboutBubbles}
-            customProjects={portfolioContent.customProjects}
-            customVideos={portfolioContent.customVideos}
-            customCertificates={portfolioContent.customCertificates}
-            cv={portfolioContent.cv}
-            portfolioContent={portfolioContent}
-            setProfile={setProfile}
-            setContacts={setContacts}
-            setAboutBubbles={setAboutBubbles}
-            setCustomProjects={setCustomProjects}
-            setCustomVideos={setCustomVideos}
-            setCustomCertificates={setCustomCertificates}
-            setCv={setCv}
-          />
-        )}
+            <Skills />
 
-      </div>
+            <div className="section-divider" />
+
+            <Contact contacts={portfolioContent.contacts} cv={portfolioContent.cv} />
+          </main>
+
+          <footer className="site-footer" aria-label="Copyright">
+            <p className="site-footer-copy">
+              Copyright 2026 Lawrence Portfolio. All rights reserved.
+            </p>
+          </footer>
+
+          {showAdminPanel && (
+            <AdminPanel
+              onClose={() => setShowAdminPanel(false)}
+              onSave={savePortfolioContent}
+              profile={portfolioContent.profile}
+              contacts={portfolioContent.contacts}  
+              aboutBubbles={portfolioContent.aboutBubbles}
+              customProjects={portfolioContent.customProjects}
+              customVideos={portfolioContent.customVideos}
+              customCertificates={portfolioContent.customCertificates}
+              cv={portfolioContent.cv}
+              portfolioContent={portfolioContent}
+              setProfile={setProfile}
+              setContacts={setContacts}
+              setAboutBubbles={setAboutBubbles}
+              setCustomProjects={setCustomProjects}
+              setCustomVideos={setCustomVideos}
+              setCustomCertificates={setCustomCertificates}
+              setCv={setCv}
+            />
+          )}
+        </div>
+      )}
+
+      {isIntroVisible && (
+        <div
+          className={`intro-overlay${isIntroClosing ? " is-hiding" : ""}`}
+          aria-hidden="true"
+          onAnimationEnd={handleIntroAnimationEnd}
+        >
+          <div className="intro-logo-orbit">
+            <img
+              src="/ls-logo-rbg.png"
+              alt=""
+              className="intro-logo"
+            />
+          </div>
+
+          <div className="intro-terminal">
+            <p
+              className={`intro-terminal-line intro-terminal-command${
+                introTypingStage === "command" ? " is-typing" : ""
+              }`}
+            >
+              <span className="intro-terminal-prefix">$</span>
+              <span className="intro-terminal-text">{introCommandText}</span>
+              <span className="intro-terminal-caret" aria-hidden="true" />
+            </p>
+            <p
+              className={`intro-terminal-line intro-terminal-local${
+                isIntroLocalVisible ? " is-visible" : ""
+              }${introTypingStage === "local" ? " is-typing" : ""}`}
+            >
+              <span className="intro-terminal-prefix">$</span>
+              <span className="intro-terminal-text">{introLocalText}</span>
+              <span className="intro-terminal-caret" aria-hidden="true" />
+            </p>
+            <p
+              className={`intro-terminal-line intro-terminal-route${
+                isIntroRouteVisible ? " is-visible" : ""
+              }${introTypingStage === "route" ? " is-typing" : ""}`}
+            >
+              <span className="intro-terminal-prefix">&gt;</span>
+              <span className="intro-terminal-text">{introRouteText}</span>
+              <span className="intro-terminal-caret" aria-hidden="true" />
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
 export default App;
+

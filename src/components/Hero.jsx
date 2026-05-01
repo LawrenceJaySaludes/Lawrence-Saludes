@@ -109,6 +109,10 @@ function Hero({ profile, dark = false }) {
 
   return (
     <section id="home" className="hero reveal">
+      <div className="hero-top-logo-wrap">
+        <img src="/ls-logo-rbg.png" alt="LS logo" className="hero-top-logo" />
+      </div>
+
       <div className="container hero-layout">
         <div className="hero-content">
           <TypingName key={displayName} text={displayName} isDark={dark} />

@@ -35,6 +35,266 @@ body {
   color: #e5e7eb;
 }
 
+.app-content {
+  transition:
+    opacity 1.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-bg.intro-active .app-content {
+  opacity: 0;
+  transform: scale(1.015);
+  filter: blur(9px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.9rem, 2.4vw, 1.4rem);
+  background:
+    radial-gradient(circle at 20% 18%, rgba(99, 102, 241, 0.22), transparent 44%),
+    radial-gradient(circle at 80% 82%, rgba(56, 189, 248, 0.18), transparent 40%),
+    rgba(3, 8, 20, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 1;
+  will-change: opacity, backdrop-filter;
+}
+
+.intro-overlay.is-hiding {
+  animation: introOverlayFadeOut 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  pointer-events: none;
+}
+
+.intro-logo-orbit {
+  --logo-size: clamp(114px, 14vw, 196px);
+  --orbit-gap: clamp(24px, 3.4vw, 40px);
+  --orbit-radius: calc((var(--logo-size) / 2) + var(--orbit-gap));
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--orbit-radius) * 2 + 52px);
+  height: calc(var(--orbit-radius) * 2 + 52px);
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  will-change: opacity, transform, filter;
+}
+
+.intro-logo-orbit::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--orbit-radius) * 2);
+  height: calc(var(--orbit-radius) * 2);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1.5px solid rgba(148, 163, 184, 0.36);
+  border-top-color: rgba(125, 249, 255, 0.75);
+  border-bottom-color: rgba(185, 131, 255, 0.75);
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.25);
+  animation: orbitRingSpin 6s linear infinite;
+}
+
+.intro-logo {
+  width: var(--logo-size);
+  animation: introLogoIn 2.2s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  filter: drop-shadow(0 0 28px rgba(99, 102, 241, 0.4));
+  position: relative;
+  z-index: 2;
+}
+
+.intro-terminal {
+  width: min(88vw, 33rem);
+  padding: 0.84rem 1rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.38);
+  background: linear-gradient(
+    160deg,
+    rgba(15, 23, 42, 0.78),
+    rgba(2, 6, 23, 0.78)
+  );
+  box-shadow:
+    0 18px 34px rgba(2, 6, 23, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  color: #dbeafe;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  will-change: opacity, transform, filter;
+}
+
+.intro-overlay.is-hiding .intro-logo-orbit,
+.intro-overlay.is-hiding .intro-terminal {
+  animation: introOverlayContentFadeOut 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-terminal-line {
+  margin: 0;
+  font-size: clamp(0.78rem, 1.8vw, 0.92rem);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.32rem;
+  white-space: nowrap;
+  transition:
+    opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-terminal-prefix {
+  color: #7df9ff;
+  font-weight: 700;
+}
+
+.intro-terminal-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: 1.35em;
+}
+
+.intro-terminal-caret {
+  width: 0.6ch;
+  border-right: 2px solid rgba(125, 249, 255, 0.9);
+  opacity: 0;
+  animation: introCaretBlink 0.8s step-end infinite;
+}
+
+.intro-terminal-local {
+  opacity: 0;
+  transform: translateY(7px);
+}
+
+.intro-terminal-route {
+  opacity: 0;
+  transform: translateY(7px);
+}
+
+.intro-terminal-line.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-terminal-line.is-typing .intro-terminal-caret {
+  opacity: 1;
+}
+
+@keyframes orbitRingSpin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes introCaretBlink {
+  0%,
+  49% {
+    border-right-color: rgba(125, 249, 255, 0.9);
+  }
+
+  50%,
+  100% {
+    border-right-color: transparent;
+  }
+}
+
+@keyframes introOverlayFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes introOverlayContentFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    filter: blur(2px);
+  }
+}
+
+@keyframes introLogoIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.74) rotate(-7deg);
+    filter: blur(8px) drop-shadow(0 0 0 rgba(99, 102, 241, 0));
+  }
+
+  38% {
+    opacity: 1;
+    transform: scale(1.04) rotate(0deg);
+    filter: blur(0) drop-shadow(0 0 28px rgba(99, 102, 241, 0.42));
+  }
+
+  72% {
+    transform: scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0) drop-shadow(0 0 24px rgba(56, 189, 248, 0.38));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-content,
+  .intro-overlay,
+  .intro-logo-orbit,
+  .intro-terminal {
+    transition: none;
+  }
+
+  .intro-logo {
+    animation: none;
+  }
+
+  .intro-logo-orbit::before,
+  .intro-terminal-caret {
+    animation: none;
+  }
+
+  .intro-terminal-line,
+  .intro-terminal-caret,
+  .intro-terminal-text,
+  .intro-terminal-local,
+  .intro-terminal-route {
+    opacity: 1;
+    transform: none;
+    width: auto;
+    border-right: 0;
+    transition: none;
+  }
+}
+
 .app-bg::before,
 .app-bg::after {
   content: "";
@@ -165,6 +425,18 @@ section {
   padding-bottom: 0;
 }
 
+.site-footer {
+  padding: clamp(1.8rem, 3vw, 2.6rem) 1.5rem clamp(2.2rem, 4vw, 3.1rem);
+  text-align: center;
+}
+
+.site-footer-copy {
+  margin: 0;
+  font-size: clamp(0.82rem, 0.78rem + 0.18vw, 0.95rem);
+  letter-spacing: 0.02em;
+  color: rgba(47, 58, 68, 0.74);
+}
+
 .hero-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -189,6 +461,57 @@ section {
   padding-bottom: clamp(2.5rem, 4.5vw, 3.75rem);
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.hero-top-logo-wrap {
+  position: absolute;
+  top: clamp(0.85rem, 2vw, 1.45rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(3.5rem, 5.6vw, 4.5rem);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.35rem, 0.6vw, 0.52rem);
+  border-radius: 999px;
+  border: 1px solid rgba(41, 22, 245, 0.48);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.82),
+    rgba(255, 255, 255, 0.58)
+  );
+  box-shadow:
+    0 0 0 2px rgba(41, 22, 245, 0.2),
+    0 14px 28px rgba(31, 41, 55, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px) saturate(135%);
+  -webkit-backdrop-filter: blur(10px) saturate(135%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-top-logo {
+  width: clamp(2rem, 3.2vw, 2.65rem);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 18px rgba(31, 41, 55, 0.2));
+}
+
+.dark .hero-top-logo-wrap {
+  border-color: rgba(148, 163, 184, 0.42);
+  background: linear-gradient(
+    150deg,
+    rgba(30, 41, 59, 0.76),
+    rgba(15, 23, 42, 0.62)
+  );
+  box-shadow:
+    0 14px 28px rgba(2, 6, 23, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.dark .hero-top-logo {
+  filter: drop-shadow(0 8px 14px rgba(2, 6, 23, 0.45));
 }
 
 @media (min-width: 1201px) {
@@ -1169,6 +1492,10 @@ body::after {
     padding-top: clamp(6rem, 18vw, 7.25rem);
     padding-bottom: clamp(2.75rem, 8vw, 4rem);
     align-items: flex-start;
+  }
+
+  .hero-top-logo-wrap {
+    top: clamp(0.75rem, 2.8vw, 1.2rem);
   }
 
   .portfolio-sections > section {
@@ -2991,6 +3318,10 @@ body::after {
 
 .dark .video-reference-links a {
   color: #5eead4;
+}
+
+.dark .site-footer-copy {
+  color: rgba(226, 232, 240, 0.72);
 }
 
 @media (max-width: 900px) {
