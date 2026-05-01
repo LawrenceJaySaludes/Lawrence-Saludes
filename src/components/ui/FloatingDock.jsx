@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IconLayoutNavbarCollapse } from "@tabler/icons-react";
 import {
   AnimatePresence,
@@ -14,15 +14,119 @@ const MotionDiv = motion.div;
 const MotionA = motion.a;
 
 export function FloatingDock({ items, desktopClassName, mobileClassName }) {
+  const [activeHref, setActiveHref] = useState(items[0]?.href ?? "#home");
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !Array.isArray(items) || items.length === 0) {
+      return undefined;
+    }
+
+    const sectionTargets = items
+      .map((item) => {
+        if (typeof item.href !== "string" || !item.href.startsWith("#")) {
+          return null;
+        }
+
+        const id = item.href.slice(1);
+        const element = document.getElementById(id);
+        if (!element) {
+          return null;
+        }
+
+        return { href: item.href, element };
+      })
+      .filter(Boolean)
+      .sort((first, second) => first.element.offsetTop - second.element.offsetTop);
+
+    if (sectionTargets.length === 0) {
+      return undefined;
+    }
+
+    const intersectionByHref = new Map(
+      sectionTargets.map((target) => [target.href, 0])
+    );
+
+    const updateActiveSection = () => {
+      let bestHref = "";
+      let bestRatio = 0;
+
+      intersectionByHref.forEach((ratio, href) => {
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestHref = href;
+        }
+      });
+
+      if (bestRatio < 0.18) {
+        const probeY = window.scrollY + window.innerHeight * 0.35;
+        let fallbackHref = sectionTargets[0].href;
+
+        sectionTargets.forEach((target) => {
+          if (probeY >= target.element.offsetTop) {
+            fallbackHref = target.href;
+          }
+        });
+
+        bestHref = fallbackHref;
+      }
+
+      if (bestHref) {
+        setActiveHref((prev) => (prev === bestHref ? prev : bestHref));
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const href = `#${entry.target.id}`;
+          if (!intersectionByHref.has(href)) {
+            return;
+          }
+
+          intersectionByHref.set(href, entry.intersectionRatio);
+        });
+
+        updateActiveSection();
+      },
+      {
+        root: null,
+        rootMargin: "-18% 0px -58% 0px",
+        threshold: [0, 0.15, 0.3, 0.5, 0.7, 1],
+      }
+    );
+
+    sectionTargets.forEach((target) => observer.observe(target.element));
+    updateActiveSection();
+
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, [items]);
+
   return (
     <>
-      <FloatingDockDesktop items={items} className={desktopClassName} />
-      <FloatingDockMobile items={items} className={mobileClassName} />
+      <FloatingDockDesktop
+        items={items}
+        className={desktopClassName}
+        activeHref={activeHref}
+        onSelect={setActiveHref}
+      />
+      <FloatingDockMobile
+        items={items}
+        className={mobileClassName}
+        activeHref={activeHref}
+        onSelect={setActiveHref}
+      />
     </>
   );
 }
 
-function FloatingDockMobile({ items, className }) {
+function FloatingDockMobile({ items, className, activeHref, onSelect }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -42,7 +146,10 @@ function FloatingDockMobile({ items, className }) {
                 key={item.title}
                 href={item.href}
                 aria-label={item.title}
-                className="floating-dock-mobile-item"
+                className={cn(
+                  "floating-dock-mobile-item",
+                  item.href === activeHref && "is-active"
+                )}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{
@@ -51,7 +158,10 @@ function FloatingDockMobile({ items, className }) {
                   transition: { delay: idx * 0.03 },
                 }}
                 transition={{ delay: (items.length - 1 - idx) * 0.03 }}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  onSelect(item.href);
+                  setOpen(false);
+                }}
               >
                 <span className="floating-dock-mobile-icon">{item.icon}</span>
               </MotionA>
@@ -72,7 +182,7 @@ function FloatingDockMobile({ items, className }) {
   );
 }
 
-function FloatingDockDesktop({ items, className }) {
+function FloatingDockDesktop({ items, className, activeHref, onSelect }) {
   const mouseY = useMotionValue(Infinity);
 
   return (
@@ -83,13 +193,19 @@ function FloatingDockDesktop({ items, className }) {
       className={cn("floating-dock-desktop", className)}
     >
       {items.map((item) => (
-        <IconContainer mouseY={mouseY} key={item.title} {...item} />
+        <IconContainer
+          mouseY={mouseY}
+          key={item.title}
+          active={item.href === activeHref}
+          onSelect={onSelect}
+          {...item}
+        />
       ))}
     </MotionNav>
   );
 }
 
-function IconContainer({ mouseY, title, icon, href }) {
+function IconContainer({ mouseY, title, icon, href, active, onSelect }) {
   const ref = useRef(null);
   const [hovered, setHovered] = useState(false);
 
@@ -98,13 +214,13 @@ function IconContainer({ mouseY, title, icon, href }) {
     return value - bounds.y - bounds.height / 2;
   });
 
-  const widthTransform = useTransform(distance, [-150, 0, 150], [42, 78, 42]);
-  const heightTransform = useTransform(distance, [-150, 0, 150], [42, 78, 42]);
-  const widthIconTransform = useTransform(distance, [-150, 0, 150], [20, 34, 20]);
+  const widthTransform = useTransform(distance, [-150, 0, 150], [38, 70, 38]);
+  const heightTransform = useTransform(distance, [-150, 0, 150], [38, 70, 38]);
+  const widthIconTransform = useTransform(distance, [-150, 0, 150], [18, 30, 18]);
   const heightIconTransform = useTransform(
     distance,
     [-150, 0, 150],
-    [20, 34, 20]
+    [18, 30, 18]
   );
 
   const width = useSpring(widthTransform, {
@@ -132,13 +248,18 @@ function IconContainer({ mouseY, title, icon, href }) {
   });
 
   return (
-    <a href={href} className="floating-dock-link" aria-label={title}>
+    <a
+      href={href}
+      className={cn("floating-dock-link", active && "is-active")}
+      aria-label={title}
+      onClick={() => onSelect(href)}
+    >
       <MotionDiv
         ref={ref}
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="floating-dock-icon-container"
+        className={cn("floating-dock-icon-container", active && "is-active")}
       >
         <AnimatePresence>
           {hovered && (

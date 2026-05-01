@@ -5,6 +5,8 @@ import { DiMsqlServer } from "react-icons/di";
 import { RiSupabaseFill } from "react-icons/ri";
 import { TbBrandCSharp } from "react-icons/tb";
 import {
+  SiReact,
+  SiPhp,
   SiAdobepremierepro,
   SiAdobeaftereffects,
   SiAdobephotoshop,
@@ -22,6 +24,8 @@ function Skills() {
       items: [
         { label: "React.js", icon: <FaReact />, color: "#61DAFB" },
         { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
+        { label: "React Native", icon: <SiReact />, color: "#61DAFB" },
+        { label: "PHP", icon: <SiPhp />, color: "#777BB4" },
         { label: "Laravel", icon: <SiLaravel />, color: "#FF2D20" },
         { label: "Git", icon: <SiGit />, color: "#F05032" },
         { label: "C# WinForms App", icon: <TbBrandCSharp />, color: "#9B4DCA" },
