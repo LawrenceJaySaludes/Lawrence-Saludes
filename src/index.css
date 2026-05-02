@@ -2875,10 +2875,95 @@ body::after {
   letter-spacing: -0.01em;
 }
 
+.channel-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .channel-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.45rem;
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.5rem 0;
+  scroll-behavior: smooth;
+}
+
+.channel-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.channel-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(67, 56, 202, 0.2);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  color: #4338ca;
+}
+
+.channel-carousel-arrow.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.channel-carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.08);
+  border-color: rgba(67, 56, 202, 0.4);
+  box-shadow: 0 12px 28px rgba(67, 56, 202, 0.2);
+}
+
+.channel-carousel-arrow-left {
+  left: -22px;
+}
+
+.channel-carousel-arrow-right {
+  right: -22px;
+}
+
+.dark .channel-carousel-arrow {
+  background: rgba(30, 41, 59, 0.92);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: #c4b5fd;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.4);
+}
+
+.dark .channel-carousel-arrow:hover {
+  border-color: rgba(185, 131, 255, 0.5);
+  box-shadow: 0 12px 28px rgba(185, 131, 255, 0.25);
+}
+
+@media (max-width: 640px) {
+  .channel-carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .channel-carousel-arrow-left {
+    left: -18px;
+  }
+
+  .channel-carousel-arrow-right {
+    right: -18px;
+  }
 }
 
 .channel-card {
@@ -2894,6 +2979,8 @@ body::after {
   backdrop-filter: blur(20px) saturate(165%);
   -webkit-backdrop-filter: blur(20px) saturate(165%);
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  flex-shrink: 0;
+  scroll-snap-align: start;
 }
 
 .channel-card::after {

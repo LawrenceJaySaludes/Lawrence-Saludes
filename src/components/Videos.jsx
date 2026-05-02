@@ -1,9 +1,11 @@
-﻿import useScrollReveal from "../hooks/useScrollReveal";
+﻿import { useRef, useState } from "react";
+import useScrollReveal from "../hooks/useScrollReveal";
 import travelPug from "../assets/travelpug.jpg";
 import waterLemon from "../assets/waterlemon.jpg";
 import etcLogo from "../assets/etc.jpg";
 import businessBoss from "../assets/businessboss.jpg";
-import ytLogo from "../assets/yt-logo.png";
+import landOfTomorrow from "../assets/lot.jpg";
+import keithHothe from "../assets/keith hothe$.jpg";
 import kaiPhoto from "../assets/kai.png";
 
 const DEFAULT_CHANNELS = [
@@ -31,10 +33,45 @@ const DEFAULT_CHANNELS = [
     name: "Business Boss",
     link: "https://youtube.com/@businessboss3156?si=aTOL8JlRQBD97pHG",
   },
+  {
+    id: "channel-5",
+    img: landOfTomorrow,
+    name: "Land of Tomorrow",
+    link: "https://youtube.com/@landoftomorrow?si=RtU5bgPy3F_Me7PE",
+  },
+  {
+    id: "channel-6",
+    img: keithHothe,
+    name: "Keith Hothe$",
+    link: "https://www.youtube.com/@KeithHothes/shorts",
+  },
 ];
 
 function Videos({ customVideos = [] }) {
   useScrollReveal();
+  const carouselRef = useRef(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  const checkScrollPosition = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const scrollLeft = carousel.scrollLeft;
+    const scrollWidth = carousel.scrollWidth;
+    const clientWidth = carousel.clientWidth;
+    setShowLeftArrow(scrollLeft > 10);
+    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+  };
+
+  const scrollCarousel = (direction) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const scrollAmount = carousel.clientWidth * 0.8;
+    carousel.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <section id="videos" className="videos-section">
@@ -61,23 +98,45 @@ function Videos({ customVideos = [] }) {
           </p>
         </div>
 
-        <div className="channel-grid">
-          {DEFAULT_CHANNELS.map((channel, index) => (
-            <a
-              key={channel.id}
-              href={channel.link}
-              target="_blank"
-              rel="noreferrer"
-              className={`card project-card channel-card scroll-animate fade-up channel-delay-${index + 1}`}
-            >
-              <div className="channel-badge-row">
-                <img src={ytLogo} alt="YouTube" className="channel-badge" />
-              </div>
+        <div className="channel-carousel-wrapper">
+          <button
+            className={`channel-carousel-arrow channel-carousel-arrow-left ${showLeftArrow ? 'visible' : ''}`}
+            onClick={() => scrollCarousel('left')}
+            aria-label="Scroll left"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
 
-              <img src={channel.img} alt={channel.name} className="channel-thumb" />
-              <h3 className="channel-name">{channel.name}</h3>
-            </a>
-          ))}
+          <div
+            ref={carouselRef}
+            className="channel-grid"
+            onScroll={checkScrollPosition}
+          >
+            {DEFAULT_CHANNELS.map((channel, index) => (
+              <a
+                key={channel.id}
+                href={channel.link}
+                target="_blank"
+                rel="noreferrer"
+                className={`card project-card channel-card scroll-animate fade-up channel-delay-${(index % 4) + 1}`}
+              >
+                <img src={channel.img} alt={channel.name} className="channel-thumb" />
+                <h3 className="channel-name">{channel.name}</h3>
+              </a>
+            ))}
+          </div>
+
+          <button
+            className={`channel-carousel-arrow channel-carousel-arrow-right ${showRightArrow ? 'visible' : ''}`}
+            onClick={() => scrollCarousel('right')}
+            aria-label="Scroll right"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
         </div>
 
         {customVideos.length > 0 && (
