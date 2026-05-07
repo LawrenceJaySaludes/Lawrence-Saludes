@@ -87,14 +87,17 @@ function Contact({ contacts, cv }) {
     {
       label: "Email",
       value: email,
+      copyable: true,
     },
     {
       label: "Phone",
       value: phone,
+      copyable: true,
     },
     {
       label: "Location",
       value: location,
+      copyable: false,
     },
   ].filter((item) => item.value);
 
@@ -239,6 +242,7 @@ function Contact({ contacts, cv }) {
 
                 <div className="contact-info">
                   {contactItems.map((item) => {
+                    const isCopyable = item.copyable !== false;
                     return (
                       <button
                         type="button"
@@ -247,11 +251,14 @@ function Contact({ contacts, cv }) {
                           item.label.toLowerCase() === "email"
                             ? " contact-item--email"
                             : ""
-                        }`}
+                        }${!isCopyable ? " not-copyable" : ""}`}
                         onClick={() => {
-                          void handleCopyDetails(item.label, item.value);
+                          if (isCopyable) {
+                            void handleCopyDetails(item.label, item.value);
+                          }
                         }}
-                        aria-label={`Copy ${item.label}: ${item.value}`}
+                        aria-label={isCopyable ? `Copy ${item.label}: ${item.value}` : `${item.label}: ${item.value}`}
+                        disabled={!isCopyable}
                       >
                         <span className="contact-item-label">{item.label}</span>
                         <strong className="contact-item-value">{item.value}</strong>

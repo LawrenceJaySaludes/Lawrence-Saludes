@@ -11,10 +11,10 @@ const LEGACY_ROLE_TEXT = "Junior Web Developer | React.js | Video Editor";
 function TypingName({ text, isDark }) {
   const safeText = text || "Lawrence";
   const nameGradientColors = isDark
-    ? ["#7DF9FF", "#B983FF", "#E5E7EB"]
+    ? ["#D10000", "#FF3B3B", "#FFD0D0"]
     : ["#2F3A44", "#2916F5", "#5E51F7"];
   const greetingGradientColors = isDark
-    ? ["#A5F3FC", "#C4B5FD", "#E2E8F0"]
+    ? ["#D10000", "#FF6B6B", "#FFFFFF"]
     : ["#334155", "#3730A3", "#4F46E5"];
   const nameShineColor = isDark
     ? "rgba(255, 255, 255, 0.95)"
@@ -87,7 +87,7 @@ function Hero({ profile, dark = false }) {
       ? profile.profileImage.trim()
       : profilePic;
   const usesDefaultProfileFrame = profileImageSrc === profilePic;
-  const electricBorderColor = dark ? "#7df9ff" : "#4f46e5";
+  const electricBorderColor = dark ? "#d10000" : "#4f46e5";
   const electricBorderStyle = dark
     ? undefined
     : {
