@@ -12,6 +12,87 @@ import { cn } from "../../lib/utils";
 const MotionNav = motion.nav;
 const MotionDiv = motion.div;
 const MotionA = motion.a;
+let activeScrollFrame = 0;
+
+function getSectionScrollOffset(element) {
+  const styles = window.getComputedStyle(element);
+  const parsedMarginTop = Number.parseFloat(styles.scrollMarginTop);
+  return Number.isFinite(parsedMarginTop) ? parsedMarginTop : 0;
+}
+
+function easeInOutCubic(progress) {
+  if (progress < 0.5) {
+    return 4 * progress * progress * progress;
+  }
+
+  return 1 - Math.pow(-2 * progress + 2, 3) / 2;
+}
+
+function smoothScrollTo(targetY, duration = 700) {
+  if (activeScrollFrame) {
+    window.cancelAnimationFrame(activeScrollFrame);
+    activeScrollFrame = 0;
+  }
+
+  const startY = window.scrollY;
+  const scrollDistance = targetY - startY;
+
+  if (Math.abs(scrollDistance) < 1) {
+    return;
+  }
+
+  const startTime = performance.now();
+
+  const animate = (now) => {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easedProgress = easeInOutCubic(progress);
+    window.scrollTo(0, startY + scrollDistance * easedProgress);
+
+    if (progress < 1) {
+      activeScrollFrame = window.requestAnimationFrame(animate);
+      return;
+    }
+
+    activeScrollFrame = 0;
+  };
+
+  activeScrollFrame = window.requestAnimationFrame(animate);
+}
+
+function handleSmoothSectionNavigation(event, href, onSelect, onComplete) {
+  if (typeof href !== "string" || !href.startsWith("#")) {
+    onSelect?.(href);
+    onComplete?.();
+    return;
+  }
+
+  const sectionId = href.slice(1);
+  const targetSection = document.getElementById(sectionId);
+
+  if (!targetSection) {
+    onSelect?.(href);
+    onComplete?.();
+    return;
+  }
+
+  event.preventDefault();
+  onSelect?.(href);
+  const targetOffset = getSectionScrollOffset(targetSection);
+  const targetY = Math.max(
+    0,
+    targetSection.getBoundingClientRect().top + window.scrollY - targetOffset
+  );
+  smoothScrollTo(targetY);
+
+  if (window.history?.replaceState) {
+    window.history.replaceState(null, "", href);
+  } else {
+    window.location.hash = href;
+  }
+
+  onComplete?.();
+}
 
 export function FloatingDock({ items, desktopClassName, mobileClassName }) {
   const [activeHref, setActiveHref] = useState(items[0]?.href ?? "#home");
@@ -158,9 +239,13 @@ function FloatingDockMobile({ items, className, activeHref, onSelect }) {
                   transition: { delay: idx * 0.03 },
                 }}
                 transition={{ delay: (items.length - 1 - idx) * 0.03 }}
-                onClick={() => {
-                  onSelect(item.href);
-                  setOpen(false);
+                onClick={(event) => {
+                  handleSmoothSectionNavigation(
+                    event,
+                    item.href,
+                    onSelect,
+                    () => setOpen(false)
+                  );
                 }}
               >
                 <span className="floating-dock-mobile-icon">{item.icon}</span>
@@ -252,7 +337,9 @@ function IconContainer({ mouseY, title, icon, href, active, onSelect }) {
       href={href}
       className={cn("floating-dock-link", active && "is-active")}
       aria-label={title}
-      onClick={() => onSelect(href)}
+      onClick={(event) => {
+        handleSmoothSectionNavigation(event, href, onSelect);
+      }}
     >
       <MotionDiv
         ref={ref}
