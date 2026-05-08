@@ -64,8 +64,8 @@ body {
   justify-content: center;
   gap: clamp(0.9rem, 2.4vw, 1.4rem);
   background: transparent;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   opacity: 1;
   overflow: hidden;
   will-change: opacity, backdrop-filter;
@@ -101,18 +101,20 @@ body {
 }
 
 .intro-overlay.is-hiding {
-  animation: introOverlayFadeOut 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  animation:
+    introOverlayFadeOut 5s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    introOverlayBlurOut 2.12s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   pointer-events: none;
 }
 
 .intro-overlay.is-hiding::before {
-  animation: introSplitTop 1.58s cubic-bezier(0.2, 0.9, 0.24, 1) forwards;
+  animation: introSplitTop 3.16s cubic-bezier(0.2, 0.9, 0.24, 1) forwards;
 }
 
 .intro-overlay.is-hiding::after {
-  animation: introSplitBottom 1.58s cubic-bezier(0.2, 0.9, 0.24, 1) forwards;
+  animation: introSplitBottom 3.16s cubic-bezier(0.2, 0.9, 0.24, 1) forwards;
 }
 
 .intro-logo-orbit {
@@ -142,30 +144,13 @@ body {
   height: calc(var(--orbit-radius) * 2);
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1.5px solid rgba(148, 163, 184, 0.36);
-  border-top-color: rgba(125, 249, 255, 0.75);
-  border-bottom-color: rgba(185, 131, 255, 0.75);
-  box-shadow: 0 0 18px rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: none;
   animation: orbitRingSpin 6s linear infinite;
 }
 
 .intro-logo-orbit::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: calc(var(--logo-size) * 1.14);
-  height: calc(var(--logo-size) * 1.14);
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 56%),
-    radial-gradient(circle at 64% 74%, rgba(125, 249, 255, 0.25), transparent 62%);
-  filter: blur(1px);
-  opacity: 0;
-  z-index: 1;
-  animation: introLogoSweep 1.6s cubic-bezier(0.18, 0.84, 0.3, 1) 0.28s both;
-  pointer-events: none;
+  content: none;
 }
 
 .intro-logo {
@@ -231,7 +216,11 @@ body {
 }
 
 .intro-overlay.is-hiding .intro-logo-orbit {
-  animation: introLogoExit 0.5s cubic-bezier(0.16, 0.84, 0.28, 1) 2.15s forwards;
+  animation: introLogoOrbitExit 0.62s cubic-bezier(0.18, 0.88, 0.28, 1) 1.5s forwards;
+}
+
+.intro-overlay.is-hiding .intro-logo {
+  animation: introLogoExit 0.62s cubic-bezier(0.18, 0.88, 0.28, 1) 1.5s forwards;
 }
 
 .intro-overlay.is-hiding .intro-terminal {
@@ -326,6 +315,23 @@ body {
   }
 }
 
+@keyframes introOverlayBlurOut {
+  0% {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  70.75% {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  100% {
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+  }
+}
+
 @keyframes introSplitTop {
   0% {
     transform: translateY(0) scaleY(1);
@@ -405,16 +411,30 @@ body {
     filter: blur(0);
   }
 
-  38% {
-    opacity: 0.98;
-    transform: translateY(-6px) scale(0.996);
-    filter: blur(0.2px);
+  40% {
+    opacity: 0.95;
+    transform: translateY(-18px) scale(0.992);
+    filter: blur(0.35px);
   }
 
   100% {
     opacity: 0;
-    transform: translateY(-18px) scale(0.975);
-    filter: blur(1.7px);
+    transform: translateY(-48px) scale(0.965);
+    filter: blur(2px);
+  }
+}
+
+@keyframes introLogoOrbitExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.98);
+    filter: blur(1.5px);
   }
 }
 
