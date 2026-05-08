@@ -7,29 +7,22 @@ import "sweetalert2/dist/sweetalert2.min.css";
 const DEFAULT_CV_URL = "/Lawrence-Saludes-Resume.pdf";
 const DEFAULT_CV_FILE_NAME = "Lawrence-Saludes-CV.pdf";
 
-function dataUrlToBlob(dataUrl) {
-  const [metadata, payload] = dataUrl.split(",");
-  const mimeMatch = metadata.match(/^data:([^;]+)/);
-  const mimeType = mimeMatch ? mimeMatch[1] : "application/octet-stream";
-  const byteString = window.atob(payload || "");
-  const buffer = new Uint8Array(byteString.length);
-
-  for (let index = 0; index < byteString.length; index += 1) {
-    buffer[index] = byteString.charCodeAt(index);
+function createCvPreviewUrl(url) {
+  if (!url) {
+    return "";
   }
 
-  return new Blob([buffer], { type: mimeType });
-}
+  if (url.startsWith("data:")) {
+    return url;
+  }
 
-function openInNewTab(url) {
-  const link = document.createElement("a");
-  link.href = url;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  try {
+    const freshUrl = new URL(url, window.location.origin);
+    freshUrl.searchParams.set("cvv", Date.now().toString());
+    return freshUrl.toString();
+  } catch {
+    return url;
+  }
 }
 
 async function copyTextToClipboard(text) {
@@ -69,6 +62,8 @@ function Contact({ contacts, cv }) {
   const [copyFeedback, setCopyFeedback] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [isCvModalOpen, setIsCvModalOpen] = useState(false);
+  const [cvPreviewUrl, setCvPreviewUrl] = useState("");
 
   const email = typeof contacts?.email === "string" ? contacts.email : "";
   const phone = typeof contacts?.phone === "string" ? contacts.phone : "";
@@ -82,7 +77,6 @@ function Contact({ contacts, cv }) {
     typeof cv?.fileName === "string" && cv.fileName.trim()
       ? cv.fileName.trim()
       : DEFAULT_CV_FILE_NAME;
-  const isDataUrl = cvUrl.startsWith("data:");
   const contactItems = [
     {
       label: "Email",
@@ -123,14 +117,41 @@ function Contact({ contacts, cv }) {
   };
 
   useEffect(() => {
-  if (cooldown <= 0) return;
+    if (cooldown <= 0) return;
 
-  const timer = setInterval(() => {
-    setCooldown((prev) => prev - 1);
-  }, 1000);
+    const timer = setInterval(() => {
+      setCooldown((prev) => prev - 1);
+    }, 1000);
 
-  return () => clearInterval(timer);
-}, [cooldown]);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  useEffect(() => {
+    if (!isCvModalOpen) {
+      return undefined;
+    }
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsCvModalOpen(false);
+        setCvPreviewUrl("");
+      }
+    };
+
+    const previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [isCvModalOpen]);
+
+  const closeCvModal = () => {
+    setIsCvModalOpen(false);
+    setCvPreviewUrl("");
+  };
 
   const handleViewCvClick = (event) => {
     event.preventDefault();
@@ -139,27 +160,8 @@ function Contact({ contacts, cv }) {
       return;
     }
 
-    if (isDataUrl) {
-      try {
-        const cvBlob = dataUrlToBlob(cvUrl);
-        const objectUrl = URL.createObjectURL(cvBlob);
-        openInNewTab(objectUrl);
-        window.setTimeout(() => {
-          URL.revokeObjectURL(objectUrl);
-        }, 60_000);
-        return;
-      } catch {
-        // Fall through to direct open when conversion fails.
-      }
-    }
-
-    try {
-      const freshUrl = new URL(cvUrl, window.location.origin);
-      freshUrl.searchParams.set("cvv", Date.now().toString());
-      openInNewTab(freshUrl.toString());
-    } catch {
-      openInNewTab(cvUrl);
-    }
+    setCvPreviewUrl(createCvPreviewUrl(cvUrl));
+    setIsCvModalOpen(true);
   };
 
  const sendEmail = async (event) => {
@@ -279,15 +281,13 @@ function Contact({ contacts, cv }) {
                 </p>
 
                 <div className="resume-actions">
-                  <a
-                    href={cvUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
                     className="btn-outline contact-resume-btn"
                     onClick={handleViewCvClick}
                   >
                     View CV
-                  </a>
+                  </button>
 
                   <a
                     href={cvUrl}
@@ -386,6 +386,47 @@ function Contact({ contacts, cv }) {
           </div>
         </div>
       </div>
+
+      {isCvModalOpen && (
+        <div
+          className="cv-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cv-modal-title"
+          onClick={closeCvModal}
+        >
+          <div
+            className="cv-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="cv-modal-close-btn"
+              onClick={closeCvModal}
+              aria-label="Close CV preview"
+            >
+              Close
+            </button>
+
+            <div className="cv-modal-head">
+              <h3 id="cv-modal-title" className="cv-modal-title">
+                Curriculum Vitae
+              </h3>
+              <p className="cv-modal-copy">
+                Previewing directly in your portfolio.
+              </p>
+            </div>
+
+            <div className="cv-modal-body">
+              <iframe
+                title="Curriculum Vitae preview"
+                src={cvPreviewUrl}
+                className="cv-modal-frame"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

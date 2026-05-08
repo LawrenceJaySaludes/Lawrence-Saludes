@@ -27,7 +27,7 @@ import {
 
 const SECRET_SEQUENCE = ["l", "j", "s"];
 const DEPLOYED_PORTFOLIO_CONTENT_URL = "/portfolio-content.json";
-const INTRO_FADE_MS = 2400;
+const INTRO_FADE_MS = 2600;
 const INTRO_SPEED_MULTIPLIER = 1.5;
 const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",
@@ -286,11 +286,6 @@ function App() {
 
       setIntroTypingStage("none");
       setIsPortfolioVisible(true);
-      await wait(40);
-      if (isCancelled) {
-        return;
-      }
-
       setIsIntroClosing(true);
     };
 
@@ -309,7 +304,8 @@ function App() {
 
     const timeoutId = window.setTimeout(() => {
       setIsIntroVisible(false);
-    }, INTRO_FADE_MS + 120);
+      setIsPortfolioVisible(true);
+    }, INTRO_FADE_MS);
 
     return () => {
       window.clearTimeout(timeoutId);
@@ -484,11 +480,30 @@ function App() {
       return;
     }
 
+    setIsPortfolioVisible(true);
     setIsIntroVisible(false);
   };
 
   return (
     <div className={appClassName}>
+      <video
+        className="app-bg-video"
+        src="/whitevidbg.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+      />
+      <video
+        className="app-bg-video-dark"
+        src="/blackvidbg.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+      />
       {isPortfolioVisible && (
         <div className="app-content">
           {/* DARK MODE TOGGLE */}
@@ -584,8 +599,9 @@ function App() {
           onAnimationEnd={handleIntroAnimationEnd}
         >
           <div className="intro-logo-orbit">
+            <span className="intro-logo-glare" aria-hidden="true" />
             <img
-              src="/ls-logo-rbg.png"
+              src="/ls-new-3d.png"
               alt=""
               className="intro-logo"
             />

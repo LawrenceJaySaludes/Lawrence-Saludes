@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import profilePic from "../assets/lawr-test.png";
 import ElectricBorder from "./ui/ElectricBorder";
 import DecryptedText from "./ui/DecryptedText";
@@ -56,7 +58,7 @@ function TypingName({ text, isDark }) {
             animateOn="view"
             sequential
             revealDirection="start"
-            speed={120}
+            speed={190}
             className="hero-name-char"
             encryptedClassName="hero-name-encrypted"
           />
@@ -110,7 +112,7 @@ function Hero({ profile, dark = false }) {
   return (
     <section id="home" className="hero reveal">
       <div className="hero-top-logo-wrap">
-        <img src="/ls-logo-rbg.png" alt="LS logo" className="hero-top-logo" />
+        <img src="/ls-new-3d.png" alt="LS logo" className="hero-top-logo" />
       </div>
 
       <div className="container hero-layout">
@@ -125,6 +127,38 @@ function Hero({ profile, dark = false }) {
             </a>
             <a href="#videos" className="btn-solid hero-cta-btn">
               Video Portfolio
+            </a>
+          </div>
+
+          <div className="hero-socials">
+            <a
+              href="https://www.linkedin.com/in/lawrence-jay-saludes-4b112a298"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-linkedin"
+            >
+              <FontAwesomeIcon icon={faLinkedin} className="hero-linkedin-icon" />
+              LinkedIn
+            </a>
+
+            <a
+              href="https://v2.onlinejobs.ph/jobseekers/info/3050749"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-olj"
+            >
+              <img src="/olj-favicon.ico" alt="" className="hero-olj-icon" />
+              OnlineJobs.ph
+            </a>
+
+            <a
+              href="https://profile.indeed.com/?hl=en_PH&co=PH&from=gnav-jobseeker-profile--profile-one-frontend"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-indeed"
+            >
+              <img src="/indeed-favicon.ico" alt="" className="hero-indeed-icon" />
+              Indeed
             </a>
           </div>
         </div>
