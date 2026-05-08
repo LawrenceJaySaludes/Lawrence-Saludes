@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import profilePic from "../assets/lawr-test.png";
@@ -69,6 +70,48 @@ function TypingName({ text, isDark }) {
 }
 
 function Hero({ profile, dark = false }) {
+  const heroRef = useRef(null);
+  const hasBeenVisibleRef = useRef(false);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+  const [animationCycle, setAnimationCycle] = useState(0);
+
+  useEffect(() => {
+    const heroElement = heroRef.current;
+
+    if (!heroElement) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry.isIntersecting;
+
+        if (isVisible && !hasBeenVisibleRef.current) {
+          hasBeenVisibleRef.current = true;
+          setAnimationCycle((prev) => prev + 1);
+          setIsHeroVisible(true);
+          return;
+        }
+
+        if (!isVisible && hasBeenVisibleRef.current) {
+          hasBeenVisibleRef.current = false;
+          setIsHeroVisible(false);
+        }
+      },
+      {
+        root: null,
+        threshold: 0.45,
+        rootMargin: "-8% 0px -12% 0px",
+      }
+    );
+
+    observer.observe(heroElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const fullName =
     typeof profile?.fullName === "string" && profile.fullName.trim()
       ? profile.fullName
@@ -110,18 +153,24 @@ function Hero({ profile, dark = false }) {
     : "hero-electric-border";
 
   return (
-    <section id="home" className="hero reveal">
+    <section id="home" className="hero reveal" ref={heroRef}>
       <div className="hero-top-logo-wrap">
         <img src="/ls-new-3d.png" alt="LS logo" className="hero-top-logo" />
       </div>
 
       <div className="container hero-layout">
         <div className="hero-content">
-          <TypingName key={displayName} text={displayName} isDark={dark} />
+          <TypingName
+            key={`${displayName}-${animationCycle}`}
+            text={displayName}
+            isDark={dark}
+          />
 
-          <p className="hero-right show hero-role">{details}</p>
+          <p className={`hero-right hero-role${isHeroVisible ? " show" : ""}`}>
+            {details}
+          </p>
 
-          <div className="hero-buttons hero-fade show">
+          <div className={`hero-buttons hero-fade${isHeroVisible ? " show" : ""}`}>
             <a href="#projects" className="btn-solid hero-cta-btn">
               System Projects
             </a>
@@ -163,7 +212,7 @@ function Hero({ profile, dark = false }) {
           </div>
         </div>
 
-        <div className="hero-image-shell show">
+        <div className={`hero-image-shell${isHeroVisible ? " show" : ""}`}>
           <ElectricBorder
             color={electricBorderColor}
             speed={1}

@@ -13,6 +13,7 @@ const MotionNav = motion.nav;
 const MotionDiv = motion.div;
 const MotionA = motion.a;
 let activeScrollFrame = 0;
+const MANUAL_ACTIVE_LOCK_MS = 900;
 
 function getSectionScrollOffset(element) {
   const styles = window.getComputedStyle(element);
@@ -96,6 +97,16 @@ function handleSmoothSectionNavigation(event, href, onSelect, onComplete) {
 
 export function FloatingDock({ items, desktopClassName, mobileClassName }) {
   const [activeHref, setActiveHref] = useState(items[0]?.href ?? "#home");
+  const manualActiveLockRef = useRef({ href: "", expiresAt: 0 });
+
+  const handleSelect = (href) => {
+    const now = performance.now();
+    manualActiveLockRef.current = {
+      href,
+      expiresAt: now + MANUAL_ACTIVE_LOCK_MS,
+    };
+    setActiveHref(href);
+  };
 
   useEffect(() => {
     if (typeof window === "undefined" || !Array.isArray(items) || items.length === 0) {
@@ -128,6 +139,18 @@ export function FloatingDock({ items, desktopClassName, mobileClassName }) {
     );
 
     const updateActiveSection = () => {
+      const now = performance.now();
+      const lock = manualActiveLockRef.current;
+
+      if (lock.href && now < lock.expiresAt) {
+        setActiveHref((prev) => (prev === lock.href ? prev : lock.href));
+        return;
+      }
+
+      if (lock.href && now >= lock.expiresAt) {
+        manualActiveLockRef.current = { href: "", expiresAt: 0 };
+      }
+
       let bestHref = "";
       let bestRatio = 0;
 
@@ -195,13 +218,13 @@ export function FloatingDock({ items, desktopClassName, mobileClassName }) {
         items={items}
         className={desktopClassName}
         activeHref={activeHref}
-        onSelect={setActiveHref}
+        onSelect={handleSelect}
       />
       <FloatingDockMobile
         items={items}
         className={mobileClassName}
         activeHref={activeHref}
-        onSelect={setActiveHref}
+        onSelect={handleSelect}
       />
     </>
   );
