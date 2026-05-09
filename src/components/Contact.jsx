@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 
 const DEFAULT_CV_URL = "/Lawrence-Saludes-Resume.pdf";
-const DEFAULT_CV_FILE_NAME = "Lawrence-Saludes-CV.pdf";
+const DEFAULT_CV_FILE_NAME = "Lawrence-Saludes-Resume.pdf";
 
 function createCvPreviewUrl(url) {
   if (!url) {
@@ -64,7 +64,6 @@ function Contact({ contacts, cv }) {
   const [cooldown, setCooldown] = useState(0);
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
   const [cvPreviewUrl, setCvPreviewUrl] = useState("");
-
   const email = typeof contacts?.email === "string" ? contacts.email : "";
   const phone = typeof contacts?.phone === "string" ? contacts.phone : "";
   const location =
@@ -412,17 +411,22 @@ function Contact({ contacts, cv }) {
               <h3 id="cv-modal-title" className="cv-modal-title">
                 Curriculum Vitae
               </h3>
-              <p className="cv-modal-copy">
-                Previewing directly in your portfolio.
-              </p>
             </div>
 
             <div className="cv-modal-body">
-              <iframe
+              <object
                 title="Curriculum Vitae preview"
-                src={cvPreviewUrl}
+                data={cvPreviewUrl}
+                type="application/pdf"
                 className="cv-modal-frame"
-              />
+              >
+                <p>
+                  Your browser does not support PDF preview.{" "}
+                  <a href={cvUrl} target="_blank" rel="noopener noreferrer">
+                    Open PDF instead
+                  </a>
+                </p>
+              </object>
             </div>
           </div>
         </div>

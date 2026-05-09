@@ -31,7 +31,7 @@ const INTRO_FADE_MS = 5000;
 const INTRO_SPEED_MULTIPLIER = 1.5;
 const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",
-  fileName: "Lawrence-Saludes-CV.pdf",
+  fileName: "Lawrence-Saludes-Resume.pdf",
 };
 const DEFAULT_ABOUT_BUBBLES = [
   "I am a 4th-year Information Technology student from Holy Cross of Davao College, specializing in building modern, responsive web applications using React.js, with solid experience in frontend development and system integration.",
@@ -57,7 +57,7 @@ const DEFAULT_CONTENT = {
     profileImage: "",
   },
   contacts: {
-    email: "lawrencesaludes00@gmail.com",
+    email: "lawrencejaysaludes@gmail.com",
     phone: "0939 694 2357",
     location: "Davao City, Philippines",
   },
