@@ -5,7 +5,9 @@ import { DiMsqlServer } from "react-icons/di";
 import { RiSupabaseFill } from "react-icons/ri";
 import { TbBrandCSharp } from "react-icons/tb";
 import {
+  SiNodedotjs,
   SiReact,
+  SiNextdotjs,
   SiPhp,
   SiAdobepremierepro,
   SiAdobeaftereffects,
@@ -23,6 +25,8 @@ function Skills() {
       className: "skills-card system",
       items: [
         { label: "React.js", icon: <FaReact />, color: "#61DAFB" },
+        { label: "Next.js", icon: <SiNextdotjs />, color: "#111111" },
+        { label: "Node.js", icon: <SiNodedotjs />, color: "#339933" },
         { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
         { label: "React Native", icon: <SiReact />, color: "#61DAFB" },
         { label: "PHP", icon: <SiPhp />, color: "#777BB4" },

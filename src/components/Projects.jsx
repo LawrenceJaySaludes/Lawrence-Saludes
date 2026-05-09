@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 /* CLINICAL SCREENSHOTS */
@@ -45,6 +45,25 @@ const DEFAULT_PROJECTS = [
     repoLink: "https://github.com/Pelyn9/aquacheck.git",
   },
   {
+    id: "default-project-6",
+    category: "Website",
+    title: "Flowly",
+    description:
+      "Flowly is a Progressive Web App (PWA) personal finance tracker that helps users monitor income and expenses in a simple, real-time dashboard across all devices.",
+    stack: "React.js | Supabase | Vercel",
+    liveLink: "https://temporary.vercel.app",
+    repoLink: "https://github.com/LawrenceJaySaludes/Flowly.git",
+  },
+  {
+    id: "default-project-7",
+    category: "Website",
+    title: "Mental Health Matters",
+    description:
+      "A mental health awareness platform with AI support, educational resources, and guidance for managing stress, anxiety, and depression, with links to professional help when needed.",
+    stack: "React.js | Node.js | Vercel",
+    liveLink: "https://mental-health-matters-bice.vercel.app/",
+  },
+  {
     id: "default-project-4",
     category: "Desktop App",
     title: "Clinical Appointment System",
@@ -75,7 +94,47 @@ function Projects({ customProjects = [] }) {
 
   const [openGallery, setOpenGallery] = useState(null);
   const [activeImage, setActiveImage] = useState(null);
-  const projects = [...DEFAULT_PROJECTS, ...customProjects];
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const projectsGridRef = useRef(null);
+  const normalizedCustomProjects = Array.isArray(customProjects)
+    ? customProjects
+    : [];
+  const projects = [...DEFAULT_PROJECTS, ...normalizedCustomProjects];
+
+  const updateScrollState = useCallback(() => {
+    const grid = projectsGridRef.current;
+    if (!grid) return;
+
+    const maxScrollLeft = grid.scrollWidth - grid.clientWidth;
+    setCanScrollLeft(grid.scrollLeft > 8);
+    setCanScrollRight(grid.scrollLeft < maxScrollLeft - 8);
+  }, []);
+
+  useEffect(() => {
+    const grid = projectsGridRef.current;
+    if (!grid) return;
+
+    updateScrollState();
+    grid.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+
+    return () => {
+      grid.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [projects.length, updateScrollState]);
+
+  const handleArrowScroll = (direction) => {
+    const grid = projectsGridRef.current;
+    if (!grid) return;
+
+    const scrollAmount = grid.clientWidth * 0.88;
+    grid.scrollBy({
+      left: direction * scrollAmount,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section id="projects" className="projects-section">
@@ -88,73 +147,130 @@ function Projects({ customProjects = [] }) {
       </p>
 
       <div className="container">
-        <div className="grid projects-grid">
-          {projects.map((project, index) => {
-            const delayClass = `delay-${(index % 4) + 1}`;
-            const isDesktop = project.category
-              ?.toLowerCase()
-              .includes("desktop");
-            const cardToneClassName = isDesktop
-              ? "project-card--desktop"
-              : "project-card--web";
-
-            return (
-              <article
-                key={project.id || `${project.title}-${index}`}
-                className={`card project-card ${cardToneClassName} scroll-animate fade-up ${delayClass}`}
+        <div className="projects-panel">
+          <div className="projects-carousel-wrap">
+            <button
+              type="button"
+              className="projects-nav-btn projects-nav-btn--left"
+              aria-label="Scroll projects left"
+              onClick={() => handleArrowScroll(-1)}
+              disabled={!canScrollLeft}
+            >
+              <svg
+                className="projects-nav-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
               >
-                <div className="project-card-top">
-                  <span className={`project-tag${isDesktop ? " desktop" : ""}`}>
-                    {project.category || "Website"}
-                  </span>
-                </div>
+                <path
+                  d="M14.5 6.5L9 12l5.5 5.5"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <div className="projects-carousel-shell">
+            <div
+              ref={projectsGridRef}
+              className="grid projects-grid"
+              aria-label="Projects carousel"
+            >
+              {projects.map((project, index) => {
+                if (!project || typeof project !== "object") return null;
+                const delayClass = `delay-${(index % 4) + 1}`;
+                const categoryLabel =
+                  typeof project.category === "string"
+                    ? project.category
+                    : "Website";
+                const isDesktop = categoryLabel.toLowerCase().includes("desktop");
+                const cardToneClassName = isDesktop
+                  ? "project-card--desktop"
+                  : "project-card--web";
 
-                <div className="project-card-body">
-                  <h3 className="project-card-title">{project.title}</h3>
-                  <p className="project-card-description">{project.description}</p>
-                </div>
+                return (
+                  <article
+                    key={project.id || `${project.title}-${index}`}
+                    className={`card project-card ${cardToneClassName} scroll-animate fade-up ${delayClass}`}
+                  >
+                    <div className="project-card-top">
+                      <span className={`project-tag${isDesktop ? " desktop" : ""}`}>
+                        {categoryLabel}
+                      </span>
+                    </div>
 
-                <div className="project-stack-block">
-                  <span className="project-stack-label">Stack</span>
-                  <small className="project-stack-value">{project.stack}</small>
-                </div>
+                    <div className="project-card-body">
+                      <h3 className="project-card-title">{project.title}</h3>
+                      <p className="project-card-description">{project.description}</p>
+                    </div>
 
-                <div className="project-actions">
-                  {Array.isArray(project.screenshots) &&
-                    project.screenshots.length > 0 && (
-                      <button
-                        className="btn-outline project-link-btn"
-                        onClick={() => setOpenGallery(project.screenshots)}
-                      >
-                        View Screenshots
-                      </button>
-                    )}
+                    <div className="project-stack-block">
+                      <span className="project-stack-label">Stack</span>
+                      <small className="project-stack-value">{project.stack}</small>
+                    </div>
 
-                  {project.liveLink && (
-                    <a
-                      href={project.liveLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn-outline project-link-btn"
-                    >
-                      {project.liveLabel || "Live Demo"}
-                    </a>
-                  )}
+                    <div className="project-actions">
+                      {Array.isArray(project.screenshots) &&
+                        project.screenshots.length > 0 && (
+                          <button
+                            className="btn-outline project-link-btn"
+                            onClick={() => setOpenGallery(project.screenshots)}
+                          >
+                            View Screenshots
+                          </button>
+                        )}
 
-                  {project.repoLink && (
-                    <a
-                      href={project.repoLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn-solid project-link-btn"
-                    >
-                      {project.repoLabel || "GitHub"}
-                    </a>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+                      {project.liveLink && (
+                        <a
+                          href={project.liveLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn-outline project-link-btn"
+                        >
+                          {project.liveLabel || "Live Demo"}
+                        </a>
+                      )}
+
+                      {project.repoLink && (
+                        <a
+                          href={project.repoLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn-solid project-link-btn"
+                        >
+                          {project.repoLabel || "GitHub"}
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+            </div>
+            <button
+              type="button"
+              className="projects-nav-btn projects-nav-btn--right"
+              aria-label="Scroll projects right"
+              onClick={() => handleArrowScroll(1)}
+              disabled={!canScrollRight}
+            >
+              <svg
+                className="projects-nav-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9.5 6.5L15 12l-5.5 5.5"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 

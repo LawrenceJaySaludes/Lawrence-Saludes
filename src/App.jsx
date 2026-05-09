@@ -27,7 +27,7 @@ import {
 
 const SECRET_SEQUENCE = ["l", "j", "s"];
 const DEPLOYED_PORTFOLIO_CONTENT_URL = "/portfolio-content.json";
-const INTRO_FADE_MS = 5000;
+const INTRO_FADE_MS = 3500;
 const INTRO_SPEED_MULTIPLIER = 1.5;
 const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",

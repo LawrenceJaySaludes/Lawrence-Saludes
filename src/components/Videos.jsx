@@ -192,93 +192,95 @@ function Videos({ customVideos = [] }) {
             </p>
           </div>
 
-          <div className="channel-carousel-wrapper">
-            <button
-              className={`channel-carousel-arrow channel-carousel-arrow-left ${showLeftArrow ? "visible" : ""}`}
-              onClick={() => scrollCarousel("left")}
-              aria-label="Scroll left"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+          <div className="channel-cards-container">
+            <div className="channel-carousel-wrapper">
+              <button
+                className={`channel-carousel-arrow channel-carousel-arrow-left ${showLeftArrow ? "visible" : ""}`}
+                onClick={() => scrollCarousel("left")}
+                aria-label="Scroll left"
               >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-
-            <div
-              ref={carouselRef}
-              className="channel-carousel-track"
-              onScroll={checkScrollPosition}
-            >
-              {DEFAULT_CHANNELS.map((channel, index) => (
-                <div
-                  key={channel.id}
-                  className={`card project-card channel-card channel-card--carousel scroll-animate fade-up channel-delay-${(index % 4) + 1}`}
-                  onClick={(event) => handleChannelClick(channel, event)}
-                  onDragStart={(event) => event.preventDefault()}
-                  style={{ cursor: "pointer" }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      handleChannelClick(channel, event);
-                    }
-                  }}
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <div className="channel-thumb-wrap">
-                    <img
-                      src={channel.img}
-                      alt={channel.name}
-                      className="channel-thumb"
-                      draggable={false}
-                    />
-                    {channel.videos.length === 0 && (
-                      <span className="channel-card-badge">YouTube shorts</span>
-                    )}
-                  </div>
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
 
-                  <div className="channel-card-body">
-                    <h3 className="channel-name">{channel.name}</h3>
-                    <p className="channel-card-meta">
-                      {channel.videos.length > 0
-                        ? "Preview sample edits from this channel"
-                        : "Open this channel directly on YouTube"}
-                    </p>
-                  </div>
-
-                  <span className="channel-card-action">
-                    {channel.videos.length > 0 ? "Preview channel" : "Open channel"}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <button
-              className={`channel-carousel-arrow channel-carousel-arrow-right ${showRightArrow ? "visible" : ""}`}
-              onClick={() => scrollCarousel("right")}
-              aria-label="Scroll right"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <div
+                ref={carouselRef}
+                className="channel-carousel-track"
+                onScroll={checkScrollPosition}
               >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
+                {DEFAULT_CHANNELS.map((channel, index) => (
+                  <div
+                    key={channel.id}
+                    className={`card project-card channel-card channel-card--carousel scroll-animate fade-up channel-delay-${(index % 4) + 1}`}
+                    onClick={(event) => handleChannelClick(channel, event)}
+                    onDragStart={(event) => event.preventDefault()}
+                    style={{ cursor: "pointer" }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        handleChannelClick(channel, event);
+                      }
+                    }}
+                  >
+                    <div className="channel-thumb-wrap">
+                      <img
+                        src={channel.img}
+                        alt={channel.name}
+                        className="channel-thumb"
+                        draggable={false}
+                      />
+                      {channel.videos.length === 0 && (
+                        <span className="channel-card-badge">YouTube shorts</span>
+                      )}
+                    </div>
+
+                    <div className="channel-card-body">
+                      <h3 className="channel-name">{channel.name}</h3>
+                      <p className="channel-card-meta">
+                        {channel.videos.length > 0
+                          ? "Preview sample edits from this channel"
+                          : "Open this channel directly on YouTube"}
+                      </p>
+                    </div>
+
+                    <span className="channel-card-action">
+                      {channel.videos.length > 0 ? "Preview channel" : "Open channel"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                className={`channel-carousel-arrow channel-carousel-arrow-right ${showRightArrow ? "visible" : ""}`}
+                onClick={() => scrollCarousel("right")}
+                aria-label="Scroll right"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
