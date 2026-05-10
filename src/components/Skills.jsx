@@ -21,7 +21,7 @@ function Skills() {
   useScrollReveal();
   const skillGroups = [
     {
-      title: "System",
+      title: "Development Stack",
       className: "skills-card system",
       items: [
         { label: "React.js", icon: <FaReact />, color: "#61DAFB" },
@@ -39,7 +39,7 @@ function Skills() {
       ],
     },
     {
-      title: "Video Editing",
+      title: "Creative Suite",
       className: "skills-card creative",
       items: [
         { label: "Adobe Premiere Pro", icon: <SiAdobepremierepro />, color: "#9999FF" },
