@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+﻿import { useCallback, useEffect, useRef, useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 /* CLINICAL SCREENSHOTS */
@@ -51,7 +51,7 @@ const DEFAULT_PROJECTS = [
     description:
       "Flowly is a Progressive Web App (PWA) personal finance tracker that helps users monitor income and expenses in a simple, real-time dashboard across all devices.",
     stack: "React.js | Supabase | Vercel",
-    liveLink: "https://temporary.vercel.app",
+    liveLink: "https://flowlyfinance.vercel.app",
     repoLink: "https://github.com/LawrenceJaySaludes/Flowly.git",
   },
   {
