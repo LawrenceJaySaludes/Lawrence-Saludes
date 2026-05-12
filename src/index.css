@@ -952,6 +952,35 @@ section {
   color: #fff;
 }
 
+.hero-jobstreet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-jobstreet:hover {
+  color: #333;
+  transform: translateY(-1px);
+}
+
+.hero-jobstreet-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 2px;
+}
+
+.dark .hero-jobstreet {
+  color: #fff;
+}
+
+.dark .hero-jobstreet:hover {
+  color: #fff;
+}
 
 /* BUTTONS */
 .btn-outline {

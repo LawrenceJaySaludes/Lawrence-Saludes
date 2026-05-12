@@ -209,6 +209,16 @@ function Hero({ profile, dark = false }) {
               <img src="/indeed-favicon.ico" alt="" className="hero-indeed-icon" />
               Indeed
             </a>
+
+            <a
+              href="https://ph.jobstreet.com/profile/me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-jobstreet"
+            >
+              <img src="/jobstreet-favicon.ico" alt="" className="hero-jobstreet-icon" />
+              JobStreet
+            </a>
           </div>
         </div>
 
