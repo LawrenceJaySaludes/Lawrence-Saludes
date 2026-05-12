@@ -171,10 +171,24 @@ function Hero({ profile, dark = false }) {
           </p>
 
           <div className={`hero-buttons hero-fade${isHeroVisible ? " show" : ""}`}>
-            <a href="#projects" className="btn-solid hero-cta-btn">
+            <a
+              href="#projects"
+              className="btn-solid hero-cta-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               System Projects
             </a>
-            <a href="#videos" className="btn-solid hero-cta-btn">
+            <a
+              href="#videos"
+              className="btn-solid hero-cta-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("videos")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               Video Portfolio
             </a>
           </div>

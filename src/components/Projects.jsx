@@ -87,6 +87,15 @@ const DEFAULT_PROJECTS = [
     repoLabel: "GitHub Repository",
     screenshots: [billing1, billing2, billing3, billing4],
   },
+  {
+    id: "default-project-8",
+    category: "Team Collab Project",
+    title: "DATABASY",
+    description:
+      "DATABASY offers beautiful, clean WEBSITES that are incredibly quick & easy to build and maintain. Alongside an affordable and super intuitive CRM that hones your sales, operations, and communications, imagine an inbox on steroids and you're close. With a simple half-price solution that agencies love, DATABASY has everything you need.",
+    stack: "CRM | PHP | Laravel | Docker",
+    liveLink: "https://databasy.io/",
+  },
 ];
 
 function Projects({ customProjects = [] }) {

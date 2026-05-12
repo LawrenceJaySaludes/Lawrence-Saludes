@@ -2143,8 +2143,24 @@ body::after {
     width: min(360px, 88vw);
   }
 
+  .hero-socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    gap: 1rem;
+  }
+
   .hero-electric-border--polaroid {
     width: min(300px, 78vw);
+  }
+
+  .project-actions {
+    flex-direction: column;
+  }
+
+  .project-link-btn {
+    width: 100%;
+    text-align: center;
   }
 
   #about .chat-wrapper {
