@@ -564,7 +564,7 @@ function App() {
 
           <footer className="site-footer" aria-label="Copyright">
             <p className="site-footer-copy">
-              Copyright 2026 Lawrence Portfolio. All rights reserved.
+              &copy; 2026 Lawrence Portfolio. All rights reserved.
             </p>
           </footer>
 

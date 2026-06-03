@@ -15,6 +15,16 @@ import billing4 from "../assets/billing-samp4.png";
 
 const DEFAULT_PROJECTS = [
   {
+    id: "default-project-0",
+    category: "Website",
+    title: "DavCom Guide",
+    description:
+      "A full-stack commute navigation app for Davao City that helps users find jeepney and Interim Bus routes, view routes on an interactive map, and discover nearby public transportation.",
+    stack: "Next.js | Laravel | PostgreSQL | Docker | Leaflet",
+    liveLink: "https://davcom-guide.vercel.app",
+    repoLink: "https://github.com/LawrenceJaySaludes/davcom-guide.git",
+  },
+  {
     id: "default-project-1",
     category: "Website",
     title: "PickN'Eat",
