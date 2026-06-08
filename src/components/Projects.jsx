@@ -108,7 +108,12 @@ const DEFAULT_PROJECTS = [
   },
 ];
 
-function Projects({ customProjects = [] }) {
+function Projects({
+  customProjects = [],
+  projects: explicitProjects,
+  title = "Website & Desktop Projects",
+  lead = "A selection of web and desktop builds focused on usable interfaces, solid system logic, and practical real-world workflows.",
+}) {
   useScrollReveal();
 
   const [openGallery, setOpenGallery] = useState(null);
@@ -119,7 +124,10 @@ function Projects({ customProjects = [] }) {
   const normalizedCustomProjects = Array.isArray(customProjects)
     ? customProjects
     : [];
-  const projects = [...DEFAULT_PROJECTS, ...normalizedCustomProjects];
+  const projects =
+    Array.isArray(explicitProjects) && explicitProjects.length > 0
+      ? explicitProjects
+      : [...DEFAULT_PROJECTS, ...normalizedCustomProjects];
 
   const updateScrollState = useCallback(() => {
     const grid = projectsGridRef.current;
@@ -158,11 +166,10 @@ function Projects({ customProjects = [] }) {
   return (
     <section id="projects" className="projects-section">
       <h2 className="section-title scroll-animate fade-up">
-        Website & Desktop Projects
+        {title}
       </h2>
       <p className="section-lead scroll-animate fade-up delay-1">
-        A selection of web and desktop builds focused on usable interfaces,
-        solid system logic, and practical real-world workflows.
+        {lead}
       </p>
 
       <div className="container">

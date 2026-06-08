@@ -8,7 +8,12 @@ const DEFAULT_ABOUT_BUBBLES = [
   "Beyond technical skills, I am a strong problem solver who adapts quickly to new technologies and tools. I value clean code, continuous learning, and collaboration, and I am actively seeking opportunities where I can grow while delivering real-world, high-quality solutions.",
 ];
 
-function About({ aboutBubbles = DEFAULT_ABOUT_BUBBLES, profileImage = "" }) {
+function About({
+  aboutBubbles = DEFAULT_ABOUT_BUBBLES,
+  profileImage = "",
+  title = "About Myself",
+  lead = "A quick snapshot of how I combine web development, system building, and creative editing into polished, real-world work.",
+}) {
   useScrollReveal();
   const avatarSrc =
     typeof profileImage === "string" && profileImage.trim()
@@ -26,10 +31,9 @@ function About({ aboutBubbles = DEFAULT_ABOUT_BUBBLES, profileImage = "" }) {
 
   return (
     <section id="about" className="about-section">
-      <h2 className="section-title scroll-animate fade-up">About Myself</h2>
+      <h2 className="section-title scroll-animate fade-up">{title}</h2>
       <p className="section-lead about-lead scroll-animate fade-up delay-1">
-        A quick snapshot of how I combine web development, system building, and
-        creative editing into polished, real-world work.
+        {lead}
       </p>
 
       <div className="container chat-wrapper">

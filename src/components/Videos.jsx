@@ -90,12 +90,20 @@ const DEFAULT_CHANNELS = [
   },
 ];
 
-function Videos({ customVideos = [] }) {
+function Videos({
+  customVideos = [],
+  channels = DEFAULT_CHANNELS,
+  title = "Video Editing Portfolio",
+  lead = "Motion graphics, short-form edits, and branded YouTube content shaped to feel clear, engaging, and polished on screen.",
+  introCopy = "With 2 years of professional video editing experience under Vast Professionals, I contributed to multiple YouTube channels by producing motion graphics, visual effects, and engaging video content using Adobe Premiere Pro, After Effects, and Canva.",
+  noteCopy = "Browse with arrows or swipe, then click a card to preview published edits.",
+}) {
   useScrollReveal();
   const carouselRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [selectedChannel, setSelectedChannel] = useState(null);
+  const videoChannels = Array.isArray(channels) && channels.length > 0 ? channels : DEFAULT_CHANNELS;
 
   useEffect(() => {
     if (selectedChannel) {
@@ -168,11 +176,10 @@ function Videos({ customVideos = [] }) {
   return (
     <section id="videos" className="videos-section">
       <h2 className="section-title scroll-animate fade-up">
-        Video Editing Portfolio
+        {title}
       </h2>
       <p className="section-lead scroll-animate fade-up delay-1">
-        Motion graphics, short-form edits, and branded YouTube content shaped to
-        feel clear, engaging, and polished on screen.
+        {lead}
       </p>
 
       <div className="container">
@@ -180,15 +187,10 @@ function Videos({ customVideos = [] }) {
           <div className="videos-intro">
             <span className="videos-intro-kicker">Channel Showcase</span>
             <p className="videos-intro-copy">
-              With <strong>2 years of professional video editing experience</strong>{" "}
-              under <strong>Vast Professionals</strong>, I contributed to multiple
-              YouTube channels by producing motion graphics, visual effects, and
-              engaging video content using <strong>Adobe Premiere Pro</strong>,{" "}
-              <strong>After Effects</strong>, and <strong>Canva</strong>.
+              {introCopy}
             </p>
             <p className="videos-intro-note">
-              Browse with arrows or swipe, then click a card to preview published
-              edits.
+              {noteCopy}
             </p>
           </div>
 
@@ -218,7 +220,7 @@ function Videos({ customVideos = [] }) {
                 className="channel-carousel-track"
                 onScroll={checkScrollPosition}
               >
-                {DEFAULT_CHANNELS.map((channel, index) => (
+                {videoChannels.map((channel, index) => (
                   <div
                     key={channel.id}
                     className={`card project-card channel-card channel-card--carousel scroll-animate fade-up channel-delay-${(index % 4) + 1}`}
@@ -453,7 +455,7 @@ function Videos({ customVideos = [] }) {
                   >
                     vastprofessionals.com
                   </a>
-                  <span>0968 753 8883</span>
+                  {/* <span>0968 753 8883</span> */}
                 </p>
               </div>
             </div>

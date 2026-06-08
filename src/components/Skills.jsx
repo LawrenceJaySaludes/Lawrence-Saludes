@@ -17,9 +17,14 @@ import {
   SiLaravel,
 } from "react-icons/si";
 
-function Skills() {
+function Skills({
+  skillGroups: explicitSkillGroups,
+  title = "Skills",
+}) {
   useScrollReveal();
-  const skillGroups = [
+  const skillGroups = Array.isArray(explicitSkillGroups) && explicitSkillGroups.length > 0
+    ? explicitSkillGroups
+    : [
     {
       title: "Development Stack",
       className: "skills-card system",
@@ -53,9 +58,7 @@ function Skills() {
   return (
     <section id="skills">
       <div className="container">
-        <h2 className="section-title scroll-animate fade-up">
-          Skills
-        </h2>
+        <h2 className="section-title scroll-animate fade-up">{title}</h2>
 
         <div className="skills-layout">
           {skillGroups.map((group, index) => (

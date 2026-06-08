@@ -1,29 +1,14 @@
 import { useEffect, useState } from "react";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Projects from "./components/Projects";
-import Videos from "./components/Videos";
-import Skills from "./components/Skills";
-import Contact from "./components/Contact";
-import Certificates from "./components/Certificates";
+import HomePage from "./pages/Home";
+import DeveloperPage from "./pages/Developer";
+import VideoEditorPage from "./pages/VideoEditor";
 import AdminPanel from "./components/AdminPanel";
 import useInspectLock from "./hooks/useInspectLock";
-import { FloatingDock } from "./components/ui/FloatingDock";
 import {
   readLocalPortfolioContent,
   saveLocalPortfolioContent,
 } from "./lib/portfolioStore";
-import {
-  IconAddressBook,
-  IconCertificate,
-  IconCode,
-  IconHome,
-  IconInfoCircle,
-  IconMoonStars,
-  IconPlayerPlay,
-  IconSunHigh,
-  IconTools,
-} from "@tabler/icons-react";
+import { HOME_ABOUT_BUBBLES } from "./lib/portfolioVariants";
 
 const SECRET_SEQUENCE = ["l", "j", "s"];
 const DEPLOYED_PORTFOLIO_CONTENT_URL = "/portfolio-content.json";
@@ -33,12 +18,6 @@ const DEFAULT_CV = {
   url: "/Lawrence-Saludes-Resume.pdf",
   fileName: "Lawrence-Saludes-Resume.pdf",
 };
-const DEFAULT_ABOUT_BUBBLES = [
-  "I am a 4th-year Information Technology student from Holy Cross of Davao College, specializing in building modern, responsive web applications using React.js, with solid experience in frontend development and system integration.",
-  "On the development side, I design, develop, and deploy web applications using React.js, with database integration through Supabase and SQL. I also build C# WinForms applications connected to SQL databases, implementing full CRUD functionality and efficient data handling.",
-  "On the creative side, I have one year of professional experience as a video editor under Vast Professional, producing motion graphics, visual effects, and thumbnails using Adobe Premiere Pro, After Effects, and Canva.",
-  "Beyond technical skills, I am a strong problem solver who adapts quickly to new technologies and tools. I value clean code, continuous learning, and collaboration, and I am actively seeking opportunities where I can grow while delivering real-world, high-quality solutions.",
-];
 
 function isObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -61,7 +40,7 @@ const DEFAULT_CONTENT = {
     phone: "0939 694 2357",
     location: "Davao City, Philippines",
   },
-  aboutBubbles: DEFAULT_ABOUT_BUBBLES,
+  aboutBubbles: HOME_ABOUT_BUBBLES,
   customProjects: [],
   customVideos: [],
   customCertificates: [],
@@ -70,10 +49,10 @@ const DEFAULT_CONTENT = {
 
 function normalizeAboutBubbles(value) {
   if (!Array.isArray(value)) {
-    return DEFAULT_ABOUT_BUBBLES;
+    return HOME_ABOUT_BUBBLES;
   }
 
-  return DEFAULT_ABOUT_BUBBLES.map((fallbackText, index) => {
+  return HOME_ABOUT_BUBBLES.map((fallbackText, index) => {
     const item = value[index];
     return typeof item === "string" ? item : fallbackText;
   });
@@ -160,9 +139,27 @@ function hasPortfolioPayload(value) {
   );
 }
 
+function normalizePath(pathname) {
+  if (typeof pathname !== "string" || !pathname.trim()) {
+    return "/";
+  }
+
+  const trimmed = pathname.trim();
+  const withLeadingSlash = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+
+  if (withLeadingSlash === "/") {
+    return "/";
+  }
+
+  return withLeadingSlash.replace(/\/+$/, "");
+}
+
 function App() {
   const [dark, setDark] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [pathname, setPathname] = useState(() =>
+    normalizePath(window.location.pathname)
+  );
   const [isIntroVisible, setIsIntroVisible] = useState(true);
   const [isIntroClosing, setIsIntroClosing] = useState(false);
   const [isPortfolioVisible, setIsPortfolioVisible] = useState(false);
@@ -177,6 +174,17 @@ function App() {
     mergeContent(readLocalPortfolioContent())
   );
 
+  const navigateTo = (nextPath) => {
+    const normalizedPath = normalizePath(nextPath);
+
+    if (normalizedPath === pathname) {
+      return;
+    }
+
+    window.history.pushState({}, "", normalizedPath);
+    setPathname(normalizedPath);
+  };
+
   const savePortfolioContent = async () => {
     try {
       saveLocalPortfolioContent(portfolioContent);
@@ -190,6 +198,15 @@ function App() {
       mode: "local",
     };
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setPathname(normalizePath(window.location.pathname));
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -246,6 +263,7 @@ function App() {
         if (isCancelled) {
           return;
         }
+
         setter(text.slice(0, index));
         await wait(charMs);
       }
@@ -254,7 +272,7 @@ function App() {
     const playIntroSequence = async () => {
       const commandLine = "npm run dev";
       const localLine = "lawrence-portfolio@0.0.0 dev";
-      const routeLine = "Opening: http://localhost:1313";
+      const routeLine = `Opening: https://www.lawrencesaludes.me${pathname === "/" ? "" : pathname}`;
 
       await wait(faster(220));
       if (isCancelled) {
@@ -289,13 +307,30 @@ function App() {
       setIsIntroClosing(true);
     };
 
-    void playIntroSequence();
+    const startTimeoutId = window.setTimeout(() => {
+      if (isCancelled) {
+        return;
+      }
+
+      setIsIntroVisible(true);
+      setIsIntroClosing(false);
+      setIsPortfolioVisible(false);
+      setIntroCommandText("");
+      setIntroLocalText("");
+      setIntroRouteText("");
+      setIsIntroLocalVisible(false);
+      setIsIntroRouteVisible(false);
+      setIntroTypingStage("none");
+
+      void playIntroSequence();
+    }, 0);
 
     return () => {
       isCancelled = true;
+      window.clearTimeout(startTimeoutId);
       timeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (!isIntroVisible || !isIntroClosing) {
@@ -371,16 +406,14 @@ function App() {
   const setProfile = (updater) => {
     setPortfolioContent((prev) => ({
       ...prev,
-      profile:
-        typeof updater === "function" ? updater(prev.profile) : updater,
+      profile: typeof updater === "function" ? updater(prev.profile) : updater,
     }));
   };
 
   const setContacts = (updater) => {
     setPortfolioContent((prev) => ({
       ...prev,
-      contacts:
-        typeof updater === "function" ? updater(prev.contacts) : updater,
+      contacts: typeof updater === "function" ? updater(prev.contacts) : updater,
     }));
   };
 
@@ -427,43 +460,6 @@ function App() {
     }));
   };
 
-  const dockItems = [
-    {
-      title: "Home",
-      href: "#home",
-      icon: <IconHome className="dock-nav-icon" stroke={1.9} />,
-    },
-    {
-      title: "About",
-      href: "#about",
-      icon: <IconInfoCircle className="dock-nav-icon" stroke={1.9} />,
-    },
-    {
-      title: "Certificates",
-      href: "#certificates",
-      icon: <IconCertificate className="dock-nav-icon" stroke={1.9} />,
-    },
-    {
-      title: "Projects",
-      href: "#projects",
-      icon: <IconCode className="dock-nav-icon" stroke={1.9} />,
-    },
-    {
-      title: "Videos",
-      href: "#videos",
-      icon: <IconPlayerPlay className="dock-nav-icon" stroke={1.9} />,
-    },
-    {
-      title: "Skills",
-      href: "#skills",
-      icon: <IconTools className="dock-nav-icon" stroke={1.9} />,
-    },
-    {
-      title: "Contact",
-      href: "#contact",
-      icon: <IconAddressBook className="dock-nav-icon" stroke={1.9} />,
-    },
-  ];
   const appClassName = `${dark ? "dark " : ""}app-bg${
     isIntroVisible && !isIntroClosing ? " intro-active" : ""
   }`;
@@ -504,92 +500,55 @@ function App() {
         playsInline
         aria-hidden="true"
       />
+
       {isPortfolioVisible && (
-        <div className="app-content">
-          {/* DARK MODE TOGGLE */}
-          <button
-            onClick={() => setDark(!dark)}
-            className="dark-toggle"
-            title="Toggle dark mode"
-            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            <span className="dark-toggle-track">
-              <span className="dark-toggle-knob">
-                {dark ? (
-                  <IconSunHigh className="dark-toggle-icon" stroke={1.8} />
-                ) : (
-                  <IconMoonStars className="dark-toggle-icon" stroke={1.8} />
-                )}
-              </span>
-            </span>
-            <span className="dark-toggle-label">{dark ? "Light" : "Dark"}</span>
-          </button>
-
-          <FloatingDock
-            items={dockItems}
-            desktopClassName="portfolio-dock-desktop"
-            mobileClassName="portfolio-dock-mobile"
+        pathname === "/developer" ? (
+          <DeveloperPage
+            key={pathname}
+            dark={dark}
+            setDark={setDark}
+            navigateTo={navigateTo}
+            portfolioContent={portfolioContent}
           />
+        ) : pathname === "/video-editor" ? (
+          <VideoEditorPage
+            key={pathname}
+            dark={dark}
+            setDark={setDark}
+            navigateTo={navigateTo}
+            portfolioContent={portfolioContent}
+          />
+        ) : (
+          <HomePage
+            key={pathname}
+            dark={dark}
+            setDark={setDark}
+            navigateTo={navigateTo}
+            portfolioContent={portfolioContent}
+          />
+        )
+      )}
 
-          <Hero profile={portfolioContent.profile} dark={dark} />
-
-          <main className="portfolio-sections">
-            <div className="section-divider" />
-
-            <About
-              aboutBubbles={portfolioContent.aboutBubbles}
-              profileImage={portfolioContent.profile.profileImage}
-            />
-
-            <div className="section-divider" />
-
-            <Certificates customCertificates={portfolioContent.customCertificates} />
-
-            <div className="section-divider" />
-
-            <Projects customProjects={portfolioContent.customProjects} />
-
-            <div className="section-divider" />
-
-            <Videos customVideos={portfolioContent.customVideos} />
-
-            <div className="section-divider" />
-
-            <Skills />
-
-            <div className="section-divider" />
-
-            <Contact contacts={portfolioContent.contacts} cv={portfolioContent.cv} />
-          </main>
-
-          <footer className="site-footer" aria-label="Copyright">
-            <p className="site-footer-copy">
-              &copy; 2026 Lawrence Portfolio. All rights reserved.
-            </p>
-          </footer>
-
-          {showAdminPanel && (
-            <AdminPanel
-              onClose={() => setShowAdminPanel(false)}
-              onSave={savePortfolioContent}
-              profile={portfolioContent.profile}
-              contacts={portfolioContent.contacts}  
-              aboutBubbles={portfolioContent.aboutBubbles}
-              customProjects={portfolioContent.customProjects}
-              customVideos={portfolioContent.customVideos}
-              customCertificates={portfolioContent.customCertificates}
-              cv={portfolioContent.cv}
-              portfolioContent={portfolioContent}
-              setProfile={setProfile}
-              setContacts={setContacts}
-              setAboutBubbles={setAboutBubbles}
-              setCustomProjects={setCustomProjects}
-              setCustomVideos={setCustomVideos}
-              setCustomCertificates={setCustomCertificates}
-              setCv={setCv}
-            />
-          )}
-        </div>
+      {showAdminPanel && (
+        <AdminPanel
+          onClose={() => setShowAdminPanel(false)}
+          onSave={savePortfolioContent}
+          profile={portfolioContent.profile}
+          contacts={portfolioContent.contacts}
+          aboutBubbles={portfolioContent.aboutBubbles}
+          customProjects={portfolioContent.customProjects}
+          customVideos={portfolioContent.customVideos}
+          customCertificates={portfolioContent.customCertificates}
+          cv={portfolioContent.cv}
+          portfolioContent={portfolioContent}
+          setProfile={setProfile}
+          setContacts={setContacts}
+          setAboutBubbles={setAboutBubbles}
+          setCustomProjects={setCustomProjects}
+          setCustomVideos={setCustomVideos}
+          setCustomCertificates={setCustomCertificates}
+          setCv={setCv}
+        />
       )}
 
       {isIntroVisible && (
@@ -600,11 +559,7 @@ function App() {
         >
           <div className="intro-logo-orbit">
             <span className="intro-logo-glare" aria-hidden="true" />
-            <img
-              src="/ls-new-3d.png"
-              alt=""
-              className="intro-logo"
-            />
+            <img src="/ls-new-3d.png" alt="" className="intro-logo" />
           </div>
 
           <div className="intro-terminal">
@@ -643,4 +598,3 @@ function App() {
 }
 
 export default App;
-

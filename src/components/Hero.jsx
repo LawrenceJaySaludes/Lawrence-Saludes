@@ -10,6 +10,18 @@ import ShinyText from "./ui/ShinyText";
 const DEFAULT_PROFILE_FRAME_RADIUS = 10;
 const DEFAULT_ROLE_TEXT = "Junior Full Stack Developer | Video Editor";
 const LEGACY_ROLE_TEXT = "Junior Web Developer | React.js | Video Editor";
+const FALLBACK_CTA_BUTTONS = [
+  {
+    label: "System Projects",
+    href: "#projects",
+    isRoute: false,
+  },
+  {
+    label: "Video Portfolio",
+    href: "#videos",
+    isRoute: false,
+  },
+];
 
 function TypingName({ text, isDark }) {
   const safeText = text || "Lawrence";
@@ -69,7 +81,7 @@ function TypingName({ text, isDark }) {
   );
 }
 
-function Hero({ profile, dark = false }) {
+function Hero({ profile, dark = false, ctaButtons = [], navigateTo, details }) {
   const heroRef = useRef(null);
   const hasBeenVisibleRef = useRef(false);
   const [isHeroVisible, setIsHeroVisible] = useState(false);
@@ -122,8 +134,12 @@ function Hero({ profile, dark = false }) {
       .split(/\s+/)
       .filter(Boolean)[0] || "Lawrence";
   const rawDetails =
-    typeof profile?.details === "string" ? profile.details.trim() : "";
-  const details =
+    typeof details === "string"
+      ? details.trim()
+      : typeof profile?.details === "string"
+        ? profile.details.trim()
+        : "";
+  const roleText =
     !rawDetails || rawDetails === LEGACY_ROLE_TEXT
       ? DEFAULT_ROLE_TEXT
       : rawDetails;
@@ -151,6 +167,34 @@ function Hero({ profile, dark = false }) {
   const electricBorderClassName = usesDefaultProfileFrame
     ? "hero-electric-border hero-electric-border--polaroid"
     : "hero-electric-border";
+  const resolvedCtaButtons =
+    Array.isArray(ctaButtons) && ctaButtons.length > 0
+      ? ctaButtons
+      : FALLBACK_CTA_BUTTONS;
+
+  const handleCtaClick = (button, event) => {
+    const href = typeof button?.href === "string" ? button.href.trim() : "";
+
+    if (!href) {
+      return;
+    }
+
+    if (button?.isRoute) {
+      event.preventDefault();
+      if (typeof navigateTo === "function") {
+        navigateTo(href);
+        return;
+      }
+
+      window.location.assign(href);
+      return;
+    }
+
+    if (href.startsWith("#")) {
+      event.preventDefault();
+      document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section id="home" className="hero reveal" ref={heroRef}>
@@ -167,30 +211,28 @@ function Hero({ profile, dark = false }) {
           />
 
           <p className={`hero-right hero-role${isHeroVisible ? " show" : ""}`}>
-            {details}
+            {roleText}
           </p>
 
           <div className={`hero-buttons hero-fade${isHeroVisible ? " show" : ""}`}>
-            <a
-              href="#projects"
-              className="btn-solid hero-cta-btn"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              System Projects
-            </a>
-            <a
-              href="#videos"
-              className="btn-solid hero-cta-btn"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("videos")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Video Portfolio
-            </a>
+            {resolvedCtaButtons.map((button) => {
+              const href =
+                typeof button?.href === "string" && button.href.trim()
+                  ? button.href.trim()
+                  : "#";
+
+              return (
+                <a
+                  key={button.label}
+                  href={href}
+                  className="btn-solid hero-cta-btn"
+                  onClick={(event) => handleCtaClick(button, event)}
+                >
+                  {button.icon && <span className="hero-cta-icon">{button.icon}</span>}
+                  {button.label}
+                </a>
+              );
+            })}
           </div>
 
           <div className="hero-socials">

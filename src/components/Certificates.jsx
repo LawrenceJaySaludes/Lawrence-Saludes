@@ -10,21 +10,29 @@ const DEFAULT_CERTIFICATES = [
   { id: "default-cert-3", title: "Certificate 3", image: cert2 },
 ];
 
-function Certificates({ customCertificates = [] }) {
+function Certificates({
+  customCertificates = [],
+  certificates: explicitCertificates,
+  title = "Certificates",
+  lead = "A certifications that reflect continuous learning, technical growth, and hands-on professional development.",
+}) {
   useScrollReveal();
 
   const certificates = useMemo(
-    () => [
-      ...DEFAULT_CERTIFICATES,
-      ...customCertificates
-        .filter((certificate) => certificate?.imageUrl)
-        .map((certificate) => ({
-          id: certificate.id,
-          title: certificate.title || "Certificate",
-          image: certificate.imageUrl,
-        })),
-    ],
-    [customCertificates]
+    () =>
+      Array.isArray(explicitCertificates)
+        ? explicitCertificates
+        : [
+            ...DEFAULT_CERTIFICATES,
+            ...customCertificates
+              .filter((certificate) => certificate?.imageUrl)
+              .map((certificate) => ({
+                id: certificate.id,
+                title: certificate.title || "Certificate",
+                image: certificate.imageUrl,
+              })),
+          ],
+    [customCertificates, explicitCertificates]
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -56,10 +64,9 @@ function Certificates({ customCertificates = [] }) {
 
   return (
     <section id="certificates" className="certificates-section">
-      <h2 className="section-title scroll-animate fade-up">Certificates</h2>
+      <h2 className="section-title scroll-animate fade-up">{title}</h2>
       <p className="section-lead scroll-animate fade-up delay-1">
-        A curated selection of certifications that reflect continuous learning,
-        technical growth, and hands-on professional development.
+        {lead}
       </p>
 
       <div className="container cert-showcase scroll-animate fade-up delay-2">
