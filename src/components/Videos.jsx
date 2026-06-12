@@ -7,6 +7,7 @@ import businessBoss from "../assets/businessboss.jpg";
 import landOfTomorrow from "../assets/lot.jpg";
 import keithHothe from "../assets/keith hothe$.jpg";
 import kaiPhoto from "../assets/kai.png";
+import infosoftLogo from "../assets/infosoft.png";
 
 const DEFAULT_CHANNELS = [
   {
@@ -90,6 +91,14 @@ const DEFAULT_CHANNELS = [
   },
 ];
 
+const INFOSOFT_PROJECT = {
+  id: "infosoft-team-building-2026",
+  img: infosoftLogo,
+  name: "Infosoft Team Building 2026",
+  description: "Freelance same-day edit for a company team building event.",
+  reels: ["/dayreels1.mp4", "/dayreels2.mp4"],
+};
+
 function Videos({
   customVideos = [],
   channels = DEFAULT_CHANNELS,
@@ -103,10 +112,12 @@ function Videos({
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [selectedChannel, setSelectedChannel] = useState(null);
+  const [selectedReelProject, setSelectedReelProject] = useState(null);
   const videoChannels = Array.isArray(channels) && channels.length > 0 ? channels : DEFAULT_CHANNELS;
+  const hasAnyModal = Boolean(selectedChannel || selectedReelProject);
 
   useEffect(() => {
-    if (selectedChannel) {
+    if (hasAnyModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -115,7 +126,7 @@ function Videos({
     return () => {
       document.body.style.overflow = "";
     };
-  }, [selectedChannel]);
+  }, [hasAnyModal]);
 
   const checkScrollPosition = useCallback(() => {
     const carousel = carouselRef.current;
@@ -162,7 +173,10 @@ function Videos({
 
   const handleChannelClick = useCallback((channel, event) => {
     event.preventDefault();
-    if (channel.videos && channel.videos.length > 0) {
+    if (
+      (Array.isArray(channel.videos) && channel.videos.length > 0) ||
+      (Array.isArray(channel.reels) && channel.reels.length > 0)
+    ) {
       setSelectedChannel(channel);
     } else {
       window.open(channel.link, "_blank");
@@ -171,6 +185,12 @@ function Videos({
 
   const closeModal = useCallback(() => {
     setSelectedChannel(null);
+    setSelectedReelProject(null);
+  }, []);
+
+  const openReelProject = useCallback(() => {
+    setSelectedChannel(null);
+    setSelectedReelProject(INFOSOFT_PROJECT);
   }, []);
 
   return (
@@ -220,10 +240,17 @@ function Videos({
                 className="channel-carousel-track"
                 onScroll={checkScrollPosition}
               >
-                {videoChannels.map((channel, index) => (
+                {videoChannels.map((channel, index) => {
+                  const hasYouTubePreviews =
+                    Array.isArray(channel.videos) && channel.videos.length > 0;
+                  const hasReelPreviews =
+                    Array.isArray(channel.reels) && channel.reels.length > 0;
+                  const isFeaturedReelProject = hasReelPreviews && !hasYouTubePreviews;
+
+                  return (
                   <div
                     key={channel.id}
-                    className={`card project-card channel-card channel-card--carousel scroll-animate fade-up channel-delay-${(index % 4) + 1}`}
+                    className={`card project-card channel-card channel-card--carousel scroll-animate fade-up channel-delay-${(index % 4) + 1}${isFeaturedReelProject ? " channel-card--reel-project" : ""}`}
                     onClick={(event) => handleChannelClick(channel, event)}
                     onDragStart={(event) => event.preventDefault()}
                     style={{ cursor: "pointer" }}
@@ -240,28 +267,31 @@ function Videos({
                       <img
                         src={channel.img}
                         alt={channel.name}
-                        className="channel-thumb"
+                        className={`channel-thumb${isFeaturedReelProject ? " channel-thumb--contain" : ""}`}
                         draggable={false}
                       />
-                      {channel.videos.length === 0 && (
+                      {!hasYouTubePreviews && !hasReelPreviews && (
                         <span className="channel-card-badge">YouTube shorts</span>
                       )}
                     </div>
 
                     <div className="channel-card-body">
                       <h3 className="channel-name">{channel.name}</h3>
-                      <p className="channel-card-meta">
-                        {channel.videos.length > 0
-                          ? "Preview sample edits from this channel"
-                          : "Open this channel directly on YouTube"}
-                      </p>
+                      {isFeaturedReelProject && channel.description && (
+                        <p className="channel-card-meta channel-card-meta--compact">
+                          {channel.description}
+                        </p>
+                      )}
                     </div>
 
-                    <span className="channel-card-action">
-                      {channel.videos.length > 0 ? "Preview channel" : "Open channel"}
-                    </span>
+                    {!isFeaturedReelProject && (
+                      <span className="channel-card-action">
+                        {hasYouTubePreviews ? "Preview Channel" : "Open channel"}
+                      </span>
+                    )}
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               <button
@@ -284,6 +314,28 @@ function Videos({
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="infosoft-project-wrap scroll-animate fade-up delay-3">
+          <button
+            type="button"
+            className="infosoft-project-card"
+            onClick={openReelProject}
+          >
+            <img
+              src={INFOSOFT_PROJECT.img}
+              alt={INFOSOFT_PROJECT.name}
+              className="infosoft-project-logo"
+              draggable={false}
+            />
+            <div className="infosoft-project-copy">
+              <h3 className="infosoft-project-title">{INFOSOFT_PROJECT.name}</h3>
+              <p className="infosoft-project-description">
+                {INFOSOFT_PROJECT.description}
+              </p>
+              <span className="infosoft-project-hint">Click to view the video</span>
+            </div>
+          </button>
         </div>
 
         {/* Video Modal */}
@@ -310,28 +362,43 @@ function Videos({
                 </svg>
               </button>
               <div className="video-modal-head">
-                <span className="video-modal-kicker">Channel Preview</span>
                 <h3 className="modal-title">{selectedChannel.name}</h3>
-                <p className="video-modal-subtitle">
-                  Sample edits from this channel.
-                </p>
+                {selectedChannel.description && (
+                  <p className="video-modal-subtitle video-modal-subtitle--compact">
+                    {selectedChannel.description}
+                  </p>
+                )}
               </div>
 
               <div className="video-grid">
-                {selectedChannel.videos.map((videoId, index) => (
-                  <div key={index} className="video-item">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`https://www.youtube.com/embed/${videoId}`}
-                      title={`Video ${index + 1} from ${selectedChannel.name}`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                    />
-                  </div>
-                ))}
+                {Array.isArray(selectedChannel.reels) && selectedChannel.reels.length > 0
+                  ? selectedChannel.reels.map((src) => (
+                      <div key={src} className="video-item">
+                        <video
+                          className="video-item-media"
+                          controls
+                          preload="metadata"
+                          playsInline
+                        >
+                          <source src={src} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    ))
+                  : selectedChannel.videos.map((videoId, index) => (
+                      <div key={index} className="video-item">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={`Video ${index + 1} from ${selectedChannel.name}`}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                        />
+                      </div>
+                    ))}
               </div>
               <div className="modal-channel-link">
                 <p className="modal-channel-note">
@@ -360,6 +427,62 @@ function Videos({
                     <line x1="10" y1="14" x2="21" y2="3" />
                   </svg>
                 </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedReelProject && (
+          <div className="modal-overlay reel-modal-overlay">
+            <div
+              className="modal reel-modal"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                className="modal-close-btn reel-modal-close-btn"
+                onClick={closeModal}
+                aria-label="Close modal"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 6L6 18" />
+                  <path d="M6 6l12 12" />
+                </svg>
+              </button>
+
+              <div className="reel-modal-head">
+                <img
+                  src={selectedReelProject.img}
+                  alt={selectedReelProject.name}
+                  className="reel-modal-logo"
+                  draggable={false}
+                />
+                <h3 className="reel-modal-title">{selectedReelProject.name}</h3>
+                <p className="reel-modal-copy">{selectedReelProject.description}</p>
+              </div>
+
+              <div className="reel-modal-stack">
+                {selectedReelProject.reels.map((src) => (
+                  <div key={src} className="reel-modal-frame">
+                    <video
+                      className="reel-modal-player"
+                      controls
+                      preload="metadata"
+                      playsInline
+                    >
+                      <source src={src} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
