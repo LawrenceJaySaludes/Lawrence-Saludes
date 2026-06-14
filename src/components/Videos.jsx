@@ -526,64 +526,93 @@ function Videos({
           </>
         )}
 
-        <div className="featured-video-wrap scroll-animate fade-up delay-2">
-          <div className="featured-video-head">
-            <span className="featured-video-kicker">Featured Sample</span>
-            <h3 className="featured-video-title">Featured Video Editing Sample</h3>
-            <p className="featured-video-copy">
-              A short compilation highlighting my editing style, transitions, pacing, and motion graphics work.
-            </p>
-          </div>
-
-          <div className="featured-video-frame">
-            <div className="featured-video-embed">
-              <video
-                className="featured-video-player"
-                controls
-                preload="metadata"
-                playsInline
-                poster="/port-thumb.png"
-              >
-                <source src="/Edit-Sample.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
-
-          <div className="video-reference">
-            <span className="video-reference-label">Professional Reference</span>
-            <div className="video-reference-body">
-              <img
-                src={kaiPhoto}
-                alt="Kyla Don"
-                className="video-reference-photo"
-                loading="lazy"
-              />
-              <div className="video-reference-content">
-                <p className="video-reference-name">Kyla Don</p>
-                <p className="video-reference-text">CEO of Vast Professionals</p>
-                <blockquote className="video-reference-quote">
-                  "Over the past 2 years, I've seen Lawrence grow significantly
-                  as a video editor, consistently improving his creativity,
-                  technical skills, and attention to detail. His dedication to
-                  learning and refining his craft shows in the quality of his
-                  work, and I'm confident he has strong potential to excel even
-                  further in this field."
-                </blockquote>
-                <p className="video-reference-links">
-                  <a
-                    href="https://vastprofessionals.com"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    vastprofessionals.com
-                  </a>
-                  {/* <span>0968 753 8883</span> */}
+          <div className="featured-video-wrap scroll-animate fade-up delay-2">
+            <div className="featured-video-head-main">
+              <div className="featured-video-head-col">
+                <span className="featured-video-kicker">Featured Sample</span>
+                <h3 className="featured-video-title">Editing Sample</h3>
+                <p className="featured-video-copy">
+                  A short compilation highlighting my editing style, transitions, pacing, and motion graphics work.
+                </p>
+              </div>
+              <div className="featured-video-head-col">
+                <span className="featured-video-kicker">Video Testimonial</span>
+                <h3 className="featured-video-title">Client Feedback</h3>
+                <p className="featured-video-copy">
+                  Kyla Don, CEO of Vast Professionals, shares her experience working with me.
                 </p>
               </div>
             </div>
+
+            <div className="featured-video-main">
+              <div className="featured-video-col">
+                <div className="featured-video-frame">
+                  <div className="featured-video-embed">
+                    <video
+                      className="featured-video-player"
+                      controls
+                      preload="metadata"
+                      playsInline
+                      poster="/port-thumb.png"
+                    >
+                      <source src="/Edit-Sample.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+
+              <div className="featured-video-col">
+                <div className="video-testimonial">
+                  <div className="video-testimonial-frame">
+                    <video
+                      className="video-testimonial-player"
+                      controls
+                      preload="metadata"
+                      playsInline
+                    >
+                      <source src="/kaifeedback.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="video-reference">
+              <span className="video-reference-label">Professional Reference</span>
+              <div className="video-reference-body">
+                <img
+                  src={kaiPhoto}
+                  alt="Kyla Don"
+                  className="video-reference-photo"
+                  loading="lazy"
+                />
+                <div className="video-reference-content">
+                  <p className="video-reference-name">Kyla Don</p>
+                  <p className="video-reference-text">CEO of Vast Professionals</p>
+                  <blockquote className="video-reference-quote">
+                    "Over the past 2 years, I've seen Lawrence grow significantly
+                    as a video editor, consistently improving his creativity,
+                    technical skills, and attention to detail. His dedication to
+                    learning and refining his craft shows in the quality of his
+                    work, and I'm confident he has strong potential to excel even
+                    further in this field."
+                  </blockquote>
+                  <p className="video-reference-links">
+                    <a
+                      href="https://vastprofessionals.com"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      vastprofessionals.com
+                    </a>
+                    {/* <span>0968 753 8883</span> */}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
       </div>
     </section>
   );
