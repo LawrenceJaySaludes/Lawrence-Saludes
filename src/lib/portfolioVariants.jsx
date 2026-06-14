@@ -105,7 +105,7 @@ export const DEVELOPER_PROJECTS = [
     category: "Website",
     title: "PickN'Eat",
     description:
-      "Food decision web application with authentication and full CRUD functionality.",
+      "A freelance food decision and management system developed for a client, featuring an Admin Dashboard, user authentication, food management, and full CRUD functionality with database integration.",
     stack: "React.js | Supabase | Vercel",
     liveLink: "https://pickneat-azure.vercel.app",
     repoLink: "https://github.com/LawrenceJaySaludes/pickneat",
@@ -116,8 +116,9 @@ export const DEVELOPER_PROJECTS = [
     category: "Website",
     title: "ShortList",
     description:
-      "ShortList \u2014 An AI-powered resume analyzer that compares resumes against job descriptions, calculates ATS compatibility scores, identifies missing skills and keywords, provides recruiter-style feedback, and generates AI-enhanced resume recommendations to improve job application success rates.",
-    stack: "Next.js | TypeScript | Tailwind CSS | Google Gemini AI | jsPDF",
+      "An AI-powered resume analyzer that compares resumes against job descriptions, calculates ATS compatibility scores, identifies missing skills and keywords, provides recruiter-style feedback, and generates AI-enhanced resume recommendations to improve job application success rates.",
+    stack: "Next.js | TypeScript | Tailwind | Gemini AI | jsPDF",
+    liveLink: "https://aishortlist.netlify.app/",
     image: shortlistThumb,
   },
   {

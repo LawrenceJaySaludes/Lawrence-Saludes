@@ -46,6 +46,7 @@ const DEFAULT_PROJECTS = [
     description:
       "An AI-powered resume analyzer that compares resumes against job descriptions, calculates ATS compatibility scores, identifies missing skills and keywords, provides recruiter-style feedback, and generates AI-enhanced resume recommendations to improve job application success rates.",
     stack: "Next.js | TypeScript | Tailwind | Gemini AI | jsPDF",
+    liveLink: "https://aishortlist.netlify.app/",
     image: shortlistThumb,
   },
   {
