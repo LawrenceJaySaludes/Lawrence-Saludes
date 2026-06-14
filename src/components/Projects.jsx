@@ -1,4 +1,4 @@
-import Gallery6 from "./blocks/gallery6";
+﻿import Gallery6 from "./blocks/gallery6";
 import clinical1 from "../assets/clinical-samp1.png";
 import clinical2 from "../assets/clinical-samp2.png";
 import clinical3 from "../assets/clinical-samp3.png";
@@ -14,6 +14,7 @@ import safeshoreThumb from "../assets/safeshore.png";
 import moodThumb from "../assets/mood.png";
 import databasyThumb from "../assets/databasy.png";
 import mentalHealthThumb from "../assets/mentalhealth.png";
+import shortlistThumb from "../assets/shortlist.png";
 
 const DEFAULT_PROJECTS = [
   {
@@ -32,11 +33,20 @@ const DEFAULT_PROJECTS = [
     category: "Website",
     title: "PickN'Eat",
     description:
-      "Food decision web application with authentication and full CRUD functionality.",
+      "A freelance food decision and management system developed for a client, featuring an Admin Dashboard, user authentication, food management, and full CRUD functionality with database integration.",
     stack: "React.js | Supabase | Vercel",
     liveLink: "https://pickneat-azure.vercel.app",
     repoLink: "https://github.com/LawrenceJaySaludes/pickneat",
     image: pickneatThumb,
+  },
+  {
+    id: "default-project-9",
+    category: "Website",
+    title: "ShortList",
+    description:
+      "An AI-powered resume analyzer that compares resumes against job descriptions, calculates ATS compatibility scores, identifies missing skills and keywords, provides recruiter-style feedback, and generates AI-enhanced resume recommendations to improve job application success rates.",
+    stack: "Next.js | TypeScript | Tailwind | Gemini AI | jsPDF",
+    image: shortlistThumb,
   },
   {
     id: "default-project-2",

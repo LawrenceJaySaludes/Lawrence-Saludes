@@ -26,6 +26,7 @@ import safeshoreThumb from "../assets/safeshore.png";
 import moodThumb from "../assets/mood.png";
 import databasyThumb from "../assets/databasy.png";
 import mentalHealthThumb from "../assets/mentalhealth.png";
+import shortlistThumb from "../assets/shortlist.png";
 import clinical1 from "../assets/clinical-samp1.png";
 import clinical2 from "../assets/clinical-samp2.png";
 import clinical3 from "../assets/clinical-samp3.png";
@@ -109,6 +110,15 @@ export const DEVELOPER_PROJECTS = [
     liveLink: "https://pickneat-azure.vercel.app",
     repoLink: "https://github.com/LawrenceJaySaludes/pickneat",
     image: pickneatThumb,
+  },
+  {
+    id: "default-project-9",
+    category: "Website",
+    title: "ShortList",
+    description:
+      "ShortList \u2014 An AI-powered resume analyzer that compares resumes against job descriptions, calculates ATS compatibility scores, identifies missing skills and keywords, provides recruiter-style feedback, and generates AI-enhanced resume recommendations to improve job application success rates.",
+    stack: "Next.js | TypeScript | Tailwind CSS | Google Gemini AI | jsPDF",
+    image: shortlistThumb,
   },
   {
     id: "default-project-2",
