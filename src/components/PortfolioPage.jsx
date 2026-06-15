@@ -6,6 +6,7 @@ import Skills from "./Skills";
 import Contact from "./Contact";
 import Certificates from "./Certificates";
 import { FloatingDock } from "./ui/FloatingDock";
+import ChatBot from "./ChatBot";
 import {
   IconAddressBook,
   IconCertificate,
@@ -320,6 +321,8 @@ function PortfolioPage({
 
         <Contact contacts={page.contacts} cv={page.cv} />
       </main>
+
+      <ChatBot />
 
       <footer className="site-footer" aria-label="Copyright">
         <p className="site-footer-copy">
