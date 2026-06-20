@@ -18,6 +18,7 @@ import {
   SiVuedotjs,
   SiAdobepremierepro,
   SiAdobeaftereffects,
+  SiAdobephotoshop,
   SiCanva,
 } from "react-icons/si";
 import { MdOutlineGraphicEq, MdOutlineSlowMotionVideo, MdOutlineVideocam } from "react-icons/md";
@@ -52,6 +53,10 @@ import businessBoss from "../assets/businessboss.jpg";
 import landOfTomorrow from "../assets/lot.jpg";
 import keithHothe from "../assets/keith hothe$.jpg";
 
+function createSkillItem(id, name, designation, icon, color) {
+  return { id, name, designation, icon, color };
+}
+
 export const HOME_ABOUT_BUBBLES = [
   "I am a 4th-year Information Technology student from Holy Cross of Davao College, specializing in building modern, responsive web applications using React.js, with solid experience in frontend development and system integration.",
   "On the development side, I design, develop, and deploy web applications using React.js, with database integration through Supabase and SQL. I also build C# WinForms applications connected to SQL databases, implementing full CRUD functionality and efficient data handling.",
@@ -76,6 +81,55 @@ export const VIDEO_ABOUT_BUBBLES = [
 export const HOME_HERO_CTA_BUTTONS = [
   { label: "Full Stack Developer", href: "/developer", isRoute: true },
   { label: "Video Editor", href: "/video-editor", isRoute: true },
+];
+
+export const HOME_SKILL_GROUPS = [
+  {
+    title: "Full Stack Development",
+    items: [
+      createSkillItem("home-fullstack-react", "React.js", "Frontend", <FaReact />, "#61DAFB"),
+      createSkillItem("home-fullstack-next", "Next.js", "Frontend", <SiNextdotjs />, "#111111"),
+      createSkillItem("home-fullstack-node", "Node.js", "Backend", <SiNodedotjs />, "#339933"),
+      createSkillItem("home-fullstack-js", "JavaScript", "Core Language", <IoLogoJavascript />, "#F7DF1E"),
+      createSkillItem("home-fullstack-react-native", "React Native", "Mobile", <SiReact />, "#61DAFB"),
+      createSkillItem("home-fullstack-vue", "Vue", "Frontend", <SiVuedotjs />, "#4FC08D"),
+      createSkillItem("home-fullstack-html", "HTML", "Markup", <SiHtml5 />, "#E34F26"),
+      createSkillItem("home-fullstack-php", "PHP", "Backend", <SiPhp />, "#777BB4"),
+      createSkillItem("home-fullstack-laravel", "Laravel", "Backend", <SiLaravel />, "#FF2D20"),
+      createSkillItem("home-fullstack-git", "Git", "Workflow", <SiGit />, "#F05032"),
+      createSkillItem("home-fullstack-csharp", "C# WinForms", "Desktop", <TbBrandCSharp />, "#9B4DCA"),
+      createSkillItem("home-fullstack-sql", "SQL Database", "Database", <DiMsqlServer />, "#0078D4"),
+      createSkillItem("home-fullstack-supabase", "Supabase", "Backend", <RiSupabaseFill />, "#3ECF8E"),
+      createSkillItem("home-fullstack-docker", "Docker", "Deployment", <FaDocker />, "#2496ED"),
+    ],
+  },
+  {
+    title: "Video Editing",
+    items: [
+      createSkillItem(
+        "home-video-premiere",
+        "Premiere Pro",
+        "Editing",
+        <SiAdobepremierepro />,
+        "#9999FF"
+      ),
+      createSkillItem(
+        "home-video-aftereffects",
+        "After Effects",
+        "Motion Graphics",
+        <SiAdobeaftereffects />,
+        "#D291FF"
+      ),
+      createSkillItem(
+        "home-video-photoshop",
+        "Photoshop",
+        "Thumbnails",
+        <SiAdobephotoshop />,
+        "#31A8FF"
+      ),
+      createSkillItem("home-video-canva", "Canva", "Graphics", <SiCanva />, "#00C4CC"),
+    ],
+  },
 ];
 
 export const DEVELOPER_CTA_BUTTONS = [
@@ -234,40 +288,37 @@ export const DEVELOPER_CERTIFICATES = [
 export const DEVELOPER_SKILL_GROUPS = [
   {
     title: "Frontend",
-    className: "skills-card system",
     items: [
-      { label: "React.js", icon: <FaReact />, color: "#61DAFB" },
-      { label: "Next.js", icon: <SiNextdotjs />, color: "#111111" },
-      { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
-      { label: "Tailwind CSS", icon: <SiTailwindcss />, color: "#38BDF8" },
-      { label: "React Native", icon: <SiReact />, color: "#61DAFB" },
-      { label: "Vue", icon: <SiVuedotjs />, color: "#4FC08D" },
-      { label: "HTML", icon: <SiHtml5 />, color: "#E34F26" },
+      createSkillItem("developer-frontend-react", "React.js", "Frontend", <FaReact />, "#61DAFB"),
+      createSkillItem("developer-frontend-next", "Next.js", "Frontend", <SiNextdotjs />, "#111111"),
+      createSkillItem("developer-frontend-js", "JavaScript", "Core Language", <IoLogoJavascript />, "#F7DF1E"),
+      createSkillItem("developer-frontend-tailwind", "Tailwind CSS", "Styling", <SiTailwindcss />, "#38BDF8"),
+      createSkillItem("developer-frontend-react-native", "React Native", "Mobile", <SiReact />, "#61DAFB"),
+      createSkillItem("developer-frontend-vue", "Vue", "Frontend", <SiVuedotjs />, "#4FC08D"),
+      createSkillItem("developer-frontend-html", "HTML", "Markup", <SiHtml5 />, "#E34F26"),
     ],
   },
   {
     title: "Backend & Data",
-    className: "skills-card creative",
     items: [
-      { label: "Laravel", icon: <SiLaravel />, color: "#FF2D20" },
-      { label: "PHP", icon: <SiPhp />, color: "#777BB4" },
-      { label: "Node.js", icon: <SiNodedotjs />, color: "#339933" },
-      { label: "Supabase", icon: <RiSupabaseFill />, color: "#3ECF8E" },
-      { label: "MySQL", icon: <SiMysql />, color: "#4479A1" },
-      { label: "PostgreSQL", icon: <SiPostgresql />, color: "#336791" },
-      { label: "API Integration", icon: <FaPhotoVideo />, color: "#4F46E5" },
-      { label: "Deployment", icon: <MdOutlineVideocam />, color: "#6366F1" },
+      createSkillItem("developer-backend-laravel", "Laravel", "Backend", <SiLaravel />, "#FF2D20"),
+      createSkillItem("developer-backend-php", "PHP", "Backend", <SiPhp />, "#777BB4"),
+      createSkillItem("developer-backend-node", "Node.js", "Backend", <SiNodedotjs />, "#339933"),
+      createSkillItem("developer-backend-supabase", "Supabase", "Backend", <RiSupabaseFill />, "#3ECF8E"),
+      createSkillItem("developer-backend-mysql", "MySQL", "Database", <SiMysql />, "#4479A1"),
+      createSkillItem("developer-backend-postgres", "PostgreSQL", "Database", <SiPostgresql />, "#336791"),
+      createSkillItem("developer-backend-api", "API Integration", "Integration", <FaPhotoVideo />, "#4F46E5"),
+      createSkillItem("developer-backend-deployment", "Deployment", "Release", <MdOutlineVideocam />, "#6366F1"),
     ],
   },
   {
     title: "Tools",
-    className: "skills-card system",
     items: [
-      { label: "Docker", icon: <FaDocker />, color: "#2496ED" },
-      { label: "Git", icon: <SiGit />, color: "#F05032" },
-      { label: "Visual Studio Code", icon: <TbBrandVisualStudio />, color: "#007ACC" },
-      { label: "C# WinForms", icon: <TbBrandCSharp />, color: "#9B4DCA" },
-      { label: "SQL Server", icon: <DiMsqlServer />, color: "#0078D4" },
+      createSkillItem("developer-tools-docker", "Docker", "DevOps", <FaDocker />, "#2496ED"),
+      createSkillItem("developer-tools-git", "Git", "Workflow", <SiGit />, "#F05032"),
+      createSkillItem("developer-tools-vscode", "Visual Studio Code", "IDE", <TbBrandVisualStudio />, "#007ACC"),
+      createSkillItem("developer-tools-csharp", "C# WinForms", "Desktop", <TbBrandCSharp />, "#9B4DCA"),
+      createSkillItem("developer-tools-sqlserver", "SQL Server", "Database", <DiMsqlServer />, "#0078D4"),
     ],
   },
 ];
@@ -320,27 +371,25 @@ export const VIDEO_CHANNELS = [
 export const VIDEO_SKILL_GROUPS = [
   {
     title: "Editing Tools",
-    className: "skills-card creative",
     items: [
-      { label: "Adobe Premiere Pro", icon: <SiAdobepremierepro />, color: "#9999FF" },
-      { label: "Adobe After Effects", icon: <SiAdobeaftereffects />, color: "#D291FF" },
-      { label: "Canva Pro", icon: <SiCanva />, color: "#00C4CC" },
-      { label: "CapCut", icon: <FaCut />, color: "#FFFFFF" },
+      createSkillItem("video-tools-premiere", "Adobe Premiere Pro", "Editing", <SiAdobepremierepro />, "#9999FF"),
+      createSkillItem("video-tools-aftereffects", "Adobe After Effects", "Motion Graphics", <SiAdobeaftereffects />, "#D291FF"),
+      createSkillItem("video-tools-canva", "Canva Pro", "Design", <SiCanva />, "#00C4CC"),
+      createSkillItem("video-tools-capcut", "CapCut", "Editing", <FaCut />, "#FFFFFF"),
     ],
   },
   {
     title: "Creative Skills",
-    className: "skills-card system",
     items: [
-      { label: "Motion Graphics", icon: <MdOutlineSlowMotionVideo />, color: "#A78BFA" },
-      { label: "Storytelling", icon: <FaFilm />, color: "#F472B6" },
-      { label: "Sound Design", icon: <MdOutlineGraphicEq />, color: "#60A5FA" },
-      { label: "Pacing", icon: <FaPhotoVideo />, color: "#34D399" },
-      { label: "Short-form Editing", icon: <FaFilm />, color: "#FBBF24" },
-      { label: "Long-form Editing", icon: <FaFilm />, color: "#FB7185" },
-      { label: "Thumbnails", icon: <FaRegImage />, color: "#FDE047" },
-      { label: "Reels", icon: <FaYoutube />, color: "#EF4444" },
-      { label: "YouTube Content", icon: <FaYoutube />, color: "#FF0000" },
+      createSkillItem("video-skills-motion", "Motion Graphics", "Animation", <MdOutlineSlowMotionVideo />, "#A78BFA"),
+      createSkillItem("video-skills-storytelling", "Storytelling", "Narrative", <FaFilm />, "#F472B6"),
+      createSkillItem("video-skills-sound", "Sound Design", "Audio", <MdOutlineGraphicEq />, "#60A5FA"),
+      createSkillItem("video-skills-pacing", "Pacing", "Retention", <FaPhotoVideo />, "#34D399"),
+      createSkillItem("video-skills-shortform", "Short-form Editing", "Social", <FaFilm />, "#FBBF24"),
+      createSkillItem("video-skills-longform", "Long-form Editing", "YouTube", <FaFilm />, "#FB7185"),
+      createSkillItem("video-skills-thumbnails", "Thumbnails", "Packaging", <FaRegImage />, "#FDE047"),
+      createSkillItem("video-skills-reels", "Reels", "Shorts", <FaYoutube />, "#EF4444"),
+      createSkillItem("video-skills-youtube", "YouTube Content", "Channels", <FaYoutube />, "#FF0000"),
     ],
   },
 ];

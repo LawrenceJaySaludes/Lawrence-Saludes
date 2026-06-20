@@ -7,8 +7,11 @@ import GlareCard from "./ui/GlareCard";
 import ShinyText from "./ui/ShinyText";
 
 const DEFAULT_PROFILE_FRAME_RADIUS = 10;
-const DEFAULT_ROLE_TEXT = "Junior Full Stack Developer | Video Editor";
-const LEGACY_ROLE_TEXT = "Junior Web Developer | React.js | Video Editor";
+const DEFAULT_ROLE_TEXT = "Full Stack Developer | Video Editor";
+const LEGACY_ROLE_TEXTS = new Set([
+  "Junior Web Developer | React.js | Video Editor",
+  "Junior Full Stack Developer | Video Editor",
+]);
 const FALLBACK_CTA_BUTTONS = [
   {
     label: "System Projects",
@@ -139,7 +142,7 @@ function Hero({ profile, dark = false, ctaButtons = [], navigateTo, details }) {
         ? profile.details.trim()
         : "";
   const roleText =
-    !rawDetails || rawDetails === LEGACY_ROLE_TEXT
+    !rawDetails || LEGACY_ROLE_TEXTS.has(rawDetails)
       ? DEFAULT_ROLE_TEXT
       : rawDetails;
   const profileImageSrc =
@@ -190,9 +193,14 @@ function Hero({ profile, dark = false, ctaButtons = [], navigateTo, details }) {
           />
 
           <p className={`hero-right hero-role${isHeroVisible ? " show" : ""}`}>
-            {roleText.split("|").map((part, i) => (
-              <span key={i}>{i > 0 && <span className="hero-role-sep"> | </span>}{part.trim()}{i === 0 && <br className="hero-role-br" />}</span>
-            ))}
+            {(() => {
+              const parts = roleText.split("|").map(p => p.trim());
+              return parts.length > 1 ? (
+                <><span className="hero-role-line1">{parts[0]}</span><span className="hero-role-sep"> | </span><span className="hero-role-line2">{parts[1]}</span></>
+              ) : (
+                <span>{roleText}</span>
+              );
+            })()}
           </p>
 
           <div className={`hero-buttons hero-fade${isHeroVisible ? " show" : ""}`}>

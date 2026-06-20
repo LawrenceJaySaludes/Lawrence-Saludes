@@ -26,6 +26,7 @@ import {
   DEVELOPER_PROJECTS,
   DEVELOPER_SKILL_GROUPS,
   HOME_HERO_CTA_BUTTONS,
+  HOME_SKILL_GROUPS,
   VIDEO_ABOUT_BUBBLES,
   VIDEO_CTA_BUTTONS,
   VIDEO_CHANNELS,
@@ -192,7 +193,7 @@ function getRouteContent(variant, portfolioContent) {
       details:
         typeof profile.details === "string" && profile.details.trim()
           ? profile.details.trim()
-          : "Junior Full Stack Developer | Video Editor",
+          : "Full Stack Development | Video Editing",
     },
     heroButtons: HOME_HERO_CTA_BUTTONS,
     aboutTitle: "About Myself",
@@ -212,7 +213,7 @@ function getRouteContent(variant, portfolioContent) {
     showVideos: true,
     showSkills: true,
     skillsTitle: "Skills",
-    skillGroups: undefined,
+    skillGroups: HOME_SKILL_GROUPS,
     customVideos: Array.isArray(homeContent.customVideos)
       ? homeContent.customVideos
       : [],

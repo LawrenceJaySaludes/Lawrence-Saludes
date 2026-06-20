@@ -1,89 +1,37 @@
 import useScrollReveal from "../hooks/useScrollReveal";
-import { FaReact, FaDocker } from "react-icons/fa";
-import { IoLogoJavascript } from "react-icons/io";
-import { DiMsqlServer } from "react-icons/di";
-import { RiSupabaseFill } from "react-icons/ri";
-import { TbBrandCSharp } from "react-icons/tb";
-import {
-  SiNodedotjs,
-  SiReact,
-  SiNextdotjs,
-  SiPhp,
-  SiAdobepremierepro,
-  SiAdobeaftereffects,
-  SiAdobephotoshop,
-  SiCanva,
-  SiGit,
-  SiLaravel,
-  SiHtml5,
-  SiVuedotjs,
-} from "react-icons/si";
+import { HOME_SKILL_GROUPS } from "../lib/portfolioVariants";
+import { AnimatedTooltip } from "./ui/AnimatedTooltip";
 
-function Skills({
-  skillGroups: explicitSkillGroups,
-  title = "Skills",
-}) {
+function Skills({ skillGroups: explicitSkillGroups, title = "Skills" }) {
   useScrollReveal();
-  const skillGroups = Array.isArray(explicitSkillGroups) && explicitSkillGroups.length > 0
-    ? explicitSkillGroups
-    : [
-    {
-      title: "Development Stack",
-      className: "skills-card system",
-      items: [
-        { label: "React.js", icon: <FaReact />, color: "#61DAFB" },
-        { label: "Next.js", icon: <SiNextdotjs />, color: "#111111" },
-        { label: "Node.js", icon: <SiNodedotjs />, color: "#339933" },
-        { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
-        { label: "React Native", icon: <SiReact />, color: "#61DAFB" },
-        { label: "Vue", icon: <SiVuedotjs />, color: "#4FC08D" },
-        { label: "HTML", icon: <SiHtml5 />, color: "#E34F26" },
-        { label: "PHP", icon: <SiPhp />, color: "#777BB4" },
-        { label: "Laravel", icon: <SiLaravel />, color: "#FF2D20" },
-        { label: "Git", icon: <SiGit />, color: "#F05032" },
-        { label: "C# WinForms App", icon: <TbBrandCSharp />, color: "#9B4DCA" },
-        { label: "SQL Database", icon: <DiMsqlServer />, color: "#0078D4" },
-        { label: "Supabase", icon: <RiSupabaseFill />, color: "#3ECF8E" },
-        { label: "Docker", icon: <FaDocker />, color: "#2496ED" },
-      ],
-    },
-    {
-      title: "Creative Suite",
-      className: "skills-card creative",
-      items: [
-        { label: "Adobe Premiere Pro", icon: <SiAdobepremierepro />, color: "#9999FF" },
-        { label: "Adobe After Effects", icon: <SiAdobeaftereffects />, color: "#D291FF" },
-        { label: "Adobe Photoshop", icon: <SiAdobephotoshop />, color: "#31A8FF" },
-        { label: "Canva", icon: <SiCanva />, color: "#00C4CC" },
-      ],
-    },
-  ];
+
+  const skillGroups =
+    Array.isArray(explicitSkillGroups) && explicitSkillGroups.length > 0
+      ? explicitSkillGroups
+      : HOME_SKILL_GROUPS;
 
   return (
-    <section id="skills">
-      <div className="container">
-        <h2 className="section-title scroll-animate fade-up">{title}</h2>
+    <section id="skills" className="skills-section">
+      <h2 className="section-title scroll-animate fade-up">{title}</h2>
 
-        <div className="skills-layout">
-          {skillGroups.map((group, index) => (
-            <div
-              key={group.title}
-              className={`${group.className} scroll-animate fade-up delay-${index + 1}`}
-            >
-              <h3 className="skills-card-title">{group.title}</h3>
-              <div className="skills-chip-grid">
-                {group.items.map((skill) => (
-                  <div className="skills-chip" key={skill.label}>
-                    <span className="skills-chip-icon" style={{ color: skill.color }}>
-                      {skill.icon}
-                    </span>
-                    <span className="skills-chip-label">{skill.label}</span>
-                  </div>
-                ))}
-              </div>
+      <div className="skills-stack">
+        {skillGroups.map((group, index) => (
+          <article
+            key={group.title}
+            className={`skills-group scroll-animate fade-up delay-${Math.min(
+              index + 1,
+              4
+            )}`}
+          >
+            <div className="skills-group-title-wrap">
+              <h3 className="skills-group-title">
+                <span className="skills-group-title-text">{group.title}</span>
+              </h3>
             </div>
-          ))}
-        </div>
+
+            <AnimatedTooltip items={group.items} className="skills-tooltip-row" />
+          </article>
+        ))}
       </div>
     </section>
   );
