@@ -13,6 +13,9 @@ import {
   SiMysql,
   SiPostgresql,
   SiNodedotjs,
+  SiReact,
+  SiHtml5,
+  SiVuedotjs,
   SiAdobepremierepro,
   SiAdobeaftereffects,
   SiCanva,
@@ -27,6 +30,9 @@ import moodThumb from "../assets/mood.png";
 import databasyThumb from "../assets/databasy.png";
 import mentalHealthThumb from "../assets/mentalhealth.png";
 import shortlistThumb from "../assets/shortlist.png";
+import stackrateThumb from "../assets/stackrate.png";
+import stackratePreview1 from "../assets/sr1.png";
+import stackratePreview2 from "../assets/sr2.png";
 import clinical1 from "../assets/clinical-samp1.png";
 import clinical2 from "../assets/clinical-samp2.png";
 import clinical3 from "../assets/clinical-samp3.png";
@@ -54,7 +60,7 @@ export const HOME_ABOUT_BUBBLES = [
 ];
 
 export const DEVELOPER_ABOUT_BUBBLES = [
-  "I am a Bachelor of Science in Information Technology graduate from Holy Cross of Davao College with hands-on experience developing modern web applications and full stack systems. I specialize in building responsive and user-friendly interfaces using React.js and Next.js.",
+  "I am a Bachelor of Science in Information Technology graduate from Holy Cross of Davao College with hands-on experience developing modern web applications, mobile apps, and full stack systems. I specialize in building responsive and user-friendly interfaces using React.js, React Native, and Next.js.",
   "Through my experience at INFOSOFT, I gained practical exposure to frontend-backend integration, API connectivity, debugging, Git/GitHub workflows, Docker-based environments, deployment processes, and modern software development practices.",
   "My technical stack includes React.js, Next.js, Laravel, PHP, JavaScript, MySQL, Supabase, Docker, Git/GitHub, REST APIs, Google API integration, and AI-assisted development tools that help improve productivity and development efficiency.",
   "I am a fast learner with strong problem-solving skills, focused on building clean, scalable, and maintainable applications. I am seeking opportunities as a Junior Full Stack Developer where I can contribute to real-world projects while continuously growing my technical expertise.",
@@ -99,6 +105,23 @@ export const DEVELOPER_PROJECTS = [
     liveLink: "https://davcom-guide.vercel.app",
     repoLink: "https://github.com/LawrenceJaySaludes/davcom-guide.git",
     image: davcomThumb,
+  },
+  {
+    id: "default-project-stackrate",
+    category: "Mobile App",
+    title: "StackRate",
+    description:
+      "StackRate is a mobile app for developers, IT students, and career shifters to assess software stack proficiency, rate skills from 0-100%, track progress, and spot the skills needed for roles like Full Stack Developer, React Native Developer, or DevOps Engineer.",
+    stack: "React Native | Expo | TypeScript | Supabase",
+    liveLink:
+      "https://github.com/LawrenceJaySaludes/stackrate-mobile/releases/tag/stackratev1",
+    liveLabel: "Download App",
+    repoLink: "https://github.com/LawrenceJaySaludes/stackrate-mobile",
+    cardLink: "https://github.com/LawrenceJaySaludes/stackrate-mobile",
+    actionLink:
+      "https://github.com/LawrenceJaySaludes/stackrate-mobile/releases/tag/stackratev1",
+    image: stackrateThumb,
+    screenshots: [stackratePreview1, stackratePreview2],
   },
   {
     id: "default-project-1",
@@ -217,6 +240,9 @@ export const DEVELOPER_SKILL_GROUPS = [
       { label: "Next.js", icon: <SiNextdotjs />, color: "#111111" },
       { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
       { label: "Tailwind CSS", icon: <SiTailwindcss />, color: "#38BDF8" },
+      { label: "React Native", icon: <SiReact />, color: "#61DAFB" },
+      { label: "Vue", icon: <SiVuedotjs />, color: "#4FC08D" },
+      { label: "HTML", icon: <SiHtml5 />, color: "#E34F26" },
     ],
   },
   {

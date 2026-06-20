@@ -61,6 +61,7 @@ function Gallery6({ items = [] }) {
   const [canScrollNext, setCanScrollNext] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [previewImages, setPreviewImages] = useState([]);
+  const [selectedPreviewIndex, setSelectedPreviewIndex] = useState(null);
 
   useEffect(() => {
     if (!carouselApi) return undefined;
@@ -80,7 +81,7 @@ function Gallery6({ items = [] }) {
   }, [carouselApi]);
 
   useEffect(() => {
-    if (previewImages.length > 0) {
+    if (previewImages.length > 0 || selectedPreviewIndex !== null) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -89,7 +90,25 @@ function Gallery6({ items = [] }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [previewImages]);
+  }, [previewImages, selectedPreviewIndex]);
+
+  useEffect(() => {
+    if (selectedPreviewIndex === null) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setSelectedPreviewIndex(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedPreviewIndex]);
 
   const scrollToItem = (index) => {
     if (!carouselApi) return;
@@ -112,6 +131,7 @@ function Gallery6({ items = [] }) {
 
   const closePreview = () => {
     setPreviewImages([]);
+    setSelectedPreviewIndex(null);
   };
 
   const openProject = (url) => {
@@ -140,12 +160,14 @@ function Gallery6({ items = [] }) {
                 const hasPreview =
                   Array.isArray(item.previewImages) && item.previewImages.length > 0;
                 const actionLabel = item.linkLabel || "View Live";
+                const cardUrl = item.cardUrl || item.url;
+                const actionUrl = item.actionUrl || item.url;
 
                 return (
                   <CarouselItem key={item.id} className="gallery6-item">
                     <article
                       className={`gallery6-card${isActive ? " gallery6-card--active" : ""}`}
-                      onClick={() => openProject(item.url)}
+                      onClick={() => openProject(cardUrl)}
                       onMouseEnter={() => {
                         setActiveIndex(index);
                       }}
@@ -157,7 +179,7 @@ function Gallery6({ items = [] }) {
                       onKeyDown={(event) => {
                         if (event.key === "Enter" || event.key === " ") {
                           event.preventDefault();
-                          openProject(item.url);
+                          openProject(cardUrl);
                         }
                       }}
                     >
@@ -183,7 +205,7 @@ function Gallery6({ items = [] }) {
 
                         <div className="gallery6-action-row">
                           <a
-                            href={item.url}
+                            href={actionUrl}
                             target="_blank"
                             rel="noreferrer"
                             className="gallery6-action-link"
@@ -200,6 +222,7 @@ function Gallery6({ items = [] }) {
                               onClick={(event) => {
                                 event.stopPropagation();
                                 setPreviewImages(item.previewImages);
+                                setSelectedPreviewIndex(null);
                               }}
                             >
                               Preview
@@ -288,14 +311,57 @@ function Gallery6({ items = [] }) {
             <h3>Project Preview</h3>
             <div className="modal-grid project-preview-grid">
               {previewImages.map((image, index) => (
-                <img
+                <button
                   key={`${image}-${index}`}
-                  src={image}
-                  alt={`Project preview ${index + 1}`}
-                  className="project-sample"
-                />
+                  type="button"
+                  className="project-sample-trigger"
+                  onClick={() => setSelectedPreviewIndex(index)}
+                >
+                  <img
+                    src={image}
+                    alt={`Project preview ${index + 1}`}
+                    className="project-sample"
+                  />
+                </button>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {selectedPreviewIndex !== null && previewImages[selectedPreviewIndex] && (
+        <div
+          className="modal-overlay project-preview-fullscreen-overlay"
+          onClick={() => setSelectedPreviewIndex(null)}
+        >
+          <div
+            className="project-preview-fullscreen"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close-btn"
+              onClick={() => setSelectedPreviewIndex(null)}
+              aria-label="Close full screen preview"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 6L6 18" />
+                <path d="M6 6l12 12" />
+              </svg>
+            </button>
+            <img
+              src={previewImages[selectedPreviewIndex]}
+              alt={`Project preview ${selectedPreviewIndex + 1}`}
+              className="project-preview-fullscreen-image"
+            />
           </div>
         </div>
       )}

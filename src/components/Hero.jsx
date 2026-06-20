@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import profilePic from "../assets/lawr-test.png";
-import ElectricBorder from "./ui/ElectricBorder";
 import DecryptedText from "./ui/DecryptedText";
 import GradientText from "./ui/GradientText";
+import GlareCard from "./ui/GlareCard";
 import ShinyText from "./ui/ShinyText";
 
 const DEFAULT_PROFILE_FRAME_RADIUS = 10;
@@ -146,27 +145,7 @@ function Hero({ profile, dark = false, ctaButtons = [], navigateTo, details }) {
   const profileImageSrc =
     typeof profile?.profileImage === "string" && profile.profileImage.trim()
       ? profile.profileImage.trim()
-      : profilePic;
-  const usesDefaultProfileFrame = profileImageSrc === profilePic;
-  const electricBorderColor = dark ? "#d10000" : "#4f46e5";
-  const electricBorderStyle = dark
-    ? undefined
-    : {
-        "--electric-light-mix": "white 10%",
-        "--electric-glow-1-fade": "transparent 58%",
-        "--electric-glow-2-fade": "transparent 50%",
-        "--electric-glow-1-blur": "0.5px",
-        "--electric-glow-2-blur": "2px",
-        "--electric-background-glow-scale": "1.04",
-        "--electric-background-glow-blur": "16px",
-        "--electric-background-glow-opacity": "0.14",
-      };
-  const electricBorderRadius = usesDefaultProfileFrame
-    ? DEFAULT_PROFILE_FRAME_RADIUS
-    : 28;
-  const electricBorderClassName = usesDefaultProfileFrame
-    ? "hero-electric-border hero-electric-border--polaroid"
-    : "hero-electric-border";
+      : "/mainprofile-gradpic.png";
   const resolvedCtaButtons =
     Array.isArray(ctaButtons) && ctaButtons.length > 0
       ? ctaButtons
@@ -279,17 +258,9 @@ function Hero({ profile, dark = false, ctaButtons = [], navigateTo, details }) {
         </div>
 
         <div className={`hero-image-shell${isHeroVisible ? " show" : ""}`}>
-          <ElectricBorder
-            color={electricBorderColor}
-            speed={1}
-            chaos={0.12}
-            thickness={2}
-            borderRadius={electricBorderRadius}
-            className={electricBorderClassName}
-            style={electricBorderStyle}
-          >
+          <GlareCard className="hero-glare-card">
             <img src={profileImageSrc} alt={fullName} className="hero-image" />
-          </ElectricBorder>
+          </GlareCard>
         </div>
       </div>
     </section>

@@ -251,8 +251,7 @@ function PortfolioPage({
             )}
           </span>
         </span>
-        <span className="dark-toggle-label">{dark ? "Light" : "Dark"}</span>
-      </button>
+        </button>
 
       <FloatingDock
         items={buildDockItems(variant)}

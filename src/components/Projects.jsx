@@ -15,6 +15,9 @@ import moodThumb from "../assets/mood.png";
 import databasyThumb from "../assets/databasy.png";
 import mentalHealthThumb from "../assets/mentalhealth.png";
 import shortlistThumb from "../assets/shortlist.png";
+import stackrateThumb from "../assets/stackrate.png";
+import stackratePreview1 from "../assets/sr1.png";
+import stackratePreview2 from "../assets/sr2.png";
 
 const DEFAULT_PROJECTS = [
   {
@@ -27,6 +30,23 @@ const DEFAULT_PROJECTS = [
     liveLink: "https://davcom-guide.vercel.app",
     repoLink: "https://github.com/LawrenceJaySaludes/davcom-guide.git",
     image: davcomThumb,
+  },
+  {
+    id: "default-project-stackrate",
+    category: "Mobile App",
+    title: "StackRate",
+    description:
+      "StackRate is a mobile app for developers, IT students, and career shifters to assess software stack proficiency, rate skills from 0-100%, track progress, and spot the skills needed for roles like Full Stack Developer, React Native Developer, or DevOps Engineer.",
+    stack: "React Native | Expo | TypeScript | Supabase",
+    liveLink:
+      "https://github.com/LawrenceJaySaludes/stackrate-mobile/releases/tag/stackratev1",
+    liveLabel: "Download App",
+    repoLink: "https://github.com/LawrenceJaySaludes/stackrate-mobile",
+    cardLink: "https://github.com/LawrenceJaySaludes/stackrate-mobile",
+    actionLink:
+      "https://github.com/LawrenceJaySaludes/stackrate-mobile/releases/tag/stackratev1",
+    image: stackrateThumb,
+    screenshots: [stackratePreview1, stackratePreview2],
   },
   {
     id: "default-project-1",
@@ -153,6 +173,16 @@ function Projects({
     const url = isDesktop
       ? project.repoLink || project.liveLink || "#"
       : project.liveLink || project.repoLink || "#";
+    const cardUrl =
+      project.cardLink ||
+      (isDesktop
+        ? project.repoLink || project.liveLink || "#"
+        : project.liveLink || project.repoLink || "#");
+    const actionUrl =
+      project.actionLink ||
+      project.liveLink ||
+      project.repoLink ||
+      "#";
     const linkLabel = isDesktop
       ? "View GitHub"
       : project.liveLabel || "View Live";
@@ -163,6 +193,8 @@ function Projects({
       summary: project.description || project.summary || "",
       stack: project.stack || "",
       url,
+      cardUrl,
+      actionUrl,
       linkLabel,
       isDesktop,
       previewImages: Array.isArray(project.screenshots)

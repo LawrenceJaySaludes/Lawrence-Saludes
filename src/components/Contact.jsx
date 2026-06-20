@@ -392,25 +392,20 @@ function Contact({ contacts, cv }) {
           role="dialog"
           aria-modal="true"
           aria-labelledby="cv-modal-title"
-          onClick={closeCvModal}
         >
           <div
             className="cv-modal"
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              type="button"
-              className="cv-modal-close-btn"
-              onClick={closeCvModal}
-              aria-label="Close CV preview"
-            >
-              Close
-            </button>
-
             <div className="cv-modal-head">
-              <h3 id="cv-modal-title" className="cv-modal-title">
-                Curriculum Vitae
-              </h3>
+              <button
+                type="button"
+                className="cv-modal-close-btn"
+                onClick={closeCvModal}
+                aria-label="Close CV preview"
+              >
+                &times;
+              </button>
             </div>
 
             <div className="cv-modal-body">

@@ -15,6 +15,8 @@ import {
   SiCanva,
   SiGit,
   SiLaravel,
+  SiHtml5,
+  SiVuedotjs,
 } from "react-icons/si";
 
 function Skills({
@@ -34,6 +36,8 @@ function Skills({
         { label: "Node.js", icon: <SiNodedotjs />, color: "#339933" },
         { label: "JavaScript", icon: <IoLogoJavascript />, color: "#F7DF1E" },
         { label: "React Native", icon: <SiReact />, color: "#61DAFB" },
+        { label: "Vue", icon: <SiVuedotjs />, color: "#4FC08D" },
+        { label: "HTML", icon: <SiHtml5 />, color: "#E34F26" },
         { label: "PHP", icon: <SiPhp />, color: "#777BB4" },
         { label: "Laravel", icon: <SiLaravel />, color: "#FF2D20" },
         { label: "Git", icon: <SiGit />, color: "#F05032" },

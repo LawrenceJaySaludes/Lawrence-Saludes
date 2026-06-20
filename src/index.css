@@ -797,14 +797,14 @@ section {
   place-items: center;
   padding: clamp(0.35rem, 0.6vw, 0.52rem);
   border-radius: 999px;
-  border: 1px solid rgba(41, 22, 245, 0.48);
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.42);
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.82),
     rgba(255, 255, 255, 0.58)
   );
   box-shadow:
-    0 0 0 2px rgba(41, 22, 245, 0.2),
     0 14px 28px rgba(31, 41, 55, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px) saturate(135%);
@@ -821,7 +821,7 @@ section {
 }
 
 .dark .hero-top-logo-wrap {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.22);
   background: rgba(255, 255, 255, 0.06);
   box-shadow:
     0 14px 28px rgba(2, 6, 23, 0.48),
@@ -1824,10 +1824,11 @@ body::after {
 }
 
 .gallery6-card-container {
-  height: 100%;
+  height: clamp(27rem, 52vw, 30rem);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  justify-content: flex-start;
+  padding: 0.8rem;
   border-radius: 1.15rem;
   border: 1px solid rgba(148, 163, 184, 0.18);
   background:
@@ -1848,7 +1849,7 @@ body::after {
 .gallery6-image-wrap {
   overflow: hidden;
   border-radius: 0.9rem;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
   background: rgba(15, 23, 42, 0.05);
 }
 
@@ -1896,8 +1897,8 @@ body::after {
 }
 
 .gallery6-title {
-  margin: 1rem 0 0.45rem;
-  font-size: clamp(1.1rem, 1.3vw, 1.5rem);
+  margin: 0.65rem 0 0.25rem;
+  font-size: clamp(1rem, 1.08vw, 1.22rem);
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.03em;
@@ -1906,18 +1907,19 @@ body::after {
 }
 
 .gallery6-summary {
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--text-muted);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 3.4rem;
+  min-height: 0;
+  max-height: 6.4rem;
 }
 
 .gallery6-stack {
-  margin-top: 0.8rem;
+  margin-top: 0.85rem;
   font-size: 0.82rem;
   line-height: 1.5;
 }
@@ -1961,7 +1963,8 @@ body::after {
 }
 
 .gallery6-action-row {
-  margin-top: 0.95rem;
+  margin-top: auto;
+  padding-top: 0.65rem;
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;
@@ -2244,8 +2247,8 @@ body::after {
 
 .project-preview-modal {
   position: relative;
-  max-width: min(920px, 92vw);
-  width: 92vw;
+  max-width: min(1120px, 94vw);
+  width: min(1120px, 94vw);
 }
 
 .project-preview-modal h3 {
@@ -2254,6 +2257,42 @@ body::after {
 
 .project-preview-grid {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.project-sample-trigger {
+  all: unset;
+  display: block;
+  cursor: zoom-in;
+}
+
+.project-preview-fullscreen-overlay {
+  background: rgba(2, 6, 23, 0.94);
+  z-index: 1200;
+}
+
+.project-preview-fullscreen {
+  position: relative;
+  width: min(100vw, 1700px);
+  height: min(100vh, 100vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem);
+}
+
+.project-preview-fullscreen-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: zoom-out;
+  filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.55));
+}
+
+.project-preview-fullscreen .modal-close-btn {
+  top: clamp(0.5rem, 1vw, 1rem);
+  right: clamp(0.5rem, 1vw, 1rem);
 }
 
 .dark .gallery6-shell {
@@ -2624,7 +2663,7 @@ body::after {
     rgba(255, 255, 255, 0.66)
   );
   color: #1f2a37;
-  padding: 0.34rem 0.62rem 0.34rem 0.36rem;
+  padding: 0.34rem;
   border-radius: 999px;
   box-shadow:
     0 14px 28px rgba(31, 41, 55, 0.22),
@@ -2807,7 +2846,7 @@ body::after {
   }
 
   .hero-image {
-    width: min(360px, 88vw);
+    width: 100%;
   }
 
   .hero-socials {
@@ -2817,8 +2856,13 @@ body::after {
     gap: 1rem;
   }
 
-  .hero-electric-border--polaroid {
-    width: min(300px, 78vw);
+  .hero-image-shell {
+    width: min(360px, 88vw);
+    justify-self: center;
+  }
+
+  .hero-glare-card {
+    aspect-ratio: 1 / 1;
   }
 
   .project-actions {
@@ -3804,62 +3848,179 @@ body::after {
 
 /* PROFILE SLIDE UP */
 .hero-image {
-  width: 430px;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
-  height: auto;
+  max-height: 100%;
+  display: block;
   flex-shrink: 0;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
   filter: drop-shadow(0 35px 70px rgba(0, 0, 0, 0.25));
 }
 
 .hero-image-shell {
-  width: fit-content;
+  position: relative;
+  width: clamp(290px, 28vw, 430px);
   max-width: 100%;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  justify-self: end;
+  padding-bottom: clamp(0.7rem, 1vw, 1rem);
   opacity: 0;
   transform: translateY(50px);
   will-change: transform, opacity;
+}
+
+.hero-glare-card {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.glare-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  contain: layout style;
+  perspective: 600px;
+  --m-x: 50%;
+  --m-y: 50%;
+  --r-x: 0deg;
+  --r-y: 0deg;
+  --bg-x: 50%;
+  --bg-y: 50%;
+  --duration: 300ms;
+  --foil-size: 100%;
+  --opacity: 0;
+  --radius: 36px;
+  --easing: ease;
+  --transition: var(--duration) var(--easing);
+}
+
+.glare-card-frame {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  transform: rotateY(var(--r-x)) rotateX(var(--r-y));
+  transform-style: preserve-3d;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.1)),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 54%);
+  backdrop-filter: blur(22px) saturate(175%);
+  -webkit-backdrop-filter: blur(22px) saturate(175%);
+  box-shadow:
+    0 24px 48px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition),
+    filter var(--transition);
+  will-change: transform;
+}
+
+.glare-card-content,
+.glare-card-glow,
+.glare-card-foil {
+  grid-area: 1 / 1;
+  border-radius: inherit;
+}
+
+.glare-card-content {
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.glare-card-content > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.glare-card-glow {
+  pointer-events: none;
+  opacity: var(--opacity);
+  background: radial-gradient(
+    farthest-corner circle at var(--m-x) var(--m-y),
+    rgba(255, 255, 255, 0.8) 10%,
+    rgba(255, 255, 255, 0.65) 20%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  mix-blend-mode: soft-light;
+  filter: blur(10px);
+  transition: opacity var(--transition);
+}
+
+.glare-card-foil {
+  pointer-events: none;
+  opacity: var(--opacity);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity var(--transition);
+}
+
+.hero-image-shell::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 78%;
+  height: 1.35rem;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(15, 23, 42, 0.26) 0%,
+    rgba(15, 23, 42, 0.14) 38%,
+    rgba(15, 23, 42, 0) 72%
+  );
+  filter: blur(12px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.dark .hero-image-shell::after {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(255, 255, 255, 0.14) 38%,
+    rgba(255, 255, 255, 0) 72%
+  );
+  opacity: 0.55;
+}
+
+.dark .glare-card-frame {
+  border-color: rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06)),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 54%);
+  box-shadow:
+    0 26px 54px rgba(2, 6, 23, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .show.hero-image-shell {
   animation: slideUp 1.18s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.hero-electric-border {
-  padding: 0;
-}
-
-.hero-electric-border .eb-content {
-  border-radius: inherit;
-}
-
-.hero-electric-border .hero-image {
+.hero-image {
   display: block;
-}
-
-.hero-electric-border--polaroid {
-  width: clamp(232px, 19vw, 278px);
-  aspect-ratio: 853 / 1383;
-  filter: drop-shadow(0 35px 70px rgba(0, 0, 0, 0.25));
-}
-
-.hero-electric-border--polaroid .eb-content {
-  position: relative;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.hero-electric-border--polaroid .hero-image {
-  position: absolute;
-  top: -6.51%;
-  left: -41.62%;
-  width: 183.24%;
-  max-width: none;
+  height: auto;
+  flex-shrink: 0;
+  object-fit: contain;
   filter: none;
+  animation: fadeIn 1s ease forwards;
 }
 
 /* TITLE ANIMATION */
@@ -6269,33 +6430,33 @@ body::after {
   overflow: hidden;
 }
 
+.cv-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+}
+
 .cv-modal-close-btn {
-  position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
-  z-index: 2;
   border: 1px solid rgba(148, 163, 184, 0.45);
   background: rgba(255, 255, 255, 0.92);
   color: #1f2937;
-  font-size: 0.78rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  letter-spacing: 0.015em;
   border-radius: 999px;
-  padding: 0.32rem 0.72rem;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
   cursor: pointer;
   transition: background 0.24s ease, border-color 0.24s ease;
+  line-height: 1;
 }
 
 .cv-modal-close-btn:hover {
   background: #ffffff;
   border-color: rgba(100, 116, 139, 0.56);
-}
-
-.cv-modal-head {
-  display: grid;
-  gap: 0.28rem;
-  padding: 1rem 1rem 0.75rem;
-  text-align: center;
 }
 
 .cv-modal-title {
@@ -6591,6 +6752,10 @@ body::after {
 
 .dark .cv-modal-overlay {
   background: rgba(2, 6, 23, 0.76);
+}
+
+.dark .cv-modal-head {
+  border-bottom-color: rgba(148, 163, 184, 0.34);
 }
 
 .dark .cv-modal {
@@ -8767,7 +8932,7 @@ html {
 
 @media (max-width: 480px) {
   .chatbot-toggle {
-    bottom: 1rem;
+    bottom: 6.75rem;
     right: 1rem;
     width: 3rem;
     height: 3rem;
@@ -8779,7 +8944,7 @@ html {
   }
 
   .chatbot-panel {
-    bottom: 4.75rem;
+    bottom: 10rem;
     right: 0.75rem;
     width: calc(100vw - 1.5rem);
     height: min(28rem, calc(100vh - 7rem));

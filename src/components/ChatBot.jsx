@@ -11,7 +11,7 @@ Known information:
 - Lawrence is a BSIT graduate from Holy Cross of Davao College.
 - He is a Junior Full Stack Developer.
 - He has experience with React.js, Next.js, Laravel, PHP, MySQL, Supabase, Docker, Git/GitHub, REST APIs, and deployment workflows.
-- Projects: DavCom Guide, SafeShore/AquaCheck, Flowly, AI Resume Analyzer, PickN'Eat.
+- Projects: DavCom Guide, StackRate, SafeShore/AquaCheck, Flowly, AI Resume Analyzer, PickN'Eat.
 - He also has video editing experience.
 - He is based in Davao City, Philippines.
 
