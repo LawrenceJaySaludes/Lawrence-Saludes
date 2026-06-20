@@ -527,7 +527,7 @@ function Videos({
         )}
 
           <div className="featured-video-wrap scroll-animate fade-up delay-2">
-            <div className="featured-video-head-main">
+              <div className="featured-video-head-main">
               <div className="featured-video-head-col">
                 <span className="featured-video-kicker">Featured Sample</span>
                 <h3 className="featured-video-title">Editing Sample</h3>
@@ -535,7 +535,7 @@ function Videos({
                   A short compilation highlighting my editing style, transitions, pacing, and motion graphics work.
                 </p>
               </div>
-              <div className="featured-video-head-col">
+              <div className="featured-video-head-col featured-video-head-col--testimonial">
                 <span className="featured-video-kicker">Video Testimonial</span>
                 <h3 className="featured-video-title">Client Feedback</h3>
                 <p className="featured-video-copy">
@@ -563,6 +563,13 @@ function Videos({
               </div>
 
               <div className="featured-video-col">
+                <div className="featured-video-head-col featured-video-head-col--testimonial-mobile">
+                  <span className="featured-video-kicker">Video Testimonial</span>
+                  <h3 className="featured-video-title">Client Feedback</h3>
+                  <p className="featured-video-copy">
+                    Kyla Don, CEO of Vast Professionals, shares her experience working with me.
+                  </p>
+                </div>
                 <div className="video-testimonial">
                   <div className="video-testimonial-frame">
                     <video

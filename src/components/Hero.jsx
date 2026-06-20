@@ -190,7 +190,9 @@ function Hero({ profile, dark = false, ctaButtons = [], navigateTo, details }) {
           />
 
           <p className={`hero-right hero-role${isHeroVisible ? " show" : ""}`}>
-            {roleText}
+            {roleText.split("|").map((part, i) => (
+              <span key={i}>{i > 0 && <span className="hero-role-sep"> | </span>}{part.trim()}{i === 0 && <br className="hero-role-br" />}</span>
+            ))}
           </p>
 
           <div className={`hero-buttons hero-fade${isHeroVisible ? " show" : ""}`}>

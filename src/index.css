@@ -2267,7 +2267,7 @@ body::after {
 
 .project-preview-fullscreen-overlay {
   background: rgba(2, 6, 23, 0.94);
-  z-index: 1200;
+  z-index: 9999;
 }
 
 .project-preview-fullscreen {
@@ -2335,17 +2335,20 @@ body::after {
   }
 
   .pagination-content {
-    gap: 0.4rem;
+    gap: 0.25rem;
+    flex-wrap: nowrap;
   }
 
   .pagination-link {
-    min-width: 2.55rem;
-    height: 2.55rem;
-    padding: 0 0.85rem;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    font-size: 0.8rem;
   }
 
   .pagination-control {
-    min-width: 6.75rem;
+    min-width: auto;
+    padding: 0 0.5rem;
   }
 
   .gallery6-action-link,
@@ -2843,6 +2846,16 @@ body::after {
   .hero-role {
     justify-content: center;
     text-align: center;
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .hero-role-sep {
+    display: none;
+  }
+
+  .hero-role-br {
+    display: block;
   }
 
   .hero-image {
@@ -2852,8 +2865,13 @@ body::after {
   .hero-socials {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    justify-items: center;
+    justify-items: stretch;
     gap: 1rem;
+  }
+
+  .hero-socials a {
+    width: 100%;
+    justify-content: center;
   }
 
   .hero-image-shell {
@@ -3301,7 +3319,7 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .modal {
@@ -4023,6 +4041,13 @@ body::after {
   animation: fadeIn 1s ease forwards;
 }
 
+@media (max-width: 900px) {
+  .hero-image-shell {
+    justify-self: center;
+    justify-content: center;
+  }
+}
+
 /* TITLE ANIMATION */
 .about-title {
   opacity: 0;
@@ -4245,9 +4270,18 @@ body::after {
   white-space: nowrap;
 }
 
+.hero-role-br {
+  display: none;
+}
+
+.hero-role-sep {
+  display: inline;
+}
+
 .hero-role {
   margin-top: 0;
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   width: fit-content;
@@ -5080,6 +5114,21 @@ body::after {
 .dark .video-testimonial-frame {
   background: rgba(2, 6, 23, 0.34);
   box-shadow: 0 20px 42px rgba(2, 6, 23, 0.28);
+}
+
+.featured-video-head-col--testimonial-mobile {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .featured-video-head-col--testimonial {
+    display: none;
+  }
+
+  .featured-video-head-col--testimonial-mobile {
+    display: block;
+    text-align: center;
+  }
 }
 
 .channel-delay-1 {
@@ -6409,7 +6458,7 @@ body::after {
 .cv-modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1300;
+  z-index: 9999;
   display: grid;
   place-items: center;
   padding: clamp(0.9rem, 2.6vw, 1.4rem);
@@ -8426,6 +8475,12 @@ html {
     grid-template-columns: 1fr;
     justify-items: center;
     text-align: center;
+    padding-bottom: 0.5rem;
+  }
+
+  .infosoft-project-hint {
+    position: static;
+    margin-top: 0.65rem;
   }
 
   .infosoft-project-logo {
@@ -8932,8 +8987,8 @@ html {
 
 @media (max-width: 480px) {
   .chatbot-toggle {
-    bottom: 6.75rem;
-    right: 1rem;
+    bottom: 0.9rem;
+    right: 0.9rem;
     width: 3rem;
     height: 3rem;
   }
@@ -8944,10 +8999,15 @@ html {
   }
 
   .chatbot-panel {
-    bottom: 10rem;
+    bottom: 4.6rem;
     right: 0.75rem;
     width: calc(100vw - 1.5rem);
     height: min(28rem, calc(100vh - 7rem));
     border-radius: 1rem;
+  }
+
+  .floating-dock-mobile-wrap {
+    bottom: 6.75rem;
+    right: 1rem;
   }
 }
