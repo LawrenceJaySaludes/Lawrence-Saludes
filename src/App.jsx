@@ -348,6 +348,15 @@ function App() {
   }, [isIntroClosing, isIntroVisible]);
 
   useEffect(() => {
+    if (isPortfolioVisible && !isIntroVisible) {
+      window.scrollTo(0, 0);
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, [isPortfolioVisible, isIntroVisible]);
+
+  useEffect(() => {
     let sequenceIndex = 0;
     let lastKeyTime = 0;
 
@@ -478,6 +487,7 @@ function App() {
 
     setIsPortfolioVisible(true);
     setIsIntroVisible(false);
+    window.scrollTo(0, 0);
   };
 
   return (
