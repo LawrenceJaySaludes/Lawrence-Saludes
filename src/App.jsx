@@ -358,7 +358,7 @@ function App() {
 
   useEffect(() => {
     if (isPortfolioVisible && !isIntroVisible) {
-      document.getElementById("home")?.scrollIntoView(true);
+      window.scrollTo(0, 0);
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);
       }
@@ -496,7 +496,6 @@ function App() {
 
     setIsPortfolioVisible(true);
     setIsIntroVisible(false);
-    document.getElementById("home")?.scrollIntoView(true);
   };
 
   return (

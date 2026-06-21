@@ -7261,7 +7261,7 @@ body::after {
 
 /* FLOATING DOCK NAVBAR */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 .dock-nav-icon {
