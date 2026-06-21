@@ -359,11 +359,22 @@ function App() {
   useEffect(() => {
     if (isPortfolioVisible && !isIntroVisible) {
       window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);
       }
     }
   }, [isPortfolioVisible, isIntroVisible]);
+
+  useEffect(() => {
+    if (!isPortfolioVisible) {
+      return;
+    }
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [isPortfolioVisible]);
 
   useEffect(() => {
     let sequenceIndex = 0;
@@ -409,15 +420,27 @@ function App() {
 
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyPosition = document.body.style.position;
+    const previousBodyTop = document.body.style.top;
+    const previousBodyLeft = document.body.style.left;
+    const previousBodyWidth = document.body.style.width;
 
     if (showAdminPanel || isIntroVisible) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = "0";
+      document.body.style.left = "0";
+      document.body.style.width = "100%";
     }
 
     return () => {
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.position = previousBodyPosition;
+      document.body.style.top = previousBodyTop;
+      document.body.style.left = previousBodyLeft;
+      document.body.style.width = previousBodyWidth;
     };
   }, [isIntroVisible, showAdminPanel]);
 
