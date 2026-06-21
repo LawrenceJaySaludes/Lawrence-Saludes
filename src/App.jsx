@@ -160,6 +160,15 @@ function App() {
   const [pathname, setPathname] = useState(() =>
     normalizePath(window.location.pathname)
   );
+
+  useEffect(() => {
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    if (history.scrollRestoration) {
+      history.scrollRestoration = "manual";
+    }
+  }, []);
   const [isIntroVisible, setIsIntroVisible] = useState(true);
   const [isIntroClosing, setIsIntroClosing] = useState(false);
   const [isPortfolioVisible, setIsPortfolioVisible] = useState(false);
@@ -349,7 +358,7 @@ function App() {
 
   useEffect(() => {
     if (isPortfolioVisible && !isIntroVisible) {
-      window.scrollTo(0, 0);
+      document.getElementById("home")?.scrollIntoView(true);
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);
       }
@@ -487,7 +496,7 @@ function App() {
 
     setIsPortfolioVisible(true);
     setIsIntroVisible(false);
-    window.scrollTo(0, 0);
+    document.getElementById("home")?.scrollIntoView(true);
   };
 
   return (
