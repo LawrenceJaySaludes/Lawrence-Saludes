@@ -3865,16 +3865,16 @@ body::after {
 /* TYPEWRITER NAME WITH GRADIENT */
 .hero-greeting {
   margin: 0 0 0.3rem;
-  font-size: clamp(1.28rem, 2.85vw, 1.98rem);
-  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  font-weight: 800;
   letter-spacing: 0.085em;
   text-transform: uppercase;
   color: rgba(47, 58, 68, 0.82);
 }
 
 .hero-name {
-  font-family: "October Twilight - TTF", "Outfit", sans-serif;
-  font-size: inherit;
+  font-family: "Playfair Display", "Outfit", serif;
+  font-size: clamp(2.5rem, 6.5vw, 5rem);
   font-weight: 800;
   letter-spacing: -1.8px;
   margin-bottom: 0.72rem;
@@ -7484,7 +7484,7 @@ html {
   }
 
   .hero-name {
-    font-family: "Outfit", sans-serif;
+    font-family: "Playfair Display", "Outfit", serif;
   }
 }
 
