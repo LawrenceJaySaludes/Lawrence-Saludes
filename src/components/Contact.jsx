@@ -274,7 +274,7 @@ function Contact({ contacts, cv }) {
               </div>
 
               <div className="contact-panel">
-                <h3 className="contact-panel-title">Curriculum Vitae</h3>
+                <h3 className="contact-panel-title">Resume</h3>
                 <p className="contact-panel-copy">
                   View online or download an offline copy.
                 </p>
@@ -285,7 +285,7 @@ function Contact({ contacts, cv }) {
                     className="btn-outline contact-resume-btn"
                     onClick={handleViewCvClick}
                   >
-                    View CV
+                    View
                   </button>
 
                   <a
@@ -293,7 +293,7 @@ function Contact({ contacts, cv }) {
                     download={cvFileName}
                     className="btn-solid contact-resume-btn"
                   >
-                    Download CV
+                    Download
                   </a>
                 </div>
               </div>

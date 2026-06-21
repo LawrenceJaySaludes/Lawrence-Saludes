@@ -326,7 +326,7 @@ function PortfolioPage({
 
       <footer className="site-footer" aria-label="Copyright">
         <p className="site-footer-copy">
-          &copy; 2026 Lawrence Portfolio. All rights reserved.
+          &copy; 2026 Lawrence Portfolio | All Rights Reserved.
         </p>
       </footer>
     </div>
