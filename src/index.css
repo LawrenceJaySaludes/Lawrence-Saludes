@@ -6448,11 +6448,13 @@ body::after {
   }
 
   .resume-actions {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
 
   .contact-resume-btn {
-    width: 100%;
+    flex: 1;
     min-width: 0;
   }
 }
@@ -7208,12 +7210,15 @@ body::after {
   }
 
   .resume-actions {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
   }
 
   .contact-resume-btn {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
   }
 
   .cv-modal-overlay {
