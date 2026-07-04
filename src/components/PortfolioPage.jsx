@@ -148,7 +148,7 @@ function getRouteContent(variant, portfolioContent) {
         "Certifications and training that support my full stack and IT development focus.",
       certificates: DEVELOPER_CERTIFICATES,
       showProjects: true,
-      projectTitle: "System Projects",
+      projectTitle: "Projects",
       projectLead:
         "Projects focused on responsive interfaces, system logic, database flows, and deployment-ready builds.",
       projects: DEVELOPER_PROJECTS,

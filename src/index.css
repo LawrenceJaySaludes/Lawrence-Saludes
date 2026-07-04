@@ -2503,7 +2503,7 @@ body::after {
 }
 
 .project-preview-fullscreen .modal-close-btn {
-  top: clamp(0.5rem, 1vw, 1rem);
+  top: clamp(0.85rem, 1.5vw, 1rem);
   right: clamp(0.5rem, 1vw, 1rem);
 }
 

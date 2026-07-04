@@ -1,4 +1,4 @@
-import { FaDocker, FaFilm, FaPhotoVideo, FaReact, FaYoutube, FaCut, FaHome, FaCode, FaPlay } from "react-icons/fa";
+import { FaDocker, FaFilm, FaPhotoVideo, FaReact, FaYoutube, FaCut, FaHome, FaCode, FaPlay, FaEnvelope } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa6";
 import { IoLogoJavascript } from "react-icons/io";
 import { DiMsqlServer } from "react-icons/di";
@@ -16,6 +16,11 @@ import {
   SiReact,
   SiHtml5,
   SiVuedotjs,
+  SiWordpress,
+  SiPython,
+  SiTypescript,
+  SiVercel,
+  SiNetlify,
   SiAdobepremierepro,
   SiAdobeaftereffects,
   SiAdobephotoshop,
@@ -90,7 +95,9 @@ export const HOME_SKILL_GROUPS = [
       createSkillItem("home-fullstack-react", "React.js", "Frontend", <FaReact />, "#61DAFB"),
       createSkillItem("home-fullstack-next", "Next.js", "Frontend", <SiNextdotjs />, "#111111"),
       createSkillItem("home-fullstack-node", "Node.js", "Backend", <SiNodedotjs />, "#339933"),
+      createSkillItem("home-fullstack-python", "Python", "Backend", <SiPython />, "#3776AB"),
       createSkillItem("home-fullstack-js", "JavaScript", "Core Language", <IoLogoJavascript />, "#F7DF1E"),
+      createSkillItem("home-fullstack-ts", "TypeScript", "Frontend", <SiTypescript />, "#3178C6"),
       createSkillItem("home-fullstack-react-native", "React Native", "Mobile", <SiReact />, "#61DAFB"),
       createSkillItem("home-fullstack-vue", "Vue", "Frontend", <SiVuedotjs />, "#4FC08D"),
       createSkillItem("home-fullstack-html", "HTML", "Markup", <SiHtml5 />, "#E34F26"),
@@ -101,6 +108,10 @@ export const HOME_SKILL_GROUPS = [
       createSkillItem("home-fullstack-sql", "SQL Database", "Database", <DiMsqlServer />, "#0078D4"),
       createSkillItem("home-fullstack-supabase", "Supabase", "Backend", <RiSupabaseFill />, "#3ECF8E"),
       createSkillItem("home-fullstack-docker", "Docker", "Deployment", <FaDocker />, "#2496ED"),
+      createSkillItem("home-fullstack-vercel", "Vercel", "Deployment", <SiVercel />, "#000000"),
+      createSkillItem("home-fullstack-netlify", "Netlify", "Deployment", <SiNetlify />, "#00C7B7"),
+      createSkillItem("home-fullstack-visualstudio", "Visual Studio 2022", "IDE", <TbBrandVisualStudio />, "#5C2D91"),
+      createSkillItem("home-fullstack-wordpress", "WordPress", "CMS", <SiWordpress />, "#21759B"),
     ],
   },
   {
@@ -133,13 +144,13 @@ export const HOME_SKILL_GROUPS = [
 ];
 
 export const DEVELOPER_CTA_BUTTONS = [
-  { label: "Home", href: "/", isRoute: true, icon: <FaHome /> },
-  { label: "Projects", href: "#projects", isRoute: false, icon: <FaCode /> },
+  { label: "View Projects", href: "#projects", isRoute: false, icon: <FaCode /> },
+  { label: "Contact Me", href: "#contact", isRoute: false, icon: <FaEnvelope /> },
 ];
 
 export const VIDEO_CTA_BUTTONS = [
-  { label: "Home", href: "/", isRoute: true, icon: <FaHome /> },
-  { label: "Videos", href: "#videos", isRoute: false, icon: <FaPlay /> },
+  { label: "View Projects", href: "#videos", isRoute: false, icon: <FaCode /> },
+  { label: "Contact Me", href: "#contact", isRoute: false, icon: <FaEnvelope /> },
 ];
 
 export const DEVELOPER_HERO_DETAILS =
@@ -292,6 +303,7 @@ export const DEVELOPER_SKILL_GROUPS = [
       createSkillItem("developer-frontend-react", "React.js", "Frontend", <FaReact />, "#61DAFB"),
       createSkillItem("developer-frontend-next", "Next.js", "Frontend", <SiNextdotjs />, "#111111"),
       createSkillItem("developer-frontend-js", "JavaScript", "Core Language", <IoLogoJavascript />, "#F7DF1E"),
+      createSkillItem("developer-frontend-ts", "TypeScript", "Frontend", <SiTypescript />, "#3178C6"),
       createSkillItem("developer-frontend-tailwind", "Tailwind CSS", "Styling", <SiTailwindcss />, "#38BDF8"),
       createSkillItem("developer-frontend-react-native", "React Native", "Mobile", <SiReact />, "#61DAFB"),
       createSkillItem("developer-frontend-vue", "Vue", "Frontend", <SiVuedotjs />, "#4FC08D"),
@@ -299,11 +311,12 @@ export const DEVELOPER_SKILL_GROUPS = [
     ],
   },
   {
-    title: "Backend & Data",
+    title: "Backend & Database",
     items: [
       createSkillItem("developer-backend-laravel", "Laravel", "Backend", <SiLaravel />, "#FF2D20"),
       createSkillItem("developer-backend-php", "PHP", "Backend", <SiPhp />, "#777BB4"),
       createSkillItem("developer-backend-node", "Node.js", "Backend", <SiNodedotjs />, "#339933"),
+      createSkillItem("developer-backend-python", "Python", "Backend", <SiPython />, "#3776AB"),
       createSkillItem("developer-backend-supabase", "Supabase", "Backend", <RiSupabaseFill />, "#3ECF8E"),
       createSkillItem("developer-backend-mysql", "MySQL", "Database", <SiMysql />, "#4479A1"),
       createSkillItem("developer-backend-postgres", "PostgreSQL", "Database", <SiPostgresql />, "#336791"),
@@ -317,8 +330,12 @@ export const DEVELOPER_SKILL_GROUPS = [
       createSkillItem("developer-tools-docker", "Docker", "DevOps", <FaDocker />, "#2496ED"),
       createSkillItem("developer-tools-git", "Git", "Workflow", <SiGit />, "#F05032"),
       createSkillItem("developer-tools-vscode", "Visual Studio Code", "IDE", <TbBrandVisualStudio />, "#007ACC"),
+      createSkillItem("developer-tools-visualstudio", "Visual Studio 2022", "IDE", <TbBrandVisualStudio />, "#5C2D91"),
       createSkillItem("developer-tools-csharp", "C# WinForms", "Desktop", <TbBrandCSharp />, "#9B4DCA"),
       createSkillItem("developer-tools-sqlserver", "SQL Server", "Database", <DiMsqlServer />, "#0078D4"),
+      createSkillItem("developer-tools-wordpress", "WordPress", "CMS", <SiWordpress />, "#21759B"),
+      createSkillItem("developer-tools-vercel", "Vercel", "Deployment", <SiVercel />, "#000000"),
+      createSkillItem("developer-tools-netlify", "Netlify", "Deployment", <SiNetlify />, "#00C7B7"),
     ],
   },
 ];

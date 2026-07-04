@@ -14,7 +14,7 @@ const LEGACY_ROLE_TEXTS = new Set([
 ]);
 const FALLBACK_CTA_BUTTONS = [
   {
-    label: "System Projects",
+    label: "Projects",
     href: "#projects",
     isRoute: false,
   },
