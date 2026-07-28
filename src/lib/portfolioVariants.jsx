@@ -39,6 +39,7 @@ import shortlistThumb from "../assets/shortlist.png";
 import stackrateThumb from "../assets/stackrate.png";
 import stackratePreview1 from "../assets/sr1.png";
 import stackratePreview2 from "../assets/sr2.png";
+import lmsThumb from "../assets/lms.png";
 import clinical1 from "../assets/clinical-samp1.png";
 import clinical2 from "../assets/clinical-samp2.png";
 import clinical3 from "../assets/clinical-samp3.png";
@@ -189,6 +190,20 @@ export const DEVELOPER_PROJECTS = [
     screenshots: [stackratePreview1, stackratePreview2],
   },
   {
+    id: "default-project-lms",
+    category: "Website",
+    title: "Employee Leave Management",
+    description:
+      "A modern full-stack Employee Leave Management System built with React and Laravel REST API. The application provides secure authentication, role-based access control, employee management, leave request processing, approval workflows, dashboard analytics, and responsive UI/UX. Designed as a portfolio project to demonstrate full-stack development, API integration, and enterprise application architecture.",
+    stack: "React (Vite) | Tailwind CSS | Axios | Laravel REST API | Sanctum | MySQL",
+    liveLink: "https://leavemanagement-opal.vercel.app",
+    repoLink:
+      "https://github.com/LawrenceJaySaludes/employee-leave-management-backend",
+    image: lmsThumb,
+    infoTooltip:
+      "This live demo showcases the frontend interface of the Employee Leave Management System.\n\nThe backend API is intentionally not deployed because this project is intended for portfolio demonstration and free hosting services do not provide sufficient resources for long-term backend hosting.\n\nSource code for both the frontend and backend is available on GitHub.",
+  },
+  {
     id: "default-project-1",
     category: "Website",
     title: "PickN'Eat",
@@ -207,6 +222,7 @@ export const DEVELOPER_PROJECTS = [
       "An AI-powered resume analyzer that compares resumes against job descriptions, calculates ATS compatibility scores, identifies missing skills and keywords, provides recruiter-style feedback, and generates AI-enhanced resume recommendations to improve job application success rates.",
     stack: "Next.js | TypeScript | Tailwind | Gemini AI | jsPDF",
     liveLink: "https://aishortlist.netlify.app/",
+    repoLink: "https://github.com/LawrenceJaySaludes/shortlist",
     image: shortlistThumb,
   },
   {
